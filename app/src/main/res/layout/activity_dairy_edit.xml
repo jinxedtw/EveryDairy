@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.tw.longerrelationship.viewmodel.DairyEditViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".views.activity.DairyEditActivity">
+
+        <com.tw.longerrelationship.views.widgets.DairyEditBar
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rightImage="@drawable/ic_more_list" />
+
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/recording_today"
+            android:text="@={viewModel.dairyContent}"
+            android:textColor="@color/EditText"
+            android:textCursorDrawable="@drawable/shape_edit_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"
+            tools:layout_editor_absoluteX="178dp" />
+
+        <ImageView
+            android:id="@+id/iv_tree"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_sticker_2"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ll_text_and_count"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="15dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_location_small"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_location_small"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_location_info"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/tv_location_info"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_location_info"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:singleLine="true"
+                    android:text="@={viewModel.location}"
+                    android:textColor="@color/DairyEditHintText"
+                    app:layout_constraintBottom_toTopOf="@id/iv_text_icon"
+                    app:layout_constraintLeft_toRightOf="@id/iv_location_small"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_text_icon"
+                    android:layout_width="14dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/tv_text_length"
+                    app:layout_constraintTop_toBottomOf="@id/tv_location_info" />
+
+                <TextView
+                    android:id="@+id/tv_text_length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:text="@string/text_num_count"
+                    android:textColor="@color/DairyEditHintText"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_text_icon"
+                    app:layout_constraintLeft_toRightOf="@id/iv_text_icon"
+                    app:layout_constraintTop_toTopOf="@id/iv_text_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.getNowTimeMonthAndHour()}"
+                    android:textColor="@color/DairyEditHintText"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_text_icon"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/iv_text_icon" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_phone_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_setting" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/iv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/edit_icon_margin"
+                    android:layout_marginEnd="@dimen/edit_icon_margin"
+                    android:src="@drawable/ic_location" />
+
+                <ImageView
+                    android:id="@+id/iv_clock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/edit_icon_margin"
+                    android:layout_marginEnd="@dimen/edit_icon_margin"
+                    android:src="@drawable/ic_clock" />
+
+                <View
+                    android:layout_width="1.5dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:background="@color/DairyEditHintText" />
+
+                <ImageView
+                    android:id="@+id/iv_weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/edit_icon_margin"
+                    android:layout_marginEnd="@dimen/edit_icon_margin"
+                    android:src="@drawable/ic_weather" />
+
+                <ImageView
+                    android:id="@+id/iv_mood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/edit_icon_margin"
+                    android:layout_marginEnd="@dimen/edit_icon_margin"
+                    android:src="@drawable/ic_mood" />
+
+                <ImageView
+                    android:id="@+id/iv_calendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/edit_icon_margin"
+                    android:layout_marginEnd="@dimen/edit_icon_margin"
+                    android:contentDescription="@string/calendar_icon"
+                    android:src="@drawable/ic_calendar" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

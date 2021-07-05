@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">美贴</string>
+    <string name="recording_today">记录今日</string>
+    <string name="title">标题</string>
+    <string name="choose_weather">选择天气</string>
+    <string name="camera">相机</string>
+    <string name="pictures">图库</string>
+    <string name="recording">录音</string>
+    <string name="text_num_count">字数统计</string>
+    <string name="delete">删除</string>
+    <string name="location_info">位置信息</string>
+    <string name="text_content_num">%d字</string>
+    <string name="currentPicture">%d/%d</string>
+    <string name="key_world_search">关键字搜索</string>
+    <string name="new_dairy">创建日记</string>
+    <string name="calendar_icon">日历图标</string>
+    <string name="cancer">取消</string>
+    <string name="back">返回</string>
+    <string name="beauty_around_you">记   录   身   边   的   美   好   !</string>
+    <string name="start_recording">开始记录</string>
+    <string name="help">帮助</string>
+    <string name="setting">设置</string>
+    <string name="daily_plan">每日</string>
+    <string name="recycle">回收</string>
+    <string name="love">收藏</string>
+    <string name="about">关于</string>
+    <string name="secret">秘密</string>
+</resources>

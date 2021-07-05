@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DairyEditBar">
+        <attr name="leftImage" format="reference" />
+        <attr name="centerTitle" format="string" />
+        <attr name="rightImage" format="reference" />
+    </declare-styleable>
+</resources>

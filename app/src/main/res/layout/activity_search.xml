@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <include
+            android:id="@+id/include_search_bar"
+            layout="@layout/layout_search_bar" />
+
+        <View
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/Divider"
+            app:layout_constraintTop_toBottomOf="@id/include_search_bar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_dairy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:overScrollMode="never"
+            app:layout_constraintTop_toBottomOf="@id/divider_line" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

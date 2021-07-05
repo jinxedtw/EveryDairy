@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/it_info"
+        android:icon="@drawable/abc_vector_test"
+        android:title="我的" />
+    <item
+        android:id="@+id/it_notification"
+        android:icon="@drawable/abc_vector_test"
+        android:title="提醒" />
+    <item
+        android:id="@+id/it_email"
+        android:icon="@drawable/abc_vector_test"
+        android:title="邮件" />
+    <item
+        android:id="@+id/it_fil_common"
+        android:icon="@drawable/abc_vector_test"
+        android:title="收藏" />
+    <item
+        android:id="@+id/it_delete"
+        android:icon="@drawable/ic_delete_black"
+        android:title="移入回收站" />
+</menu>

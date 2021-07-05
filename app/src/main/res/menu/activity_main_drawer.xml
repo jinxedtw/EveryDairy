@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/it_pictures"
+            android:icon="@drawable/ic_photo_album"
+            android:title="@string/pictures" />
+        <item
+            android:id="@+id/it_daily_plan"
+            android:icon="@drawable/ic_survey"
+            android:title="@string/daily_plan" />
+        <item
+            android:id="@+id/it_fil_common"
+            android:icon="@drawable/ic_file_common"
+            android:title="@string/love" />
+        <item
+            android:id="@+id/it_secret"
+            android:icon="@drawable/ic_secret"
+            android:title="@string/secret" />
+        <item
+            android:id="@+id/it_recycle"
+            android:icon="@drawable/ic_recycle"
+            android:title="@string/recycle" />
+    </group>
+
+    <group android:id="@+id/about">
+        <item
+            android:id="@+id/it_help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/help" />
+        <item
+            android:id="@+id/it_about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/about" />
+        <item
+            android:id="@+id/it_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/setting" />
+    </group>
+</menu>
