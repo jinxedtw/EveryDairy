@@ -33,31 +33,31 @@ import com.tw.longerrelationship.views.widgets.IconSelectDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DairyEditActivity : BaseActivity() {
+    private var showRvPhotoList: Boolean = true
     private lateinit var mBinding: ActivityDairyEditBinding
-
     private lateinit var locationService: LocationService
-
     private lateinit var locationListener: BDAbstractLocationListener
-
     private lateinit var pictureSelectAdapter: PictureSelectAdapter
-
     private val layoutManager = GridLayoutManager(this, 3)
 
-    private var dairyID: Int = -1
+    private val dairyId by lazy {
+        intent.getIntExtra(DAIRY_ID, -1)
+    }
 
     /**
      * 记录相机保存图片的Uri
      */
     private lateinit var currentUri: Uri
 
-
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            InjectorUtils.getDairyEditViewModelFactory(dairyID)
+            InjectorUtils.getDairyEditViewModelFactory(dairyId)
         ).get(DairyEditViewModel::class.java)
     }
 
@@ -69,7 +69,6 @@ class DairyEditActivity : BaseActivity() {
             if (it != null) {
                 viewModel.pictureList.add(it)
                 viewModel.isChanged.value = true
-
                 // 只需要刷新新增的一个和尾部,也是就itemCount为2
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
             }
@@ -83,7 +82,6 @@ class DairyEditActivity : BaseActivity() {
             if (it) {
                 viewModel.pictureList.add(currentUri)
                 viewModel.isChanged.value = true
-                // 只需要刷新新增的一个和尾部,也是就itemCount为2
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
             }
         }
@@ -108,9 +106,6 @@ class DairyEditActivity : BaseActivity() {
     override fun init() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         mBinding.viewModel = this.viewModel
-
-        logV("程序可用最大内存:", (Runtime.getRuntime().maxMemory() / 1024).toString() + "k")
-
         observe()
         initView()
         addOnSoftKeyBoardVisibleListener()
@@ -147,6 +142,27 @@ class DairyEditActivity : BaseActivity() {
                 String.format(getString(R.string.text_content_num), it.length)
         }
 
+        // 获取日记成功时的回调,这里回调代表是编辑日记状态
+        viewModel.dairyItem.observe(this) {
+            mBinding.viewModel = viewModel
+            if (it.content != null) {
+                mBinding.etContent.setText(it.content)
+                mBinding.etContent.setSelection(it.content.length)
+                mBinding.etContent.requestFocus()
+            }
+            if (it.title != null) {
+                mBinding.appBar.setTitle(it.title)
+            }
+            viewModel.apply {
+                location = it.location
+                pictureList = it.uriList as ArrayList<Uri>
+                time = it.time
+                weatherIcon = it.weather
+                moodIcon = it.mood
+            }
+            pictureSelectAdapter.pictureList = viewModel.pictureList
+            pictureSelectAdapter.notifyDataSetChanged()
+        }
     }
 
     /**
@@ -156,9 +172,11 @@ class DairyEditActivity : BaseActivity() {
     private fun initView() {
         pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this)
 
-        mBinding.rvPhoneList.addItemDecoration(SpacesItemDecoration(60))
-        mBinding.rvPhoneList.adapter = pictureSelectAdapter
-        mBinding.rvPhoneList.layoutManager = layoutManager
+        mBinding.rvPhotoList.apply {
+            addItemDecoration(SpacesItemDecoration(60))
+            adapter = pictureSelectAdapter
+            layoutManager = this@DairyEditActivity.layoutManager
+        }
 
         setOnClickListeners(
             mBinding.ivCalendar,
@@ -175,7 +193,7 @@ class DairyEditActivity : BaseActivity() {
                 // 添加时间
                 mBinding.ivClock -> {
                     mBinding.etContent.text =
-                        mBinding.etContent.text.append("[" + getNowTimeHour(viewModel.time) + "]")
+                        mBinding.etContent.text.append("[" + getNowTimeHour(Date()) + "]")
                     mBinding.etContent.setSelection(mBinding.etContent.text.length)
                 }
                 // 获得位置
@@ -189,14 +207,14 @@ class DairyEditActivity : BaseActivity() {
                 mBinding.ivMood -> {
                     IconSelectDialog(context, R.style.Dialog, 2) { drawable, iconId ->
                         mBinding.ivMood.setImageDrawable(drawable)
-                        mBinding.ivMood.tag = iconId
+                        viewModel.moodIcon = iconId
                     }.show()
                 }
                 // 设置天气
                 mBinding.ivWeather -> {
                     IconSelectDialog(context, R.style.Dialog, 1) { drawable, iconId ->
                         mBinding.ivWeather.setImageDrawable(drawable)
-                        mBinding.ivWeather.tag = iconId
+                        viewModel.weatherIcon = iconId
                     }.show()
                 }
                 mBinding.ivSetting -> {
@@ -220,7 +238,6 @@ class DairyEditActivity : BaseActivity() {
                 }
             }
         }
-
         locationService = MyApplication.locationService
         locationService.registerListener(locationListener)
         locationService.setLocationOption(locationService.defaultLocationClientOption)
@@ -244,7 +261,6 @@ class DairyEditActivity : BaseActivity() {
 
     /**
      * 监听软键盘状态
-     * TODO 该方法可能导致界面晃动
      */
     private fun addOnSoftKeyBoardVisibleListener() {
         val decorView: View = this.window.decorView
@@ -253,13 +269,15 @@ class DairyEditActivity : BaseActivity() {
             decorView.getWindowVisibleDisplayFrame(rect)
             // 如果decorView的高度小于原来的80%就说明弹出了软键盘
             if ((rect.bottom - rect.top).toDouble() / decorView.height < 0.8) {
-                mBinding.rvPhoneList.visibility = View.GONE
-                mBinding.llTextAndCount.visibility = View.VISIBLE
-                mBinding.ivTree.visibility = View.VISIBLE
+                mBinding.rvPhotoList.visibility = View.GONE
+                mBinding.etContent.requestFocus()
+                decorView.handler.postDelayed({
+                    mBinding.llTextAndCount.visibility = View.VISIBLE
+                }, 50)
             } else {
                 mBinding.llTextAndCount.visibility = View.GONE
-                mBinding.rvPhoneList.visibility = View.VISIBLE
-                mBinding.ivTree.visibility = View.GONE
+                if (showRvPhotoList) mBinding.rvPhotoList.visibility =
+                    View.VISIBLE else mBinding.rvPhotoList.visibility = View.GONE
             }
         }
     }
@@ -267,24 +285,31 @@ class DairyEditActivity : BaseActivity() {
     /**
      * 保存日记
      */
-    fun saveDairy() {
+    fun saveDairy(view: View) {
         lifecycleScope.launch(Dispatchers.Main) {
             val result = withContext(Dispatchers.IO) {
-                viewModel.saveDairy(
-                    mBinding.appBar.getTitle(),
-                    if (mBinding.ivWeather.tag == null) R.drawable.ic_weather else mBinding.ivWeather.tag as Int,
-                    if (mBinding.ivMood.tag == null) R.drawable.ic_mood else mBinding.ivMood.tag as Int,
-                )
+                viewModel.saveDairy(mBinding.appBar.getTitle())
             }
-
             if (result.isSuccess)
                 showToast(baseContext, "保存成功")
             else
                 showToast(baseContext, "保存失败")
         }
-
-        finish()
+        finishActivity(view)
     }
+
+    fun finishActivity(view: View) {
+        if (isSoftShowing()) {
+            closeKeyboard(view.windowToken)
+            showRvPhotoList = false
+            view.handler.postDelayed({
+                finish()
+            }, 50)
+        } else {
+            finish()
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -310,10 +335,9 @@ class DairyEditActivity : BaseActivity() {
 
     fun pictureInfoActivityJump(index: Int) {
         val bundle = Bundle().apply {
-            putParcelableArrayList("pictureList", viewModel.pictureList)
-            putInt("currentPicture", index)
+            putParcelableArrayList(PICTURE_LIST, viewModel.pictureList)
+            putInt(CURRENT_PICTURE, index)
         }
-
         toPictureInfoLauncher.launch(bundle)
     }
 
@@ -329,13 +353,11 @@ class DairyEditActivity : BaseActivity() {
             }
         }
 
-
         override fun parseResult(resultCode: Int, intent: Intent?): Int {
             val data = intent?.getIntExtra("result", -1)
 
             return if (resultCode == Activity.RESULT_OK && data != null) data else -1
         }
-
     }
 
     /**

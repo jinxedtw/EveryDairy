@@ -52,7 +52,6 @@ class SearchActivity : BaseActivity() {
         }
     }
 
-
     private fun click() {
         setOnClickListeners(
             mBinding.includeSearchBar.tvCancer,
@@ -60,7 +59,12 @@ class SearchActivity : BaseActivity() {
         ) {
             when (this) {
                 mBinding.includeSearchBar.tvCancer -> {
-                    finish()
+                    // 为了解决软键盘导致的view晃动问题
+                    // 先让软键盘关闭，再返回上一个activity
+                    closeKeyboard(windowToken)
+                    handler.postDelayed({
+                        finish()
+                    }, 50)
                 }
                 mBinding.includeSearchBar.ivCancer -> {
                     mBinding.includeSearchBar.etSearch.text = null
@@ -70,6 +74,34 @@ class SearchActivity : BaseActivity() {
     }
 
     override fun getLayoutId(): Int = R.layout.activity_search
+
+
+    private fun initEditText() {
+        // 输入监听
+        mBinding.includeSearchBar.etSearch.doOnTextChanged { text, _, _, _ ->
+            if (!TextUtils.isEmpty(text))
+                mBinding.includeSearchBar.ivCancer.visibility = View.VISIBLE
+            else
+                mBinding.includeSearchBar.ivCancer.visibility = View.GONE
+        }
+        // 软键盘监听
+        mBinding.includeSearchBar.etSearch.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                v.clearFocus()                                  // 失去焦点
+                getKeyDairy(v.text.toString())
+                closeKeyboard(v.windowToken)
+            }
+            return@setOnEditorActionListener false
+        }
+    }
+
+    private fun getKeyDairy(key: String) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.getKeyDairy(key).collect {
+                dairyAdapter.submitData(it)
+            }
+        }
+    }
 
     /**
      * 显示键盘
@@ -85,36 +117,6 @@ class SearchActivity : BaseActivity() {
                     0
                 )
             }
-        }, 300)
-    }
-
-    private fun initEditText() {
-        // 输入监听
-        mBinding.includeSearchBar.etSearch.doOnTextChanged { text, _, _, _ ->
-            if (!TextUtils.isEmpty(text))
-                mBinding.includeSearchBar.ivCancer.visibility = View.VISIBLE
-            else
-                mBinding.includeSearchBar.ivCancer.visibility = View.GONE
-        }
-        // 软键盘监听
-        mBinding.includeSearchBar.etSearch.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                v.clearFocus()                                  // 失去焦点
-                getKeyDairy(v.text.toString())
-                (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                    v.windowToken,                              // 关闭软键盘
-                    0
-                )
-            }
-            return@setOnEditorActionListener false
-        }
-    }
-
-    private fun getKeyDairy(key: String) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.getKeyDairy(key).collect {
-                dairyAdapter.submitData(it)
-            }
-        }
+        }, 50)
     }
 }

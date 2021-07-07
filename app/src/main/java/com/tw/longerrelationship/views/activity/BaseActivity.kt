@@ -1,11 +1,16 @@
 package com.tw.longerrelationship.views.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Rect
 import android.os.Bundle
+import android.os.IBinder
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import com.tw.longerrelationship.util.logD
-import com.tw.longerrelationship.util.setAndroidNativeLightStatusBar
+import com.tw.longerrelationship.util.*
+
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -14,13 +19,20 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     val tag: String = this.javaClass.simpleName
 
+    val sharedPreferences: SharedPreferences by lazy {
+        baseContext.getSharedPreferences(
+            Constants.SHARED_PREFERENCES_NAME,
+            Context.MODE_PRIVATE
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logD(tag, "onCreate()")
 
         // 设置无标题栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
-        setAndroidNativeLightStatusBar(this,true)
+        setAndroidNativeLightStatusBar(this, true)
 
         init()
     }
@@ -29,7 +41,6 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         logD(tag, "onSaveInstanceState()")
     }
-
 
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -70,6 +81,28 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         logD(tag, "onDestroy()")
+    }
+
+    /**
+     * 判断软键盘是否在显示
+     */
+    fun isSoftShowing(): Boolean {
+        //获取当前屏幕内容的高度
+        val screenHeight = window.decorView.height
+        //获取View可见区域的bottom
+        val rect = Rect()
+        window.decorView.getWindowVisibleDisplayFrame(rect)
+        return screenHeight - rect.bottom != 0
+    }
+
+    /**
+     * 关闭软键盘
+     */
+    fun closeKeyboard(windowToken: IBinder) {
+        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+            windowToken,                              // 关闭软键盘
+            0
+        )
     }
 
     /**

@@ -57,8 +57,7 @@
             android:layout_width="52dp"
             android:layout_height="match_parent"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            isFold="@{viewModel.isFold}"/>
+            android:paddingRight="15dp" />
     </LinearLayout>
 </layout>
 

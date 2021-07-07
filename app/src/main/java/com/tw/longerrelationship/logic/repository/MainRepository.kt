@@ -22,8 +22,9 @@ class MainRepository private constructor(
 
     fun deleteDairy(id: Int) = dairyDao.deleteDairy(id)
 
-    fun saveDairy(dairyItem: DairyItem) = dairyDao.insertDairy(dairyItem)
-
+    fun saveDairy(dairyItem: DairyItem) =
+        if (dairyItem.id == null) dairyDao.insertDairy(dairyItem)
+        else dairyDao.updateDairy(dairyItem)
 
     /**
      * 查找表获得所有日记

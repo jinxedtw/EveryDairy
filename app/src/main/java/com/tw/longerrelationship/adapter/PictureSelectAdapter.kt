@@ -15,13 +15,16 @@ import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.views.activity.DairyEditActivity
 import com.tw.longerrelationship.views.widgets.PictureTypeSelectDialog
 
+/**
+ * 日记编辑界面的选择图片适配器
+ * @see[DairyEditActivity]
+ */
 class PictureSelectAdapter(
-    private val pictureList: List<Uri>,
+    var pictureList: List<Uri>,
     private val activity: DairyEditActivity
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var parent: ViewGroup? = null
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -58,11 +61,12 @@ class PictureSelectAdapter(
     }
 
     override fun getItemCount(): Int {
+        if (pictureList.size == 9) return 9
         return pictureList.size + 1
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == pictureList.size)
+        return if (position == pictureList.size && position != 9)
             Constants.ItemViewType.PICTURE_SELECT_TAIL
         else
             Constants.ItemViewType.PICTURE_SELECT
@@ -78,8 +82,8 @@ class PictureSelectAdapter(
 
         init {
             pictureAdd.setOnClickListener {
-                if (pictureList.size == 8)
-                    showToast(activity, "最多只能添加8张图片哦(^_^)")
+                if (pictureList.size == 9)
+                    showToast(activity, "最多只能添加9张图片哦(^_^)")
                 else
                     PictureTypeSelectDialog(activity).show()
             }

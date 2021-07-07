@@ -65,10 +65,10 @@ class DairyEditBar(context: Context, attributes: AttributeSet) : LinearLayout(co
                 leftIcon -> {
                     if (mySelf.tag == "changed") {
                         // 保存日记
-                        (context as DairyEditActivity).saveDairy()
+                        (context as DairyEditActivity).saveDairy(this)
                     } else {
                         // 退出当前Activity
-                        (context as Activity).finish()
+                        (context as DairyEditActivity).finishActivity(this)
                     }
                 }
                 rightIcon -> logV("右部按钮", "点击成功")
@@ -77,4 +77,8 @@ class DairyEditBar(context: Context, attributes: AttributeSet) : LinearLayout(co
     }
 
     fun getTitle(): String = mTitle.text.toString()
+
+    fun setTitle(title: String) {
+        mTitle.text = title
+    }
 }

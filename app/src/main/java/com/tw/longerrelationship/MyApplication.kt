@@ -8,12 +8,14 @@ import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import com.baidu.mapapi.SDKInitializer
 import com.tw.longerrelationship.help.LocationService
+import com.tw.longerrelationship.util.logV
 
 
 class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        logV("程序可用最大内存:", (Runtime.getRuntime().maxMemory() / 1024).toString() + "k")
         context = this
 
         // 初始化百度SDK

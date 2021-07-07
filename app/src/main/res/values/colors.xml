@@ -34,5 +34,7 @@
     <!--    DairyInfoActivity-->
     <color name="mainBackGround">#f8f8f8</color>
     <color name="textContent">#101010</color>
+    <color name="placeHolder">#f2f2f2</color>
+    <color name="placeHolderText">#c6c6c6</color>
 
 </resources>

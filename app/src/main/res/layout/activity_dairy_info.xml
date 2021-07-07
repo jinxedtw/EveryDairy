@@ -46,27 +46,27 @@
                 android:id="@+id/iv_copy"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                android:background="@drawable/rip_picture_type"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:background="@drawable/rip_picture_type"
                 android:src="@drawable/ic_copy_black" />
 
             <ImageView
                 android:id="@+id/iv_edit"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                android:background="@drawable/rip_picture_type"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:background="@drawable/rip_picture_type"
                 android:src="@drawable/ic_edit_black" />
 
             <ImageView
                 android:id="@+id/iv_more"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                android:background="@drawable/rip_picture_type"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:background="@drawable/rip_picture_type"
                 android:src="@drawable/ic_more_black" />
         </LinearLayout>
 
@@ -99,17 +99,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingRight="10dp"
-                        android:text="28"
                         android:textSize="30sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/tv_year_and_month"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:paddingEnd="10dp" />
 
                     <TextView
                         android:id="@+id/tv_year_and_month"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2021年6月/周一"
                         app:layout_constraintLeft_toRightOf="@id/tv_day"
                         app:layout_constraintTop_toTopOf="@id/tv_day" />
 
@@ -117,7 +116,6 @@
                         android:id="@+id/tv_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="22:04"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="@id/tv_year_and_month"
                         app:layout_constraintTop_toBottomOf="@id/tv_year_and_month" />
@@ -174,10 +172,10 @@
                         android:textColor="@color/EditText"
                         app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-                    <ImageView
-                        android:id="@+id/iv_photo"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_photo_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_content" />
@@ -189,7 +187,7 @@
                         android:layout_marginTop="30dp"
                         android:src="@drawable/ic_location_small"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_photo" />
+                        app:layout_constraintTop_toBottomOf="@id/rv_photo_list" />
 
                     <TextView
                         android:id="@+id/tv_location"
@@ -225,14 +223,14 @@
                         app:layout_constraintTop_toTopOf="@id/iv_text_icon" />
 
                     <ImageView
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/ic_sticker_3"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/iv_location"
+                        android:id="@+id/iv_sticker"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp" />
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/iv_location" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>

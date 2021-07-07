@@ -1,19 +1,21 @@
 package com.tw.longerrelationship.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.*
-import com.tw.longerrelationship.logic.model.DairyItem
+import com.tw.longerrelationship.views.activity.DairyInfoActivity
 import com.tw.longerrelationship.logic.repository.MainRepository
-import com.tw.longerrelationship.util.logV
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
+/**
+ * use in [DairyInfoActivity]
+ */
 class DairyInfoViewModel(private val repository: MainRepository, private val dairyId: Int) :
     ViewModel() {
 
-    fun getDairy() = repository.getDairyById(dairyId)
+    var pictureList = ArrayList<Uri>()
 
+    fun getDairy() = repository.getDairyById(dairyId)
 
     fun deleteDairy() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteDairy(dairyId)

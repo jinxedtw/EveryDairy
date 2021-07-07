@@ -15,11 +15,8 @@ import com.bumptech.glide.Glide
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.util.getComparedTime
-import com.tw.longerrelationship.util.getNowTimeHour
+import com.tw.longerrelationship.util.logV
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
-import com.tw.longerrelationship.views.activity.MainActivity
-import org.w3c.dom.Text
-import java.util.*
 
 class DairyAdapter(val context: Context, var type: Int = 1) :
     PagingDataAdapter<DairyItem, RecyclerView.ViewHolder>(COMPARATOR) {
@@ -35,6 +32,7 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
         )
     }
 
+    // TODO 切换RecyclerView的显示方式时，可能会导致图片不显示的问题，暂时没找到解决办法，推测和Recycler缓存有关
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val dairyItem = getItem(position) ?: return
 
@@ -53,19 +51,25 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
                 if (dairyItem.title?.isNotEmpty() == true) {
                     holder.title.visibility = View.VISIBLE
                     holder.title.text = dairyItem.title
+                } else {
+                    holder.title.visibility = View.GONE
                 }
             }
 
             is UnfoldViewHolder -> {
                 holder.time.text = getComparedTime(dairyItem.time)
                 if (dairyItem.uriList.isNotEmpty()) {
-                    Glide.with(this.context).load(dairyItem.uriList[0]).into(holder.picture)
+                    Glide.with(this.context).load(dairyItem.uriList[0])
+                        .into(holder.picture)
                 } else {
                     holder.picture.visibility = View.GONE
                 }
 
-                if (dairyItem.content != null)
+                if (dairyItem.content != null) {
                     holder.content.text = dairyItem.content
+                } else {
+                    holder.content.text = ""
+                }
             }
         }
 

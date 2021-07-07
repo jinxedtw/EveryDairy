@@ -20,9 +20,10 @@
         android:roundIcon="@drawable/pic_guide"
         android:supportsRtl="true"
         android:theme="@style/Theme.LongerRelationShip">
-        <activity android:name=".views.activity.GuideActivity"/>
+        <activity android:name=".views.activity.GuideActivity" />
         <activity android:name=".views.activity.PictureInfoActivity" />
-        <activity android:name=".views.activity.SearchActivity" />
+        <activity
+            android:name=".views.activity.SearchActivity" />
         <activity android:name=".views.activity.DairyInfoActivity" />
         <activity
             android:name=".views.activity.DairyEditActivity"

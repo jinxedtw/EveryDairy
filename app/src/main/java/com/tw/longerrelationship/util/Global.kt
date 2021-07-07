@@ -32,6 +32,7 @@ fun setOnClickListeners(vararg v: View?, block: View.() -> Unit) {
  * 获取手机厂商
  *
  * @return  手机厂商
+ * eg: Realme
  */
 fun getDeviceBrand(): String {
     return Build.BRAND
@@ -128,7 +129,7 @@ fun getComparedTime(data: Date): String {
             return "昨天"
         }
         now.get(Calendar.DAY_OF_YEAR) - old.get(Calendar.DAY_OF_YEAR) > 1 -> {
-            return "${old.get(Calendar.MONTH + 1)}/${old.get(Calendar.DAY_OF_YEAR)}"
+            return "${old.get(Calendar.MONTH)+1}/${old.get(Calendar.DAY_OF_MONTH)}"
         }
     }
     return "${

@@ -43,18 +43,6 @@
             app:layout_constraintTop_toBottomOf="@id/app_bar"
             tools:layout_editor_absoluteX="178dp" />
 
-        <ImageView
-            android:id="@+id/iv_tree"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_sticker_2"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
-            app:layout_constraintRight_toRightOf="parent" />
-
         <LinearLayout
             android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
@@ -127,11 +115,10 @@
                     app:layout_constraintBottom_toBottomOf="@id/iv_text_icon"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/iv_text_icon" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_phone_list"
+                android:id="@+id/rv_photo_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -179,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/edit_icon_margin"
                     android:layout_marginEnd="@dimen/edit_icon_margin"
-                    android:src="@drawable/ic_weather" />
+                    setDrawable="@{viewModel.weatherIcon}" />
 
                 <ImageView
                     android:id="@+id/iv_mood"
@@ -187,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/edit_icon_margin"
                     android:layout_marginEnd="@dimen/edit_icon_margin"
-                    android:src="@drawable/ic_mood" />
+                    setDrawable="@{viewModel.moodIcon}" />
 
                 <ImageView
                     android:id="@+id/iv_calendar"
@@ -199,8 +186,6 @@
                     android:src="@drawable/ic_calendar" />
 
             </LinearLayout>
-
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

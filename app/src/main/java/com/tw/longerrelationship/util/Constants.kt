@@ -7,8 +7,10 @@ import com.tw.longerrelationship.MyApplication
  * Constants used throughout the app.
  */
 const val DATABASE_NAME = "longer-relationship-db"
-const val PLANT_DATA_FILENAME = "plants.json"
-
+const val PICTURE_LIST = "pictureList"          // 图片列表
+const val CURRENT_PICTURE = "currentPicture"    // 当前图片
+const val IF_CAN_DELETE = "ifCanDelete"         // 是否可以删除图片
+const val DAIRY_ID = "dairyId"
 
 object Constants {
 
@@ -18,5 +20,5 @@ object Constants {
         const val PICTURE_SELECT = 2        //图片选择,一般类型
     }
 
-    const val SHARED_PREFERENCES_NAME:String= "app_preferences"
+    const val SHARED_PREFERENCES_NAME: String = "app_preferences"
 }

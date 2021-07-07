@@ -15,8 +15,6 @@ class MainViewModel(
     private val repository: MainRepository
 ) : ViewModel() {
 
-    var isFold = true
-
     fun getAllDairy(): Flow<PagingData<DairyItem>> {
         return repository.getAllDairyData().cachedIn(viewModelScope)
     }

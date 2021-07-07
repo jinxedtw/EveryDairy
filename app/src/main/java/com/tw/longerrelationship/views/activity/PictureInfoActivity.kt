@@ -1,25 +1,22 @@
- package com.tw.longerrelationship.views.activity
+package com.tw.longerrelationship.views.activity
 
 import android.app.Activity
 import android.content.Intent
 import android.view.MotionEvent
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.ImageAdapter
 import com.tw.longerrelationship.databinding.ActivityPictureInfoBinding
+import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.PictureInfoViewModel
-import com.tw.longerrelationship.util.InjectorUtils
-import com.tw.longerrelationship.util.makeStatusBarTransparent
-import com.tw.longerrelationship.util.setAndroidNativeLightStatusBar
-import com.tw.longerrelationship.util.setOnClickListeners
 
 
 class PictureInfoActivity : BaseActivity() {
-
+    private var ifCanDelete: Boolean = true
     private lateinit var mBinding: ActivityPictureInfoBinding
-
     private var current: Int = -1
 
     private val viewModel by lazy {
@@ -30,9 +27,8 @@ class PictureInfoActivity : BaseActivity() {
     }
 
     override fun init() {
-        setAndroidNativeLightStatusBar(this,false)
+        setAndroidNativeLightStatusBar(this, false)
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
-
         makeStatusBarTransparent(this)
         observe()
         initParams()
@@ -54,15 +50,17 @@ class PictureInfoActivity : BaseActivity() {
         val data = intent.extras
         if (data != null) {
             viewModel.uriList =
-                data.getParcelableArrayList("pictureList") ?: ArrayList()
-            viewModel.currentPicture.postValue(data.getInt("currentPicture"))
-            current = data.getInt("currentPicture")
+                data.getParcelableArrayList(PICTURE_LIST) ?: ArrayList()
+            viewModel.currentPicture.postValue(data.getInt(CURRENT_PICTURE))
+            current = data.getInt(CURRENT_PICTURE)
+            ifCanDelete = data.getBoolean(IF_CAN_DELETE, true)
         }
     }
 
     private fun initView() {
         mBinding.vpShowPicture.adapter = ImageAdapter(viewModel.uriList, this)
-        mBinding.vpShowPicture.setCurrentItem(current,false)
+        mBinding.vpShowPicture.setCurrentItem(current, false)
+        mBinding.tvDelete.visibility = if (ifCanDelete) View.VISIBLE else View.GONE
 
         mBinding.vpShowPicture.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
@@ -95,7 +93,6 @@ class PictureInfoActivity : BaseActivity() {
      * 设置左右滑动切换图片
      */
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
 
         return super.onTouchEvent(event)
     }

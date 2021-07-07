@@ -20,7 +20,8 @@ class ImageAdapter(private val uriList: List<Uri>, private val context: Context)
         )
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        Glide.with(context).load(uriList[position]).into(holder.imageView)
+        Glide.with(context).load(uriList[position])
+            .into(holder.imageView)
     }
 
     override fun getItemCount(): Int = uriList.size

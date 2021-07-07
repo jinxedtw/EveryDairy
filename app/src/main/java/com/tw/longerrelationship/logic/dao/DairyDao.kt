@@ -22,9 +22,6 @@ interface DairyDao {
     @Query("SELECT * FROM DairyEntity order by time desc")
     fun getAllDairy(): DataSource.Factory<Int, DairyItem>
 
-    /**
-     * 根据传入的日记主键来更新已有日记
-     */
     @Update
     fun updateDairy(dairyItem: DairyItem)
 

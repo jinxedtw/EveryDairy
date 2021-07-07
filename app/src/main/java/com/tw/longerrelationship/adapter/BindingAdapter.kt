@@ -22,4 +22,14 @@ fun bindIsFold(view: ImageView, isFold: Boolean) {
     )
 }
 
+/**
+ * 给ImageView设置图片
+ */
+@BindingAdapter("setDrawable")
+fun bindDrawable(view: ImageView, drawableId: Int) {
+    view.setImageDrawable(ContextCompat.getDrawable(view.context, drawableId))
+}
+
+
+
 
