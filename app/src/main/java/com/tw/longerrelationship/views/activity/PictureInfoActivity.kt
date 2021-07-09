@@ -13,7 +13,9 @@ import com.tw.longerrelationship.databinding.ActivityPictureInfoBinding
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.PictureInfoViewModel
 
-
+/**
+ * TODO 多指操作,放大缩小图片
+ */
 class PictureInfoActivity : BaseActivity() {
     private var ifCanDelete: Boolean = true
     private lateinit var mBinding: ActivityPictureInfoBinding

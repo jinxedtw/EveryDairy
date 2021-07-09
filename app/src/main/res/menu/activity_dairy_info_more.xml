@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/it_info"
-        android:title="我的" />
+        android:title="详情" />
     <item
-        android:id="@+id/it_notification"
-        android:title="提醒" />
+        android:id="@+id/it_copy_content"
+        android:title="复制文本" />
     <item
         android:id="@+id/it_stickers"
         android:title="切换贴纸" />
     <item
         android:id="@+id/it_delete"
-        android:title="移入回收站" />
+        android:title="删除" />
 </menu>

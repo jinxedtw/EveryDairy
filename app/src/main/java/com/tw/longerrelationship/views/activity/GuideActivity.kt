@@ -51,7 +51,7 @@ class GuideActivity : AppCompatActivity() {
         }
     }
 
-    fun getAnim(): Animation {
+    private fun getAnim(): Animation {
         return AlphaAnimation(0f, 1.0f).apply {
             duration = 2000
         }

@@ -1,18 +1,17 @@
 package com.tw.longerrelationship.views.activity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,17 +24,25 @@ import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.DairyInfoViewModel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import java.lang.StringBuilder
 import java.util.*
-import kotlin.collections.ArrayList
 
-
+/**
+ * 日记详情界面
+ * 从[MainActivity]点击单项日记跳转，点击编辑跳转到[DairyEditActivity]
+ */
 class DairyInfoActivity : BaseActivity() {
     private lateinit var mBinding: ActivityDairyInfoBinding
     private var stickerId = 0
-    private val layoutManager = GridLayoutManager(this, 3)
     private var dairyId = -1
+    private val layoutManager by lazy {
+        object : GridLayoutManager(this, 3) {
+            override fun canScrollVertically(): Boolean {
+                return false            // 解决Scrollview嵌套RecyclerView滑动卡顿问题
+            }
+        }
+    }
     private val viewModel: DairyInfoViewModel by lazy {
         ViewModelProvider(
             this,
@@ -52,24 +59,33 @@ class DairyInfoActivity : BaseActivity() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView()
         click()
+        observe()
+    }
+
+    private fun observe() {
+        viewModel.ifFavorites.observe(this) {
+            mBinding.ivFavorites.setDrawable(if (it) R.drawable.ic_star_fill else R.drawable.ic_star)
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun initView() {
         stickerId = sharedPreferences.getInt(STICKER_ID, 0)
         setStickerDrawable()
+        mBinding.rvPhotoList.apply {
+            addItemDecoration(SpacesItemDecoration(60))
+            layoutManager = this@DairyInfoActivity.layoutManager
+        }
+
         lifecycleScope.launch {
-            viewModel.getDairy().filter {
-                it != null
-            }.collect {          // 为什么这里删除日记后collect会返回空值
+            viewModel.getDairy().collect {
+                viewModel.dairyItem = it
                 viewModel.pictureList = it.uriList as ArrayList<Uri>
-                mBinding.rvPhotoList.apply {
-                    addItemDecoration(SpacesItemDecoration(60))
-                    adapter = PictureShowAdapter(it.uriList, this@DairyInfoActivity)
-                    layoutManager = this@DairyInfoActivity.layoutManager
-                }
+                viewModel.ifFavorites.value = it.isLove
                 dairyId = it.id ?: -1
-                val calendar: Calendar = Calendar.getInstance().apply { time = it.time }
+                val calendar: Calendar = Calendar.getInstance().apply { time = it.createTime }
+                mBinding.rvPhotoList.adapter =
+                    PictureShowAdapter(it.uriList, this@DairyInfoActivity)
                 mBinding.tvDay.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
                 mBinding.tvYearAndMonth.text =
                     "${calendar.get(Calendar.YEAR)}年${calendar.get(Calendar.MONTH) + 1}月/${
@@ -77,27 +93,10 @@ class DairyInfoActivity : BaseActivity() {
                             Calendar.DAY_OF_WEEK
                         )]
                     }"
-                mBinding.tvTime.text =
-                    "${
-                        if (calendar.get(Calendar.HOUR_OF_DAY) < 10) "0${calendar.get(Calendar.HOUR_OF_DAY)}"
-                        else calendar.get(Calendar.HOUR_OF_DAY)
-                    }:${
-                        if (calendar.get(Calendar.MINUTE) < 10) "0${calendar.get(Calendar.MINUTE)}"
-                        else calendar.get(Calendar.MINUTE)
-                    }"
+                mBinding.tvTime.text = getHourMinuteTime(calendar)
                 mBinding.tvTitle.text = it.title
-                mBinding.ivWeather.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        baseContext,
-                        it.weather
-                    )
-                )
-                mBinding.ivMood.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        baseContext,
-                        it.mood
-                    )
-                )
+                mBinding.ivWeather.setDrawable(it.weather)
+                mBinding.ivMood.setDrawable(it.mood)
                 mBinding.tvContent.text = it.content
                 mBinding.tvLocation.text = it.location
                 mBinding.tvTextLength.text =
@@ -108,23 +107,18 @@ class DairyInfoActivity : BaseActivity() {
 
     private fun setStickerDrawable() {
         val resID = resources.getIdentifier(
-            "ic_sticker_${(++stickerId)%9}",
+            "ic_sticker_${(++stickerId) % 9}",
             "drawable",
             BuildConfig.APPLICATION_ID
         )
-        mBinding.ivSticker.setImageDrawable(
-            ContextCompat.getDrawable(
-                baseContext,
-                resID
-            )
-        )
+        mBinding.ivSticker.setDrawable(resID)
     }
 
     private fun click() {
         setOnClickListeners(
             mBinding.tvBack,
             mBinding.ivBack,
-            mBinding.ivCopy,
+            mBinding.ivFavorites,
             mBinding.ivMore,
             mBinding.ivEdit
         ) {
@@ -132,11 +126,15 @@ class DairyInfoActivity : BaseActivity() {
                 mBinding.tvBack, mBinding.ivBack -> {
                     finish()
                 }
-                mBinding.ivCopy -> {
-                    (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).apply {
-                        setPrimaryClip(ClipData.newPlainText("日记文本", mBinding.tvContent.text))
+                mBinding.ivFavorites -> {
+                    val bool = !viewModel.ifFavorites.value!!
+                    viewModel.ifFavorites.value = bool
+                    if (bool) {
+                        showToast(this@DairyInfoActivity, "已收藏")
+                    } else {
+                        showToast(this@DairyInfoActivity, "已取消收藏")
                     }
-                    showToast(this@DairyInfoActivity, "复制文本成功")
+                    viewModel.favoriteDairy(dairyId)
                 }
                 mBinding.ivEdit -> {
                     jumpToDairyEditActivity()
@@ -160,12 +158,22 @@ class DairyInfoActivity : BaseActivity() {
             override fun onMenuItemClick(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.it_info -> {
-                        Toast.makeText(baseContext, "Option 1", Toast.LENGTH_SHORT).show()
+                        // TODO: 2021/7/9 后面可以用自定义Dialog进行UI美化
+                        AlertDialog.Builder(this@DairyInfoActivity).setTitle("详情")
+                            .setMessage(getDateInfo())
+                            .setPositiveButton("我知道了", null)
+                            .show()
                         return true
+                    }
+                    R.id.it_copy_content -> {
+                        (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).apply {
+                            setPrimaryClip(ClipData.newPlainText("日记文本", mBinding.tvContent.text))
+                        }
+                        showToast(this@DairyInfoActivity, "复制文本成功")
                     }
                     R.id.it_stickers -> {
                         setStickerDrawable()
-                        sharedPreferences.edit().putInt(STICKER_ID,stickerId%9-1).apply()
+                        sharedPreferences.edit().putInt(STICKER_ID, stickerId % 9 - 1).apply()
                         showToast(baseContext, "切换成功")
                         return true
                     }
@@ -175,13 +183,28 @@ class DairyInfoActivity : BaseActivity() {
                         showToast(baseContext, "删除成功")
                         return true
                     }
-                    else -> {
-                    }
                 }
                 return false
             }
         })
         popupMenu.show()
+    }
+
+    private fun getDateInfo(): String {
+        val str = StringBuilder()
+        val dateInfo = viewModel.dairyItem.editInfoList
+        for (i in dateInfo.indices) {
+            val calendar: Calendar = Calendar.getInstance().apply { time = dateInfo[i] }
+            str.append(
+                (if (i == 0) "创建时间: " else "修改时间: ").plus(
+                    "${calendar.get(Calendar.YEAR)}年${calendar.get(Calendar.MONTH) + 1}月${
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                    }日  ${getHourMinuteTime(calendar)}"
+                )
+            )
+            if (i != dateInfo.size - 1) str.append("\n")
+        }
+        return str.toString()
     }
 
     fun pictureInfoActivityJump(index: Int) {

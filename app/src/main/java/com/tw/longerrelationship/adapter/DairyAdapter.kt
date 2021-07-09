@@ -1,13 +1,17 @@
 package com.tw.longerrelationship.adapter
 
 import android.app.Activity
+import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +19,15 @@ import com.bumptech.glide.Glide
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.util.getComparedTime
-import com.tw.longerrelationship.util.logV
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
+import com.tw.longerrelationship.views.activity.MainActivity
+
 
 class DairyAdapter(val context: Context, var type: Int = 1) :
     PagingDataAdapter<DairyItem, RecyclerView.ViewHolder>(COMPARATOR) {
+    var checkBoxMap = HashMap<Int, Boolean>()           // 保存checkBox状态
+    val checkedNum = MutableLiveData<Int>()
+    var isShowBox = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == FOLD_LAYOUT) FoldViewHolder(
@@ -39,9 +47,11 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
         when (holder) {
             is FoldViewHolder -> {
                 val content = StringBuilder()
-
-                holder.time.text = getComparedTime(dairyItem.time)
-
+                holder.time.text = getComparedTime(dairyItem.createTime)
+                holder.time.visibility = View.VISIBLE
+                holder.checkBox.setOnClickListener {
+                    setSelectItem(position)
+                }
                 for (i in dairyItem.uriList.indices)
                     content.append("[图片]")
                 if (dairyItem.content != null)
@@ -54,10 +64,21 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
                 } else {
                     holder.title.visibility = View.GONE
                 }
+
+                if (isShowBox) {
+                    if (holder.title.visibility == View.GONE)
+                        holder.time.visibility = View.GONE
+                    holder.checkBox.visibility = View.VISIBLE
+                    holder.checkBox.isChecked = checkBoxMap[position]!!
+                } else
+                    holder.checkBox.visibility = View.GONE
             }
 
             is UnfoldViewHolder -> {
-                holder.time.text = getComparedTime(dairyItem.time)
+                holder.checkBox.setOnClickListener {
+                    setSelectItem(position)
+                }
+                holder.time.text = getComparedTime(dairyItem.createTime)
                 if (dairyItem.uriList.isNotEmpty()) {
                     Glide.with(this.context).load(dairyItem.uriList[0])
                         .into(holder.picture)
@@ -70,24 +91,58 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
                 } else {
                     holder.content.text = ""
                 }
+                if (isShowBox) {
+                    holder.checkBox.visibility = View.VISIBLE
+                    holder.checkBox.isChecked = checkBoxMap[position]!!
+                } else holder.checkBox.visibility = View.GONE
             }
         }
 
         holder.itemView.setOnClickListener {
-            (context as Activity).startActivity(
-                Intent(
-                    context,
-                    DairyInfoActivity::class.java
-                ).apply {
-                    putExtra("dairyId", dairyItem.id)
+            if (isShowBox) {
+                setSelectItem(position)
+                when (holder) {
+                    is FoldViewHolder -> holder.checkBox.isChecked = checkBoxMap[position]!!
+                    is UnfoldViewHolder -> holder.checkBox.isChecked = checkBoxMap[position]!!
                 }
-            )
+            } else {
+                (context as Activity).startActivity(
+                    Intent(context, DairyInfoActivity::class.java).apply {
+                        putExtra("dairyId", dairyItem.id)
+                    }
+                )
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return type
     }
+
+    private fun setSelectItem(position: Int) {
+        checkBoxMap[position] = !checkBoxMap[position]!!
+        checkedNum.value = checkedNum.value!!.plus(if (checkBoxMap[position]!!) 1 else -1)
+    }
+
+    fun selectAll() {
+        for (i in 0 until itemCount) {
+            checkBoxMap[i] = true
+        }
+        checkedNum.value = itemCount
+    }
+
+    private fun initMap() {
+        checkBoxMap.clear()
+        for (i in 0 until itemCount) {
+            checkBoxMap[i] = false
+        }
+        checkedNum.value = 0
+    }
+
+    fun getDairyItem(position: Int): DairyItem? {
+        return super.getItem(position)
+    }
+
 
     companion object {
         const val FOLD_LAYOUT = 1
@@ -108,13 +163,33 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
         val content: TextView = itemView.findViewById(R.id.tv_dairy_content)
         val time: TextView = itemView.findViewById(R.id.tv_time)
         val title: TextView = itemView.findViewById(R.id.tv_title)
+        val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
+
+        init {
+            itemView.setOnLongClickListener {
+                initMap()
+                setSelectItem(this.layoutPosition)
+                (context.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator).vibrate(1000)
+                (context as MainActivity).entryCheckType(true)
+                true
+            }
+        }
     }
 
     inner class UnfoldViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val picture: ImageView = itemView.findViewById(R.id.iv_photo)
         val content: TextView = itemView.findViewById(R.id.tv_content)
         val time: TextView = itemView.findViewById(R.id.tv_time)
+        val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
+
+        init {
+            itemView.setOnLongClickListener {
+                initMap()
+                setSelectItem(this.layoutPosition)
+                (context.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator).vibrate(1000)
+                (context as MainActivity).entryCheckType(true)
+                true
+            }
+        }
     }
-
-
 }

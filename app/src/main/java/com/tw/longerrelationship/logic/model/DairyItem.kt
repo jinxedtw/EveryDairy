@@ -16,11 +16,11 @@ data class DairyItem(
     val id: Int?,
     val title: String?,             // 日记标题
     val content: String?,           // 日记内容
-    val time: Date,                 // 时间
+    val createTime: Date,           // 创建时间
+    val editInfoList: List<Date>,   // 记录修改时间信息
     val location: String,           // 位置信息
     val uriList: List<Uri>,         // 图片的Uri信息
     val weather: Int,               // 天气
-    val mood: Int ,                 // 心情
-    val isDelete: Boolean = false,  // 是否被删除
-    val isLove: Boolean = false     // 是否收藏
+    val mood: Int,                  // 心情
+    val isLove: Boolean             // 是否收藏
 )

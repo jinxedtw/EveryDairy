@@ -58,6 +58,19 @@
             android:layout_height="match_parent"
             android:paddingLeft="15dp"
             android:paddingRight="15dp" />
+
+        <TextView
+            android:id="@+id/tv_filter"
+            android:visibility="gone"
+            android:layout_width="52dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/filter"
+            android:background="@drawable/rip_common"
+            android:textColor="@color/black_weak"
+            android:textSize="@dimen/app_bar_text_size" />
     </LinearLayout>
 </layout>
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/Divider">
+
+    <item
+        android:drawable="@drawable/shape_dairy_item"
+        android:state_pressed="false">
+    </item>
+
+</ripple>

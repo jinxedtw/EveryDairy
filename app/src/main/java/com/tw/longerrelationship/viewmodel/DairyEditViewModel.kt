@@ -15,7 +15,6 @@ import kotlin.collections.ArrayList
 
 class DairyEditViewModel(private val repository: MainRepository, val dairyId: Int) :
     ViewModel() {
-
     val dairyItem = repository.getDairyById(dairyId).filter {
         it != null
     }.asLiveData()
@@ -23,10 +22,12 @@ class DairyEditViewModel(private val repository: MainRepository, val dairyId: In
     val isChanged: MutableLiveData<Boolean> = MutableLiveData(false)
     val dairyContent: MutableLiveData<String> = MutableLiveData()
     var pictureList = ArrayList<Uri>()
-    var time = Date()
+    var editInfoList = emptyList<Date>()
+    var createTime = Date()
     var location: String = "位置信息"
     var weatherIcon: Int = R.drawable.ic_weather
     var moodIcon: Int = R.drawable.ic_mood
+    var ifLove: Boolean = false
 
     fun saveDairy(title: String) =
         try {
@@ -35,11 +36,13 @@ class DairyEditViewModel(private val repository: MainRepository, val dairyId: In
                     if (dairyId == -1) null else dairyId,
                     title,
                     dairyContent.value,
-                    time,
+                    createTime,
+                    editInfoList.plus(Date()),      // 每次操作都会往时间列表中加入当前操作时间
                     location,
                     pictureList,
                     weatherIcon,
-                    moodIcon
+                    moodIcon,
+                    ifLove
                 )
             )
             Result.success(true)
@@ -49,6 +52,6 @@ class DairyEditViewModel(private val repository: MainRepository, val dairyId: In
 
     @SuppressLint("SimpleDateFormat")
     fun getNowTimeMonthAndHour(): String {
-        return SimpleDateFormat("M月dd日 HH:mm").format(time)
+        return SimpleDateFormat("M月dd日 HH:mm").format(createTime)
     }
 }

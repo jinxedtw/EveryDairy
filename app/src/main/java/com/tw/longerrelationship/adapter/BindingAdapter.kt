@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.util.setDrawable
 
 
 @BindingAdapter("isChanged")
@@ -14,12 +15,7 @@ fun bindIsChanged(view: View, isChanged: Boolean) {
 
 @BindingAdapter("isFold")
 fun bindIsFold(view: ImageView, isFold: Boolean) {
-    view.setImageDrawable(
-        ContextCompat.getDrawable(
-            view.context,
-            if (isFold) R.drawable.pic_unfold else R.drawable.pic_fold
-        )
-    )
+    view.setDrawable(if (isFold) R.drawable.pic_unfold else R.drawable.pic_fold)
 }
 
 /**
@@ -27,7 +23,7 @@ fun bindIsFold(view: ImageView, isFold: Boolean) {
  */
 @BindingAdapter("setDrawable")
 fun bindDrawable(view: ImageView, drawableId: Int) {
-    view.setImageDrawable(ContextCompat.getDrawable(view.context, drawableId))
+    view.setDrawable(drawableId)
 }
 
 

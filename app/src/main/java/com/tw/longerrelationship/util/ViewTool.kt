@@ -12,7 +12,9 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.net.toUri
 import java.io.File
@@ -166,4 +168,13 @@ fun calculateInSampleSize(
         inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
     }
     return inSampleSize
+}
+
+/**
+ * 设置ImageView的图片资源,使用统一的主题
+ */
+fun ImageView.setDrawable(res: Int) {
+    setImageDrawable(
+        ContextCompat.getDrawable(context, res)
+    )
 }

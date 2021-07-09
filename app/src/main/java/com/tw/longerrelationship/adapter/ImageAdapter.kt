@@ -1,6 +1,7 @@
 package com.tw.longerrelationship.adapter
 
 import android.app.Activity
+import com.tw.longerrelationship.views.activity.PictureInfoActivity
 import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
@@ -11,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tw.longerrelationship.R
 
+/**
+ * [PictureInfoActivity]的viewpager的图片展示适配器
+ */
 class ImageAdapter(private val uriList: List<Uri>, private val context: Context) :
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 

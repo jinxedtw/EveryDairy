@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">美贴</string>
+    <string name="app_name">时刻</string>
     <string name="recording_today">记录今日</string>
     <string name="title">标题</string>
     <string name="choose_weather">选择天气</string>
@@ -26,4 +26,9 @@
     <string name="about">关于</string>
     <string name="secret">秘密</string>
     <string name="loading">加载中…</string>
+    <string name="all_select">全选</string>
+    <string name="alreadySelect">已选%d个</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filter">筛选</string>
 </resources>

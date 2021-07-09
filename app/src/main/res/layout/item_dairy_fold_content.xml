@@ -4,37 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ct_dairy"
     android:layout_width="match_parent"
-    android:layout_marginBottom="10dp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
-    android:background="@drawable/shape_dairy_item"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/rip_dairy"
     android:elevation="5dp"
     tools:targetApi="lollipop">
 
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:id="@+id/ll_text"
         android:layout_width="0dp"
-        android:layout_marginStart="6dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintHorizontal_weight="7"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/tv_time"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="6dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black_weak"
-            android:visibility="gone"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_dairy_content"
@@ -49,6 +49,7 @@
         android:id="@+id/tv_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
         android:layout_marginRight="6dp"
         android:gravity="right"
         android:textColor="@color/SearchEditHintText"
@@ -57,7 +58,14 @@
         app:layout_constraintLeft_toRightOf="@id/ll_text"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/ll_text"
-        android:layout_marginEnd="6dp"
         tools:ignore="RtlHardcoded" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,4 +2,6 @@
 <resources>
     <dimen name="edit_icon_margin">4dp</dimen>
     <dimen name="app_bar_height">56dp</dimen>
+    <dimen name="app_bar_text_size">16sp</dimen>
+    <dimen name="tab_layout_height">44dp</dimen>
 </resources>

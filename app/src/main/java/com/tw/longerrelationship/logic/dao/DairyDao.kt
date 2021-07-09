@@ -8,10 +8,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DairyDao {
 
-    /**
-     * 个人理解,返回为Flow的形式
-     * 代表数据库在查询的时候在子线程中进行，并且是用flow的数据形式,响应式
-     */
     @Query("SELECT * FROM DairyEntity WHERE id=:id")
     fun getDairyById(id: Int): Flow<DairyItem>
 
@@ -19,7 +15,7 @@ interface DairyDao {
      * 用DataSource把数据绑定到Paging  响应式
      * 根据时间降序查找
      */
-    @Query("SELECT * FROM DairyEntity order by time desc")
+    @Query("SELECT * FROM DairyEntity order by createTime desc")
     fun getAllDairy(): DataSource.Factory<Int, DairyItem>
 
     @Update
@@ -37,4 +33,10 @@ interface DairyDao {
 
     @Query("DELETE From DairyEntity Where id=:id")
     fun deleteDairy(id: Int)
+
+    /**
+     * 收藏日记
+     */
+    @Query("UPDATE DairyEntity SET isLove=:isLove Where id=:id")
+    fun favoritesDairy(id: Int, isLove: Boolean)
 }

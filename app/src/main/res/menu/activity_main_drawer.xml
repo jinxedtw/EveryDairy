@@ -11,16 +11,12 @@
             android:title="@string/daily_plan" />
         <item
             android:id="@+id/it_fil_common"
-            android:icon="@drawable/ic_file_common"
+            android:icon="@drawable/ic_favorites"
             android:title="@string/love" />
         <item
             android:id="@+id/it_secret"
             android:icon="@drawable/ic_secret"
             android:title="@string/secret" />
-        <item
-            android:id="@+id/it_recycle"
-            android:icon="@drawable/ic_recycle"
-            android:title="@string/recycle" />
     </group>
 
     <group android:id="@+id/about">

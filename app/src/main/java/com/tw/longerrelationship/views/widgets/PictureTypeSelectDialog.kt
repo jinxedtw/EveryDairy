@@ -49,7 +49,7 @@ class PictureTypeSelectDialog : Dialog {
                 }
                 // 后期可以换成自定义相册,实现一次性选取多张图片
                 llPicture -> {
-//                    requestSDCardWritePermission(activity)
+                    requestSDCardWritePermission(activity)
                     openAlbum()
 
                     dismiss()

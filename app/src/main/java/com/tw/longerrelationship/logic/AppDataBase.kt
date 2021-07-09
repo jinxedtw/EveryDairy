@@ -6,14 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.tw.longerrelationship.logic.dao.DairyDao
+import com.tw.longerrelationship.logic.dao.ToDoDao
 import com.tw.longerrelationship.logic.model.DairyItem
+import com.tw.longerrelationship.logic.model.ToDoItem
 import com.tw.longerrelationship.util.DATABASE_NAME
 
 /**
  * App数据库
  */
 @Database(
-    entities = [DairyItem::class],
+    entities = [DairyItem::class, ToDoItem::class],
     version = 1,
     exportSchema = false
 )
@@ -21,6 +23,7 @@ import com.tw.longerrelationship.util.DATABASE_NAME
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun dairyDao(): DairyDao
+    abstract fun toDoDao(): ToDoDao
 
     companion object {
         @Volatile

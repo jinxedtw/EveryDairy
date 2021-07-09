@@ -2,29 +2,29 @@ package com.tw.longerrelationship.views.activity
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.view.View
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tw.longerrelationship.R
-import com.tw.longerrelationship.adapter.DairyAdapter
+import com.tw.longerrelationship.adapter.FragmentAdapter
 import com.tw.longerrelationship.databinding.ActivityMainBinding
 import com.tw.longerrelationship.util.*
-
 import com.tw.longerrelationship.viewmodel.MainViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import com.tw.longerrelationship.views.fragment.BaseFragment
+import com.tw.longerrelationship.views.fragment.NoteFragment
+import com.tw.longerrelationship.views.fragment.ToDoFragment
 import java.util.*
 
 class MainActivity : BaseActivity() {
     private lateinit var mBinding: ActivityMainBinding
-    private var isFold: Boolean = true
-    private lateinit var dairyAdapter: DairyAdapter
+    private lateinit var tapTitle: List<String>
+    private lateinit var fragments: List<BaseFragment>
+    private lateinit var toDoFragment: ToDoFragment
+    private lateinit var noteFragment: NoteFragment
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -36,29 +36,66 @@ class MainActivity : BaseActivity() {
     override fun init() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         requestSDCardWritePermission(this)
-        getDairyData()
+        initTab()
         initView()
+        observe()
+    }
+
+    private fun observe() {
+        viewModel.isFold.observe(this) {
+            // TODO 添加切换动画
+            changeDairyShowTypeIcon()
+        }
+        viewModel.ifEnterCheckBoxType.observe(this) {
+            enterOrExitCheckBoxType(it)
+        }
+    }
+
+    private fun initTab() {
+        noteFragment = NoteFragment()
+        toDoFragment = ToDoFragment()
+        tapTitle = arrayListOf("笔记", "待办")
+        fragments = arrayListOf(noteFragment, ToDoFragment())
+        mBinding.includeMain.vpMain.adapter = FragmentAdapter(fragments, this)
+
+        //TabLayout和ViewPager的绑定
+        TabLayoutMediator(
+            mBinding.includeMain.tabLayout, mBinding.includeMain.vpMain
+        ) { tab, position ->
+            tab.text = tapTitle[position]
+        }.attach()
+
+        // 滑动监听
+        mBinding.includeMain.tabLayout.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab!!.text == tapTitle[0]) {
+                    viewModel.tabSelect = 0
+                    mBinding.includeMain.includeBar.ivDisplay.visibility = View.VISIBLE
+                    mBinding.includeMain.includeBar.tvFilter.visibility = View.GONE
+                } else {
+                    viewModel.tabSelect = 1
+                    mBinding.includeMain.includeBar.ivDisplay.visibility = View.GONE
+                    mBinding.includeMain.includeBar.tvFilter.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // 未选择是触发
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // 选中之后再次点击即复选时触发
+            }
+        })
     }
 
     private fun initView() {
-        isFold = sharedPreferences.getBoolean(DAIRY_SHOW_FOLD, true).apply {
-            isFold = this
-            dairyAdapter = DairyAdapter(this@MainActivity, if (this) 1 else 2)
-            changeDairyShowTypeIcon()
+        sharedPreferences.getBoolean(DAIRY_SHOW_FOLD, true).apply {
+            viewModel.isFold.value = this
         }
         sharedPreferences.getInt(ACCOUNT_SEX, 0).apply {
             changeHeadImage(this)
-        }
-
-        mBinding.includeMain.rvDairy.adapter = dairyAdapter
-        changeRecyclerView()
-
-        mBinding.includeMain.smartRefresh.apply {
-            isEnableLoadmore = false    //是否启用上拉加载功能
-            setOnRefreshListener {      // 设置下拉刷新
-                finishRefresh()
-                getDairyData()
-            }
         }
 
         mBinding.navigation.setNavigationItemSelectedListener {
@@ -73,23 +110,22 @@ class MainActivity : BaseActivity() {
         setOnClickListeners(
             mBinding.includeMain.includeBar.ivMine,
             mBinding.includeMain.includeBar.ivDisplay,
-            mBinding.includeMain.fbEdit,
             mBinding.includeMain.includeBar.llSearch,
-            mBinding.navigation.getHeaderView(0)
+            mBinding.includeMain.includeBar.tvFilter,
+            mBinding.navigation.getHeaderView(0),
+            mBinding.includeMain.fbEdit,
+            mBinding.includeMain.includeCheckBar.ivClose,
+            mBinding.includeMain.includeCheckBar.tvDelete,
+            mBinding.includeMain.includeCheckBar.tvSelectAll
         ) {
             when (this) {
                 mBinding.includeMain.includeBar.ivMine -> {
                     mBinding.drawerLayout.openDrawer(GravityCompat.START)
                 }
                 mBinding.includeMain.includeBar.ivDisplay -> {
-                    isFold = !isFold
-                    changeRecyclerView()
-                    changeDairyShowTypeIcon()
-                    sharedPreferences.edit().putBoolean(DAIRY_SHOW_FOLD, isFold).apply()
-                    dairyAdapter.notifyDataSetChanged()
-                }
-                mBinding.includeMain.fbEdit -> {
-                    startActivity(Intent(this.context, DairyEditActivity::class.java))
+                    viewModel.isFold.value = !viewModel.isFold.value!!
+                    sharedPreferences.edit().putBoolean(DAIRY_SHOW_FOLD, viewModel.isFold.value!!)
+                        .apply()
                 }
                 mBinding.includeMain.includeBar.llSearch -> {
                     startActivity(Intent(this.context, SearchActivity::class.java))
@@ -105,32 +141,54 @@ class MainActivity : BaseActivity() {
                             dialog.cancel()
                         }.show()
                 }
-            }
-        }
-    }
+                mBinding.includeMain.includeCheckBar.ivClose -> {
+                    entryCheckType(false)
+                }
+                mBinding.includeMain.includeCheckBar.tvDelete -> {
+                    AlertDialog.Builder(this@MainActivity).setMessage("确定删除所选笔记吗")
+                        .setNegativeButton("取消", null).setPositiveButton("确认") { _, _ ->
+                            noteFragment.deleteDairy()
+                            entryCheckType(false)
+                        }.show()
+                }
+                mBinding.includeMain.includeCheckBar.tvSelectAll -> {
+                    noteFragment.selectAll()
+                }
+                mBinding.includeMain.fbEdit -> {
+                    // 新建笔记或新建待办的入口
+                    if (viewModel.tabSelect == 0)
+                        startActivity(Intent(this@MainActivity, DairyEditActivity::class.java))
+                    else
+                        startActivity(Intent(this@MainActivity, ToDoEditActivity::class.java))
+                }
+                mBinding.includeMain.includeBar.tvFilter -> {
 
-    private fun changeRecyclerView() {
-        if (isFold) {
-            mBinding.includeMain.rvDairy.apply {
-                layoutManager = LinearLayoutManager(this@MainActivity)
-                (adapter as DairyAdapter).type = 1
-            }
-        } else {
-            mBinding.includeMain.rvDairy.apply {
-                layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                (adapter as DairyAdapter).type = 2
+                }
             }
         }
     }
 
     override fun getLayoutId(): Int = R.layout.activity_main
 
-    private fun getDairyData() {
-        // TODO 如何监听返回的数据量,修改UI
-        lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.getAllDairy().collect {
-                dairyAdapter.submitData(it)
-            }
+    fun entryCheckType(boolean: Boolean) {
+        viewModel.ifEnterCheckBoxType.value = boolean
+    }
+
+    /**
+     * 进入或退出选择模式
+     * @param boolean 是否进入选择模式
+     */
+    private fun enterOrExitCheckBoxType(boolean: Boolean) {
+        if (boolean) {
+            mBinding.includeMain.vpMain.isUserInputEnabled = false              // 禁止左右滑动
+            mBinding.includeMain.tabLayout.visibility = View.GONE
+            mBinding.includeMain.includeBar.root.visibility = View.GONE
+            mBinding.includeMain.includeCheckBar.root.visibility = View.VISIBLE
+        } else {
+            mBinding.includeMain.vpMain.isUserInputEnabled = true
+            mBinding.includeMain.includeBar.root.visibility = View.VISIBLE
+            mBinding.includeMain.tabLayout.visibility = View.VISIBLE
+            mBinding.includeMain.includeCheckBar.root.visibility = View.GONE
         }
     }
 
@@ -143,21 +201,11 @@ class MainActivity : BaseActivity() {
         when (type) {
             0 -> {
                 mBinding.navigation.getHeaderView(0)
-                    .findViewById<ImageView>(R.id.iv_head).setImageDrawable(
-                        ContextCompat.getDrawable(
-                            this@MainActivity,
-                            R.drawable.ic_boy
-                        )
-                    )
+                    .findViewById<ImageView>(R.id.iv_head).setDrawable(R.drawable.ic_boy)
             }
             1 -> {
                 mBinding.navigation.getHeaderView(0)
-                    .findViewById<ImageView>(R.id.iv_head).setImageDrawable(
-                        ContextCompat.getDrawable(
-                            this@MainActivity,
-                            R.drawable.ic_girl
-                        )
-                    )
+                    .findViewById<ImageView>(R.id.iv_head).setDrawable(R.drawable.ic_girl)
             }
         }
     }
@@ -166,23 +214,28 @@ class MainActivity : BaseActivity() {
      * 修改日记列表的展示方式的图标
      */
     private fun changeDairyShowTypeIcon() {
-        if (isFold) {
-            mBinding.includeMain.includeBar.ivDisplay.setImageDrawable(
-                ContextCompat.getDrawable(
-                    baseContext,
-                    R.drawable.pic_unfold,
-                )
-            )
+        if (viewModel.isFold.value!!) {
+            mBinding.includeMain.includeBar.ivDisplay.setDrawable(R.drawable.pic_unfold)
         } else {
-            mBinding.includeMain.includeBar.ivDisplay.setImageDrawable(
-                ContextCompat.getDrawable(
-                    baseContext,
-                    R.drawable.pic_fold,
-                )
-            )
+            mBinding.includeMain.includeBar.ivDisplay.setDrawable(R.drawable.pic_fold)
         }
     }
 
+    /**
+     * 设置选中模式的头部数量
+     */
+    fun setSelectNum(it: Int) {
+        mBinding.includeMain.includeCheckBar.tvSelectNum.text =
+            String.format(getString(R.string.alreadySelect), it)
+    }
+
+    override fun onBackPressed() {
+        if (viewModel.ifEnterCheckBoxType.value!!) {
+            entryCheckType(false)
+        } else {
+            super.onBackPressed()
+        }
+    }
 
     companion object {
         const val DAIRY_SHOW_FOLD = "dairyShowFold"     // 打开日记的方式

@@ -16,8 +16,7 @@ import com.tw.longerrelationship.views.activity.DairyEditActivity
 import com.tw.longerrelationship.views.widgets.PictureTypeSelectDialog
 
 /**
- * 日记编辑界面的选择图片适配器
- * @see[DairyEditActivity]
+ * 日记编辑界面[DairyEditActivity]的选择图片适配器
  */
 class PictureSelectAdapter(
     var pictureList: List<Uri>,
@@ -49,7 +48,6 @@ class PictureSelectAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CustomViewHolder -> {
-
                 Glide.with(activity)
                     .load(pictureList[position])
                     .apply(RequestOptions.bitmapTransform(RoundedCorners(15)))
@@ -95,7 +93,6 @@ class PictureSelectAdapter(
 
         init {
             picture.setOnClickListener {
-
                 activity.pictureInfoActivityJump(it.tag as Int)
             }
         }

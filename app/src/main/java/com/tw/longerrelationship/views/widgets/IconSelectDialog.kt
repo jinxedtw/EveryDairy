@@ -4,13 +4,14 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.View
+import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.DialogIconsAdapter
 import com.tw.longerrelationship.help.SpacesItemDecoration
+import com.tw.longerrelationship.views.activity.DairyEditActivity
 
 class IconSelectDialog(
     context: Context,
@@ -26,8 +27,23 @@ class IconSelectDialog(
         super.onCreate(savedInstanceState)
         val view = View.inflate(context, R.layout.layout_icon_select_dialog, null)
         setContentView(view)
-
+        cancerOnFocus()
         initView(type)
+    }
+
+    /**
+     * 点击不会抢占焦点,但是会导致点击dialog外不消失
+     * 解决方法:监听dialog以外的事件来cancer掉dialog
+     * [DairyEditActivity.dispatchTouchEvent]
+     * [DairyEditActivity.dispatchKeyEvent]
+     */
+    private fun cancerOnFocus() {
+        setCanceledOnTouchOutside(true)
+        window!!.apply {
+            setGravity(Gravity.CENTER)
+            setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
+        }
     }
 
     /**

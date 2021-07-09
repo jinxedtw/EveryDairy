@@ -2,6 +2,7 @@ package com.tw.longerrelationship.views.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -9,11 +10,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -36,9 +38,12 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+/**
+ * TODO 意外退出时的恢复上次编辑功能
+ */
 class DairyEditActivity : BaseActivity() {
     private var showRvPhotoList: Boolean = true
+
     private lateinit var mBinding: ActivityDairyEditBinding
     private lateinit var locationService: LocationService
     private lateinit var locationListener: BDAbstractLocationListener
@@ -47,6 +52,18 @@ class DairyEditActivity : BaseActivity() {
 
     private val dairyId by lazy {
         intent.getIntExtra(DAIRY_ID, -1)
+    }
+    private val moodDialog: IconSelectDialog by lazy {
+        IconSelectDialog(this, R.style.Dialog, 2) { drawable, iconId ->
+            mBinding.ivMood.setImageDrawable(drawable)
+            viewModel.moodIcon = iconId
+        }
+    }
+    private val weatherDialog: IconSelectDialog by lazy {
+        IconSelectDialog(this, R.style.Dialog, 1) { drawable, iconId ->
+            mBinding.ivWeather.setImageDrawable(drawable)
+            viewModel.weatherIcon = iconId
+        }
     }
 
     /**
@@ -73,7 +90,6 @@ class DairyEditActivity : BaseActivity() {
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
             }
         }
-
     /**
      * 初始化相机启动器
      */
@@ -85,7 +101,6 @@ class DairyEditActivity : BaseActivity() {
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
             }
         }
-
     /**
      * 跳转Activity启动器
      */
@@ -103,9 +118,31 @@ class DairyEditActivity : BaseActivity() {
         }
     }
 
+    /**
+     * 下面两个方法用于监听触摸事件和软件盘输入事件,并尝试关闭已经显示的dialog
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (ev!!.action == MotionEvent.ACTION_DOWN) tryHideDialog()
+        return super.dispatchTouchEvent(ev)
+    }
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        tryHideDialog()
+        return super.dispatchKeyEvent(event)
+    }
+    private fun tryHideDialog() {
+        if (moodDialog.isShowing || weatherDialog.isShowing) {
+            if (moodDialog.isShowing) {
+                moodDialog.cancel()
+            } else {
+                weatherDialog.cancel()
+            }
+        }
+    }
+
     override fun init() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         mBinding.viewModel = this.viewModel
+        mBinding.etContent.requestFocus()
         observe()
         initView()
         addOnSoftKeyBoardVisibleListener()
@@ -116,23 +153,12 @@ class DairyEditActivity : BaseActivity() {
     private fun observe() {
         // 通过监控文本状态,改变标题栏图标
         viewModel.isChanged.observe(this) {
-            if (!it && isDiaryNotChanged()) {
-                mBinding.appBar.leftIcon.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.ic_close,
-                    )
-                )
+            if (isDiaryNotChanged()) {
+                mBinding.appBar.leftIcon.setDrawable(R.drawable.ic_close)
                 mBinding.appBar.tag = "noChanged"
             } else {
-                mBinding.appBar.leftIcon.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.ic_select,
-                    )
-                )
-                // 设置一个标记
-                mBinding.appBar.tag = "changed"
+                mBinding.appBar.leftIcon.setDrawable(R.drawable.ic_select)
+                mBinding.appBar.tag = "changed"         // 设置一个标记
             }
         }
 
@@ -148,7 +174,6 @@ class DairyEditActivity : BaseActivity() {
             if (it.content != null) {
                 mBinding.etContent.setText(it.content)
                 mBinding.etContent.setSelection(it.content.length)
-                mBinding.etContent.requestFocus()
             }
             if (it.title != null) {
                 mBinding.appBar.setTitle(it.title)
@@ -156,9 +181,11 @@ class DairyEditActivity : BaseActivity() {
             viewModel.apply {
                 location = it.location
                 pictureList = it.uriList as ArrayList<Uri>
-                time = it.time
+                createTime = it.createTime
+                editInfoList = it.editInfoList
                 weatherIcon = it.weather
                 moodIcon = it.mood
+                ifLove = it.isLove
             }
             pictureSelectAdapter.pictureList = viewModel.pictureList
             pictureSelectAdapter.notifyDataSetChanged()
@@ -205,17 +232,11 @@ class DairyEditActivity : BaseActivity() {
                 }
                 // 设置心情
                 mBinding.ivMood -> {
-                    IconSelectDialog(context, R.style.Dialog, 2) { drawable, iconId ->
-                        mBinding.ivMood.setImageDrawable(drawable)
-                        viewModel.moodIcon = iconId
-                    }.show()
+                    moodDialog.show()
                 }
                 // 设置天气
                 mBinding.ivWeather -> {
-                    IconSelectDialog(context, R.style.Dialog, 1) { drawable, iconId ->
-                        mBinding.ivWeather.setImageDrawable(drawable)
-                        viewModel.weatherIcon = iconId
-                    }.show()
+                    weatherDialog.show()
                 }
                 mBinding.ivSetting -> {
 
@@ -232,7 +253,7 @@ class DairyEditActivity : BaseActivity() {
             override fun onReceiveLocation(location: BDLocation?) {
                 if (location?.locType ?: 0 == 62) {
                     showToast(baseContext, "定位失败,请检查定位系统是否已经开启")
-                    mBinding.tvLocationInfo.text = "定位失败,请检查定位系统是否已经开启"
+                    mBinding.tvLocationInfo.text = "无位置信息"
                 } else {
                     mBinding.tvLocationInfo.text = location?.addrStr
                 }
@@ -285,7 +306,7 @@ class DairyEditActivity : BaseActivity() {
     /**
      * 保存日记
      */
-    fun saveDairy(view: View) {
+    fun saveDairy() {
         lifecycleScope.launch(Dispatchers.Main) {
             val result = withContext(Dispatchers.IO) {
                 viewModel.saveDairy(mBinding.appBar.getTitle())
@@ -295,14 +316,14 @@ class DairyEditActivity : BaseActivity() {
             else
                 showToast(baseContext, "保存失败")
         }
-        finishActivity(view)
+        finishActivity()
     }
 
-    fun finishActivity(view: View) {
+    fun finishActivity() {
         if (isSoftShowing()) {
-            closeKeyboard(view.windowToken)
+            closeKeyboard(mBinding.root.windowToken)
             showRvPhotoList = false
-            view.handler.postDelayed({
+            mBinding.root.handler.postDelayed({
                 finish()
             }, 50)
         } else {
@@ -319,9 +340,12 @@ class DairyEditActivity : BaseActivity() {
 
     /**
      * 判断是否修改了日记
+     * 标题,图片,文本内容
      */
     private fun isDiaryNotChanged(): Boolean =
-        TextUtils.isEmpty(viewModel.dairyContent.value) && viewModel.pictureList.isEmpty()
+        !viewModel.isChanged.value!!
+                && TextUtils.isEmpty(viewModel.dairyContent.value)
+                && viewModel.pictureList.isEmpty()
 
 
     fun openCamera() {
@@ -342,6 +366,25 @@ class DairyEditActivity : BaseActivity() {
     }
 
     /**
+     * 监听回退键,当正在编辑时弹出提示框
+     */
+    override fun onBackPressed() {
+        if (isDiaryNotChanged()) {
+            super.onBackPressed()
+        } else {
+            AlertDialog.Builder(this).setMessage("确定放弃此次编辑?")
+                .setNegativeButton("放弃") { _, _ ->
+                    super.onBackPressed()
+                }
+                .setPositiveButton("保存") { _, _ ->
+                    saveDairy()
+                }
+                .setNeutralButton("取消", null)
+                .show()
+        }
+    }
+
+    /**
      * 跳转到[PictureInfoActivity]  协议类
      * 传入参数  ArrayList<Bitmap>  图片列表
      * 返回参数  Int                标识哪一张图片被删除
@@ -355,7 +398,6 @@ class DairyEditActivity : BaseActivity() {
 
         override fun parseResult(resultCode: Int, intent: Intent?): Int {
             val data = intent?.getIntExtra("result", -1)
-
             return if (resultCode == Activity.RESULT_OK && data != null) data else -1
         }
     }
@@ -378,6 +420,5 @@ class DairyEditActivity : BaseActivity() {
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
             return intent?.data
         }
-
     }
 }

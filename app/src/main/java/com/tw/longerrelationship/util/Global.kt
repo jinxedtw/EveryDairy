@@ -89,13 +89,11 @@ fun requestPositioningPermission(context: Activity?) {
 }
 
 /**
- * 读写权限动态申请
+ * SD卡读写权限动态申请
  */
 fun requestSDCardWritePermission(context: Activity) {
-    if (ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) != PackageManager.PERMISSION_GRANTED
+    if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        != PackageManager.PERMISSION_GRANTED
     ) {
         ActivityCompat.requestPermissions(
             context,
@@ -103,6 +101,20 @@ fun requestSDCardWritePermission(context: Activity) {
         )
     }
 }
+
+/**
+ * 录音权限
+ */
+fun requestRecordAudioPermission(context: Activity) {
+    if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.RECORD_AUDIO)
+        != PackageManager.PERMISSION_GRANTED
+    ) {
+        ActivityCompat.requestPermissions(
+            context, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1
+        )
+    }
+}
+
 
 /**
  *  获得当前时间
@@ -129,17 +141,24 @@ fun getComparedTime(data: Date): String {
             return "昨天"
         }
         now.get(Calendar.DAY_OF_YEAR) - old.get(Calendar.DAY_OF_YEAR) > 1 -> {
-            return "${old.get(Calendar.MONTH)+1}/${old.get(Calendar.DAY_OF_MONTH)}"
+            return "${old.get(Calendar.MONTH) + 1}/${old.get(Calendar.DAY_OF_MONTH)}"
         }
     }
-    return "${
-        if (old.get(Calendar.HOUR_OF_DAY) < 10) "0${old.get(Calendar.HOUR_OF_DAY)}"
-        else old.get(Calendar.HOUR_OF_DAY)
-    }:${
-        if (old.get(Calendar.MINUTE) < 10) "0${old.get(Calendar.MINUTE)}"
-        else old.get(Calendar.MINUTE)
-    }"
+    return getHourMinuteTime(old)
 }
+
+/**
+ * 获得右边格式的时间  eg: 18:00,07:08
+ */
+fun getHourMinuteTime(calendar: Calendar) =
+    "${
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 10) "0${calendar.get(Calendar.HOUR_OF_DAY)}"
+        else calendar.get(Calendar.HOUR_OF_DAY)
+    }:${
+        if (calendar.get(Calendar.MINUTE) < 10) "0${calendar.get(Calendar.MINUTE)}"
+        else calendar.get(Calendar.MINUTE)
+    }"
+
 
 inline fun Animation.addAnimListener(
     crossinline onAnimationStart: (animation: Animation?) -> Unit = { _ -> },

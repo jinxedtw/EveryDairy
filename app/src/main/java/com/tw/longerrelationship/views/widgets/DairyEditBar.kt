@@ -12,6 +12,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.logV
+import com.tw.longerrelationship.util.setDrawable
 import com.tw.longerrelationship.util.setOnClickListeners
 import com.tw.longerrelationship.views.activity.DairyEditActivity
 
@@ -41,18 +42,8 @@ class DairyEditBar(context: Context, attributes: AttributeSet) : LinearLayout(co
         typedArray.recycle()
 
         mTitle.text = title
-        leftIcon.setImageDrawable(
-            ContextCompat.getDrawable(
-                context,
-                leftImage,
-            )
-        )
-        rightIcon.setImageDrawable(
-            ContextCompat.getDrawable(
-                context,
-                rightImage,
-            )
-        )
+        leftIcon.setDrawable(leftImage)
+        rightIcon.setDrawable(rightImage)
     }
 
     private fun initView() {
@@ -65,10 +56,10 @@ class DairyEditBar(context: Context, attributes: AttributeSet) : LinearLayout(co
                 leftIcon -> {
                     if (mySelf.tag == "changed") {
                         // 保存日记
-                        (context as DairyEditActivity).saveDairy(this)
+                        (context as DairyEditActivity).saveDairy()
                     } else {
                         // 退出当前Activity
-                        (context as DairyEditActivity).finishActivity(this)
+                        (context as DairyEditActivity).finishActivity()
                     }
                 }
                 rightIcon -> logV("右部按钮", "点击成功")
@@ -77,8 +68,5 @@ class DairyEditBar(context: Context, attributes: AttributeSet) : LinearLayout(co
     }
 
     fun getTitle(): String = mTitle.text.toString()
-
-    fun setTitle(title: String) {
-        mTitle.text = title
-    }
+    fun setTitle(title: String) { mTitle.text = title }
 }

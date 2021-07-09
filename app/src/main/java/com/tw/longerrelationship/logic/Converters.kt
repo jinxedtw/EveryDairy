@@ -19,17 +19,10 @@ package com.tw.longerrelationship.logic
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.tw.longerrelationship.logic.model.Tag
-import com.tw.longerrelationship.util.logV
+import com.tw.longerrelationship.logic.model.EmergencyLevel
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.MutableList as MutableList1
 
-/**
- * Type converters to allow Room to reference complex data types.
- */
 class Converters {
     @TypeConverter
     fun dateToDatestamp(date: Date): Long = date.time
@@ -38,14 +31,36 @@ class Converters {
     fun datestampToDate(value: Long): Date = Date(value)
 
     @TypeConverter
-    fun stringToTagList(data: String?): List<Tag> {
-        val listType = object : TypeToken<List<Tag>>() {}.type
-        return Gson().fromJson(data, listType)
+    fun calendarToDatestamp(calendar: Calendar): Long = calendar.timeInMillis
+
+    @TypeConverter
+    fun datestampToCalendar(value: Long): Calendar =
+        Calendar.getInstance().apply { timeInMillis = value }
+
+    /**
+     * List<Date>的转换方式
+     */
+    @TypeConverter
+    fun stringToDateList(data: String?): List<Date> {
+        val list = ArrayList<Date>()
+
+        if (data == null) return list
+        data.split("$$").forEach {
+            if (it != "") {
+                list.add(datestampToDate(it.toLong()))
+            }
+        }
+        return list
     }
 
     @TypeConverter
-    fun tagListToString(objectList: List<Tag>): String {
-        return Gson().toJson(objectList)
+    fun dateListToString(objectList: List<Date>): String {
+        val str: StringBuilder = StringBuilder()
+        objectList.forEach {
+            str.append("${dateToDatestamp(it)}$$")
+        }
+
+        return str.toString()
     }
 
     /**
@@ -56,13 +71,11 @@ class Converters {
         val list = ArrayList<Uri>()
 
         if (data == null) return list
-
         data.split("$$").forEach {
-            if (it != ""){
+            if (it != "") {
                 list.add(it.toUri())
             }
         }
-
         return list
     }
 
@@ -74,5 +87,14 @@ class Converters {
         }
 
         return str.toString()
+    }
+
+    @TypeConverter
+    fun intToEmergencyLevel(level: Int): EmergencyLevel {
+        return EmergencyLevel.newInstanceByLevel(level)
+    }
+    @TypeConverter
+    fun emergencyLevelToInt(emergencyLevel: EmergencyLevel): Int {
+        return emergencyLevel.level
     }
 }
