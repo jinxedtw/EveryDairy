@@ -39,4 +39,20 @@
     <color name="placeHolder">#f2f2f2</color>
     <color name="placeHolderText">#c6c6c6</color>
 
+    <!--    ToDoEditActivity-->
+    <color name="selectTodo">#626262</color>
+    <color name="textNum">#898989</color>
+    <color name="toDoEditDivider">#f4f4f4</color>
+    <color name="todoEditBackground">#fafafa</color>
+    <color name="importantAndUrgent">#f45e5b</color>
+    <color name="importantAndNoUrgent">#f38a1b</color>
+    <color name="noImportantAndUrgent">#79a0f1</color>
+    <color name="noImportantAndNoUrgent">#539eb7</color>
+    <color name="bg_importantAndUrgent">#66F45E5B</color>
+    <color name="bg_importantAndNoUrgent">#66F38A1B</color>
+    <color name="bg_noImportantAndUrgent">#6679A0F1</color>
+    <color name="bg_noImportantAndNoUrgent">#66539EB7</color>
+
+    <!--    TodoAdapter-->
+    <color name="topDivider">#eef1f6</color>
 </resources>

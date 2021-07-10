@@ -1,15 +1,11 @@
 package com.tw.longerrelationship.views.widgets
 
-import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doOnTextChanged
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.logV
 import com.tw.longerrelationship.util.setDrawable

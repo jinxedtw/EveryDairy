@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.DairyAdapter
 import com.tw.longerrelationship.databinding.FragmentNoteBinding
 import com.tw.longerrelationship.viewmodel.MainViewModel
@@ -33,6 +35,9 @@ class NoteFragment : BaseFragment() {
                 super.onLayoutChildren(recycler, state)
                 viewModel.dairyNum.value = dairyAdapter.itemCount
             }
+            override fun canScrollVertically(): Boolean {       // 解决scroll嵌套的滑动卡顿问题
+                return false
+            }
         }
     }
     private val gridLayoutManager by lazy {
@@ -43,6 +48,9 @@ class NoteFragment : BaseFragment() {
             ) {
                 super.onLayoutChildren(recycler, state)
                 viewModel.dairyNum.value = dairyAdapter.itemCount
+            }
+            override fun canScrollVertically(): Boolean {
+                return false
             }
         }
     }
@@ -71,7 +79,7 @@ class NoteFragment : BaseFragment() {
         viewModel.isFold.observe(viewLifecycleOwner) {
             mBinding.rvDairy.adapter = dairyAdapter
             changeRecyclerView()
-            if (this.isResumed){
+            if (this.isResumed) {
                 dairyAdapter.notifyDataSetChanged()
             }
         }
@@ -83,25 +91,24 @@ class NoteFragment : BaseFragment() {
         }
         viewModel.dairyNum.observe(viewLifecycleOwner) {
             if (it == 0) {
-                mBinding.ctDairyNum.visibility = View.VISIBLE
-                mBinding.ivEmpty.visibility = View.GONE
+                mBinding.ivEmpty.visibility = View.VISIBLE
             } else {
-                mBinding.ctDairyNum.visibility = View.VISIBLE
                 mBinding.ivEmpty.visibility = View.GONE
             }
-            mBinding.tvRecordNum.text = String.format("共${it}篇")
+            mBinding.root.findViewById<TextView>(R.id.tv_center_text).text =
+                String.format("共${it}篇")
         }
     }
 
     private fun initView() {
-        // TODO 暂无功能,后期可以在这里增加上传至服务器的操作
-        mBinding.smartRefresh.apply {
-            isEnableLoadmore = false    //是否启用上拉加载功能
-            isEnableRefresh = false
-            setOnRefreshListener {      // 设置下拉刷新
-                finishRefresh()
-            }
-        }
+        // TODO 取消下拉刷新,后期可以在这里增加上传至服务器的操作
+//        mBinding.smartRefresh.apply {
+//            isEnableLoadmore = false    //是否启用上拉加载功能
+//            isEnableRefresh = false
+//            setOnRefreshListener {      // 设置下拉刷新
+//                finishRefresh()
+//            }
+//        }
     }
 
     private fun changeRecyclerView() {

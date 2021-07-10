@@ -5,4 +5,10 @@
         <attr name="centerTitle" format="string" />
         <attr name="rightImage" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="CommonBar">
+        <attr name="title" format="string" />
+        <attr name="imageOfRight" format="reference" />
+        <attr name="textOfRight" format="string"/>
+    </declare-styleable>
 </resources>

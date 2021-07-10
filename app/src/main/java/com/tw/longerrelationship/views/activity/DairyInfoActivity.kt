@@ -9,8 +9,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -55,11 +55,12 @@ class DairyInfoActivity : BaseActivity() {
      */
     private val toPictureInfoLauncher = registerForActivityResult(ToPictureInfoResultContract()) {}
 
-    override fun init() {
+    override fun init(): View {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView()
         click()
         observe()
+        return mBinding.root
     }
 
     private fun observe() {

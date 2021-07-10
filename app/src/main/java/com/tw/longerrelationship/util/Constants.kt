@@ -11,6 +11,7 @@ const val PICTURE_LIST = "pictureList"          // 图片列表
 const val CURRENT_PICTURE = "currentPicture"    // 当前图片
 const val IF_CAN_DELETE = "ifCanDelete"         // 是否可以删除图片
 const val DAIRY_ID = "dairyId"
+const val TODO_ID = "todoId"
 
 object Constants {
 

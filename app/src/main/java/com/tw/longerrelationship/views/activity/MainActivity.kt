@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.tw.longerrelationship.R
@@ -17,6 +18,8 @@ import com.tw.longerrelationship.viewmodel.MainViewModel
 import com.tw.longerrelationship.views.fragment.BaseFragment
 import com.tw.longerrelationship.views.fragment.NoteFragment
 import com.tw.longerrelationship.views.fragment.ToDoFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : BaseActivity() {
@@ -33,12 +36,13 @@ class MainActivity : BaseActivity() {
         ).get(MainViewModel::class.java)
     }
 
-    override fun init() {
+    override fun init(): View {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         requestSDCardWritePermission(this)
         initTab()
         initView()
         observe()
+        return mBinding.root
     }
 
     private fun observe() {
@@ -234,6 +238,12 @@ class MainActivity : BaseActivity() {
             entryCheckType(false)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    fun setTodoComplete(id: Int) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.setTodoComplete(id)
         }
     }
 

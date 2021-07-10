@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.Flow
  */
 class MainRepository private constructor(
     private val dairyDao: DairyDao,
-    private val toDoDao: ToDoDao
+    private val todoDao: ToDoDao
 ) {
-
+    // -----------------------------笔记相关接口
     fun getDairyById(id: Int) = dairyDao.getDairyById(id)
 
     fun deleteDairy(id: Int) = dairyDao.deleteDairy(id)
@@ -48,7 +48,25 @@ class MainRepository private constructor(
         ).flow
     }
 
-    fun saveToDo(toDoItem: ToDoItem) = toDoDao.insertTodo(toDoItem)
+    // ------------------------------待办相关接口
+    fun getNotCompleteToDoData(): Flow<PagingData<ToDoItem>> {
+        return Pager(
+            config = PagingConfig(PAGE_SIZE, maxSize = 150),
+            pagingSourceFactory = todoDao.getNotCompleteToDoItem().asPagingSourceFactory()
+        ).flow
+    }
+
+    fun getCompleteToDoData(): Flow<PagingData<ToDoItem>> {
+        return Pager(
+            config = PagingConfig(PAGE_SIZE, maxSize = 150),
+            pagingSourceFactory = todoDao.getCompleteToDoItem().asPagingSourceFactory()
+        ).flow
+    }
+
+    fun setTodoComplete(id: Int) = todoDao.setTodoComplete(id)
+
+    fun saveToDo(toDoItem: ToDoItem) = todoDao.insertTodo(toDoItem)
+
 
     companion object {
         private const val PAGE_SIZE = 50

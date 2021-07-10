@@ -159,6 +159,12 @@ fun getHourMinuteTime(calendar: Calendar) =
         else calendar.get(Calendar.MINUTE)
     }"
 
+/**
+ * 获得右边的时间格式 eg: 2021/3/15
+ */
+fun getYearAndDay(calendar: Calendar) =
+    "${calendar.get(Calendar.YEAR)}/${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}"
+
 
 inline fun Animation.addAnimListener(
     crossinline onAnimationStart: (animation: Animation?) -> Unit = { _ -> },

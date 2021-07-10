@@ -4,8 +4,10 @@
     android:color="@color/Divider"
     tools:targetApi="lollipop">
 
-    <item
-        android:drawable="@drawable/shape_dairy_item"
-        android:state_pressed="false">
+    <item android:state_pressed="false">
+        <shape>
+            <corners android:radius="5dp" />
+            <solid android:color="@color/importantAndUrgent" />
+        </shape>
     </item>
 </ripple>

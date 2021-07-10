@@ -90,6 +90,7 @@ class DairyEditActivity : BaseActivity() {
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
             }
         }
+
     /**
      * 初始化相机启动器
      */
@@ -101,6 +102,7 @@ class DairyEditActivity : BaseActivity() {
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
             }
         }
+
     /**
      * 跳转Activity启动器
      */
@@ -125,10 +127,12 @@ class DairyEditActivity : BaseActivity() {
         if (ev!!.action == MotionEvent.ACTION_DOWN) tryHideDialog()
         return super.dispatchTouchEvent(ev)
     }
+
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
         tryHideDialog()
         return super.dispatchKeyEvent(event)
     }
+
     private fun tryHideDialog() {
         if (moodDialog.isShowing || weatherDialog.isShowing) {
             if (moodDialog.isShowing) {
@@ -139,7 +143,7 @@ class DairyEditActivity : BaseActivity() {
         }
     }
 
-    override fun init() {
+    override fun init(): View {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         mBinding.viewModel = this.viewModel
         mBinding.etContent.requestFocus()
@@ -148,6 +152,7 @@ class DairyEditActivity : BaseActivity() {
         addOnSoftKeyBoardVisibleListener()
         initEditText()
         initLocation()
+        return mBinding.root
     }
 
     private fun observe() {

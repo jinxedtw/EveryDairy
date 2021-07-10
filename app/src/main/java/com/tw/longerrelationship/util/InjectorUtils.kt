@@ -28,4 +28,6 @@ object InjectorUtils {
         DairyInfoViewModelFactory(getMainRepository(), dairyId)
 
     fun getSearchViewModelFactory() = SearchViewModelFactory(getMainRepository())
+
+    fun getToDoEditViewModelFactory(todoId: Int)= ToDoEditViewModelFactory(getMainRepository(),todoId)
 }

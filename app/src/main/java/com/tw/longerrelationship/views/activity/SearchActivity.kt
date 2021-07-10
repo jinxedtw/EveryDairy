@@ -33,9 +33,10 @@ class SearchActivity : BaseActivity() {
 
     private var dairyAdapter: DairyAdapter = DairyAdapter(this)
 
-    override fun init() {
+    override fun init(): View {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView()
+        return mBinding.root
     }
 
     private fun initView() {

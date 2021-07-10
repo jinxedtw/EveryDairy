@@ -1,13 +1,14 @@
 package com.tw.longerrelationship.views.activity
 
 import android.content.Intent
+import android.view.View
 import com.tw.longerrelationship.R
 
 /**
  * 开屏页面，判断是否是第一次进入App
  */
 class SplashActivity : BaseActivity() {
-    override fun init() {
+    override fun init(): View? {
         setContentView(getLayoutId())
 
         val isFirstOpenApp = sharedPreferences.getBoolean(FIRST_OPEN_APP, true)
@@ -22,6 +23,7 @@ class SplashActivity : BaseActivity() {
             )
         )
         finish()
+        return null
     }
 
     override fun getLayoutId(): Int = R.layout.activity_splash

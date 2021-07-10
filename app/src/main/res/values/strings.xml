@@ -28,7 +28,9 @@
     <string name="loading">加载中…</string>
     <string name="all_select">全选</string>
     <string name="alreadySelect">已选%d个</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="filter">筛选</string>
+    <string name="to_do_type">待办类型</string>
+    <string name="select_to_do">请选择待办事项</string>
+    <string name="inputToDoHint">请输入办理事项内容进行记录保存!</string>
+    <string name="todonum">%d/300字</string>
 </resources>

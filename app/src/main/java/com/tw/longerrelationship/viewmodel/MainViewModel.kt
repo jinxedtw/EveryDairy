@@ -5,6 +5,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.tw.longerrelationship.views.fragment.NoteFragment
 import com.tw.longerrelationship.logic.model.DairyItem
+import com.tw.longerrelationship.logic.model.ToDoItem
 import com.tw.longerrelationship.logic.repository.MainRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +24,7 @@ class MainViewModel(
     val ifEnterCheckBoxType: MutableLiveData<Boolean> = MutableLiveData(false)  // 是否进入选择状态
     var tabSelect: Int = 0              // 当前选中的tab  0为笔记  1为待办
 
+    // -----------------------------笔记相关接口
     fun getAllDairy(): Flow<PagingData<DairyItem>> {
         return repository.getAllDairyData().cachedIn(viewModelScope)
     }
@@ -30,5 +32,17 @@ class MainViewModel(
     fun deleteDairy(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteDairy(id)
     }
+
+
+    // ------------------------------待办相关接口
+    fun getNotCompleteTodoList(): Flow<PagingData<ToDoItem>> {
+        return repository.getNotCompleteToDoData().cachedIn(viewModelScope)
+    }
+
+    fun getCompleteTodoList(): Flow<PagingData<ToDoItem>> {
+        return repository.getCompleteToDoData().cachedIn(viewModelScope)
+    }
+
+    fun setTodoComplete(id: Int) = repository.setTodoComplete(id)
 
 }

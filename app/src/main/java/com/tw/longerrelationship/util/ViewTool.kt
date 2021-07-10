@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -177,4 +178,8 @@ fun ImageView.setDrawable(res: Int) {
     setImageDrawable(
         ContextCompat.getDrawable(context, res)
     )
+}
+
+fun TextView.setColorForText(res: Int) {
+    setTextColor(ContextCompat.getColor(context, res))
 }

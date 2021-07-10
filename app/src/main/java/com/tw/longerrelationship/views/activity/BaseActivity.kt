@@ -6,9 +6,12 @@ import android.content.SharedPreferences
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.*
 
 
@@ -18,6 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
      * 日志输出标志
      */
     val tag: String = this.javaClass.simpleName
+    var root: View? = null                                  // 根布局
 
     val sharedPreferences: SharedPreferences by lazy {
         baseContext.getSharedPreferences(
@@ -34,7 +38,24 @@ abstract class BaseActivity : AppCompatActivity() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setAndroidNativeLightStatusBar(this, true)
 
-        init()
+        root = init()
+        setUpViews()
+    }
+
+    private fun setUpViews() {
+        val leaveIcon = findViewById<ImageView>(R.id.iv_leave)
+        leaveIcon?.setOnClickListener { finishAndTryCloseSoftKeyboard() }
+    }
+
+    fun finishAndTryCloseSoftKeyboard() {
+        if (isSoftShowing()) {
+            closeKeyboard(root!!.windowToken)
+            root!!.handler.postDelayed({
+                finish()
+            }, 50)
+        } else {
+            finish()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -108,7 +129,7 @@ abstract class BaseActivity : AppCompatActivity() {
     /**
      * 子类可以通过重写该方法进行一些初始化操作
      */
-    abstract fun init()
+    abstract fun init(): View?
 
 
     /**

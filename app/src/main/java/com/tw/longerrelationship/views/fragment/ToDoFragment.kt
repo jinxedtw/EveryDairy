@@ -4,8 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.tw.longerrelationship.adapter.TodoAdapter
 import com.tw.longerrelationship.databinding.FragmentTodoBinding
+import com.tw.longerrelationship.viewmodel.MainViewModel
 import com.tw.longerrelationship.views.activity.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * 待办事项列表
@@ -13,6 +22,41 @@ import com.tw.longerrelationship.views.activity.MainActivity
 class ToDoFragment : BaseFragment() {
     private lateinit var mBinding: FragmentTodoBinding
     private lateinit var mActivity: MainActivity
+    private lateinit var notCompleteAdapter: TodoAdapter
+    private lateinit var completeAdapter: TodoAdapter
+    private val viewModel by lazy {
+        ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    }
+    private val linearLayoutManagerNot by lazy {
+        object : LinearLayoutManager(activity) {
+            override fun onLayoutChildren(              // 这里重写使之监听recyclerView的布局完成,修改UI
+                recycler: RecyclerView.Recycler?,
+                state: RecyclerView.State?
+            ) {
+                super.onLayoutChildren(recycler, state)
+//                viewModel.dairyNum.value = dairyAdapter.itemCount
+            }
+
+            override fun canScrollVertically(): Boolean {       // 解决scroll嵌套的滑动卡顿问题
+                return false
+            }
+        }
+    }
+    private val linearLayoutManagerOk by lazy {
+        object : LinearLayoutManager(activity) {
+            override fun onLayoutChildren(              // 这里重写使之监听recyclerView的布局完成,修改UI
+                recycler: RecyclerView.Recycler?,
+                state: RecyclerView.State?
+            ) {
+                super.onLayoutChildren(recycler, state)
+//                viewModel.dairyNum.value = dairyAdapter.itemCount
+            }
+
+            override fun canScrollVertically(): Boolean {       // 解决scroll嵌套的滑动卡顿问题
+                return false
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,5 +70,34 @@ class ToDoFragment : BaseFragment() {
     }
 
     private fun init() {
+        initView()
+        getTodoData()
+    }
+
+    private fun initView() {
+        mBinding.rvNotComplete.apply {
+            notCompleteAdapter = TodoAdapter(mActivity)
+            adapter = notCompleteAdapter
+            layoutManager = linearLayoutManagerNot
+        }
+        mBinding.rvComplete.apply {
+            completeAdapter = TodoAdapter(mActivity)
+            adapter = completeAdapter
+            layoutManager = linearLayoutManagerOk
+        }
+    }
+
+    private fun getTodoData() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.getNotCompleteTodoList().collect {
+                notCompleteAdapter.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.getCompleteTodoList().collect {
+                completeAdapter.submitData(it)
+            }
+        }
     }
 }

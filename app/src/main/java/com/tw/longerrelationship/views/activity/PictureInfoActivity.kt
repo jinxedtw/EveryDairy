@@ -28,13 +28,14 @@ class PictureInfoActivity : BaseActivity() {
         ).get(PictureInfoViewModel::class.java)
     }
 
-    override fun init() {
+    override fun init(): View {
         setAndroidNativeLightStatusBar(this, false)
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         makeStatusBarTransparent(this)
         observe()
         initParams()
         initView()
+        return mBinding.root
     }
 
     private fun observe() {
