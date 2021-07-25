@@ -120,10 +120,11 @@ abstract class BaseActivity : AppCompatActivity() {
      * 关闭软键盘
      */
     fun closeKeyboard(windowToken: IBinder) {
-        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-            windowToken,                              // 关闭软键盘
-            0
-        )
+        if (isSoftShowing())
+            (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                windowToken,                              // 关闭软键盘
+                0
+            )
     }
 
     /**

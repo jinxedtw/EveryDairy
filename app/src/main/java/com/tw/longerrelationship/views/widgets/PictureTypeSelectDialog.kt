@@ -3,15 +3,13 @@ package com.tw.longerrelationship.views.widgets
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.LinearLayout
-import androidx.core.app.ActivityCompat.startActivityForResult
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.requestSDCardWritePermission
 import com.tw.longerrelationship.util.setOnClickListeners
+import com.tw.longerrelationship.util.showToast
 import com.tw.longerrelationship.views.activity.DairyEditActivity
 
 
@@ -38,10 +36,10 @@ class PictureTypeSelectDialog : Dialog {
     private fun initView() {
         val llCamera: LinearLayout = findViewById(R.id.ll_camera)
         val llPicture: LinearLayout = findViewById(R.id.ll_picture)
-        val llRecording: LinearLayout = findViewById(R.id.ll_recording)
+        val llPaint: LinearLayout = findViewById(R.id.ll_paint)
 
         // 相机，图库，录音的点击入口
-        setOnClickListeners(llCamera, llPicture, llRecording) {
+        setOnClickListeners(llCamera, llPicture, llPaint) {
             when (this) {
                 llCamera -> {
                     openCamera()
@@ -54,8 +52,8 @@ class PictureTypeSelectDialog : Dialog {
 
                     dismiss()
                 }
-                llRecording -> {
-                    openRecording()
+                llPaint -> {
+                    showToast(activity, "点击画板")
                     dismiss()
                 }
             }
@@ -74,13 +72,5 @@ class PictureTypeSelectDialog : Dialog {
      */
     private fun openCamera() {
         (activity as DairyEditActivity).openCamera()
-    }
-
-    /**
-     * 调用系统录音
-     */
-    private fun openRecording() {
-        val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
-        startActivityForResult(activity, intent, 3, null)
     }
 }

@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/layout_drawer_header"
-            app:menu="@menu/activity_main_drawer" />
+            app:menu="@menu/menu_main_drawer" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

@@ -10,6 +10,8 @@ import android.os.Build
 import android.os.Environment
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -169,6 +171,30 @@ fun calculateInSampleSize(
         inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
     }
     return inSampleSize
+}
+
+/**
+ * 弹出动画
+ * @param view
+ */
+fun slideToUp(view: View) {
+    val slide: Animation = TranslateAnimation(
+        Animation.RELATIVE_TO_SELF, 0.0f,
+        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+        1.0f, Animation.RELATIVE_TO_SELF, 0.0f
+    )
+    slide.apply {
+        duration = 300
+        fillAfter = true
+        isFillEnabled = true
+    }
+
+    view.startAnimation(slide)
+    slide.setAnimationListener(object : Animation.AnimationListener {
+        override fun onAnimationStart(animation: Animation?) {}
+        override fun onAnimationEnd(animation: Animation?) {}
+        override fun onAnimationRepeat(animation: Animation?) {}
+    })
 }
 
 /**

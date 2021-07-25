@@ -2,14 +2,17 @@ package com.tw.longerrelationship.views.widgets
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.logV
 import com.tw.longerrelationship.util.setDrawable
 import com.tw.longerrelationship.util.setOnClickListeners
+import com.tw.longerrelationship.util.showToast
 import com.tw.longerrelationship.views.activity.DairyEditActivity
 
 
@@ -58,9 +61,28 @@ class DairyEditBar(context: Context, attributes: AttributeSet) : LinearLayout(co
                         (context as DairyEditActivity).finishActivity()
                     }
                 }
-                rightIcon -> logV("右部按钮", "点击成功")
+                rightIcon -> {
+                    showPopupMenu()
+                }
             }
         }
+    }
+
+    private fun showPopupMenu() {
+        val popupMenu = PopupMenu(context, rightIcon)
+        popupMenu.inflate(R.menu.menu_dairy_edit)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.it_set_private -> {
+                    showToast(context, "设为私密")
+                }
+                R.id.it_set_love -> {
+                    showToast(context, "设为喜爱")
+                }
+            }
+            true
+        }
+        popupMenu.show()
     }
 
     fun getTitle(): String = mTitle.text.toString()

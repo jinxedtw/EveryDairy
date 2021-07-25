@@ -49,6 +49,7 @@ class NoteFragment : BaseFragment() {
                 super.onLayoutChildren(recycler, state)
                 viewModel.dairyNum.value = dairyAdapter.itemCount
             }
+
             override fun canScrollVertically(): Boolean {
                 return false
             }

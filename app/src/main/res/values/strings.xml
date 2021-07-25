@@ -5,6 +5,7 @@
     <string name="choose_weather">选择天气</string>
     <string name="camera">相机</string>
     <string name="pictures">图库</string>
+    <string name="canvas">画板</string>
     <string name="recording">录音</string>
     <string name="text_num_count">字数统计</string>
     <string name="delete">删除</string>
@@ -35,4 +36,6 @@
     <string name="todo_num">%d/300字</string>
     <string name="not_complete_num">未完成(%d项)</string>
     <string name="complete_num">已完成(%d项)</string>
+    <string name="set_love">设为喜爱</string>
+    <string name="set_private">设为私密</string>
 </resources>

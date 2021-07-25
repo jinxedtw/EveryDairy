@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.KeyEvent
@@ -16,6 +17,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -29,14 +31,15 @@ import com.tw.longerrelationship.adapter.PictureSelectAdapter
 import com.tw.longerrelationship.databinding.ActivityDairyEditBinding
 import com.tw.longerrelationship.help.LocationService
 import com.tw.longerrelationship.help.SpacesItemDecoration
-import com.tw.longerrelationship.viewmodel.DairyEditViewModel
 import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.viewmodel.DairyEditViewModel
+import com.tw.longerrelationship.views.widgets.ColorsPainDialog
 import com.tw.longerrelationship.views.widgets.IconSelectDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 /**
  * TODO 意外退出时的恢复上次编辑功能
@@ -211,14 +214,18 @@ class DairyEditActivity : BaseActivity() {
         }
 
         setOnClickListeners(
+            mBinding.ivRecording,
             mBinding.ivCalendar,
             mBinding.ivClock,
             mBinding.ivLocation,
             mBinding.ivWeather,
-            mBinding.ivSetting,
+            mBinding.ivPainting,
             mBinding.ivMood
         ) {
             when (this) {
+                mBinding.ivRecording -> {
+                    openRecording()
+                }
                 mBinding.ivCalendar -> {
 
                 }
@@ -243,8 +250,8 @@ class DairyEditActivity : BaseActivity() {
                 mBinding.ivWeather -> {
                     weatherDialog.show()
                 }
-                mBinding.ivSetting -> {
-
+                mBinding.ivPainting -> {
+                    showColorsDialog()
                 }
             }
         }
@@ -336,6 +343,9 @@ class DairyEditActivity : BaseActivity() {
         }
     }
 
+    private fun showColorsDialog() {
+        ColorsPainDialog(this).show(supportFragmentManager, "dialog")
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -360,6 +370,18 @@ class DairyEditActivity : BaseActivity() {
 
     fun openAlbum() {
         toAlbumLauncher.launch(null)
+    }
+
+    fun closeKeyboard() {
+        super.closeKeyboard(mBinding.root.windowToken)
+    }
+
+    /**
+     * 调用系统录音
+     */
+    private fun openRecording() {
+        val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
+        ActivityCompat.startActivityForResult(this, intent, 3, null)
     }
 
     fun pictureInfoActivityJump(index: Int) {

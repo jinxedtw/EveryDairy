@@ -154,7 +154,7 @@ class DairyInfoActivity : BaseActivity() {
      */
     private fun showPopupMenu() {
         val popupMenu = PopupMenu(this, mBinding.ivMore)
-        popupMenu.inflate(R.menu.activity_dairy_info_more)
+        popupMenu.inflate(R.menu.menu_dairy_info_more)
         popupMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
             override fun onMenuItemClick(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {

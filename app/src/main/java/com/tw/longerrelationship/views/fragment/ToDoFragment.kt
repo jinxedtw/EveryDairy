@@ -17,6 +17,7 @@ import com.tw.longerrelationship.views.activity.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 
 /**
  * 待办事项列表
@@ -78,16 +79,20 @@ class ToDoFragment : BaseFragment() {
     }
 
     private fun observer() {
+        // 设置已完成待办事项和未完成待办事项的相关逻辑
         viewModel.notCompleteTodoNum.observe(viewLifecycleOwner) {
-            mBinding.root.findViewById<TextView>(R.id.tv_center_text).text =
-                String.format(getString(R.string.not_complete_num), it)
-
+            if (it == 0 && viewModel.completeTodoNum.value == 0) {
+                mBinding.ivEmpty.visibility = View.VISIBLE
+            } else {
+                mBinding.ivEmpty.visibility = View.GONE
+            }
         }
-
         viewModel.completeTodoNum.observe(viewLifecycleOwner) {
-            mBinding.root.findViewById<TextView>(R.id.tv_complete_center_text).text =
-                String.format(getString(R.string.complete_num), it)
-
+            if (it == 0 && viewModel.notCompleteTodoNum.value == 0) {
+                mBinding.ivEmpty.visibility = View.VISIBLE
+            } else {
+                mBinding.ivEmpty.visibility = View.GONE
+            }
         }
     }
 

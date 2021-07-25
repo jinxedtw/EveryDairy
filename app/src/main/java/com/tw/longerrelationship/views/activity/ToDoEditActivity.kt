@@ -1,6 +1,5 @@
 package com.tw.longerrelationship.views.activity
 
-import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -82,7 +81,7 @@ class ToDoEditActivity : BaseActivity() {
 
     private fun showPopupMenu() {
         val popupMenu = PopupMenu(this, mBinding.ivArrowDown)
-        popupMenu.inflate(R.menu.emergence_level)
+        popupMenu.inflate(R.menu.menu_emergence_level)
         popupMenu.setOnMenuItemClickListener { menuItem ->
             setTodoType(
                 when (menuItem.itemId) {
