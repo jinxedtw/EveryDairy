@@ -106,11 +106,11 @@ fun requestSDCardWritePermission(context: Activity) {
  * 录音权限
  */
 fun requestRecordAudioPermission(context: Activity) {
-    if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.RECORD_AUDIO)
+    if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
         != PackageManager.PERMISSION_GRANTED
     ) {
         ActivityCompat.requestPermissions(
-            context, arrayOf(android.Manifest.permission.RECORD_AUDIO), 1
+            context, arrayOf(Manifest.permission.RECORD_AUDIO), 1
         )
     }
 }

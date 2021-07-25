@@ -4,16 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.TodoAdapter
 import com.tw.longerrelationship.databinding.FragmentTodoBinding
 import com.tw.longerrelationship.viewmodel.MainViewModel
 import com.tw.longerrelationship.views.activity.MainActivity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 /**
@@ -34,7 +36,7 @@ class ToDoFragment : BaseFragment() {
                 state: RecyclerView.State?
             ) {
                 super.onLayoutChildren(recycler, state)
-//                viewModel.dairyNum.value = dairyAdapter.itemCount
+                viewModel.notCompleteTodoNum.value = notCompleteAdapter.itemCount
             }
 
             override fun canScrollVertically(): Boolean {       // 解决scroll嵌套的滑动卡顿问题
@@ -49,7 +51,7 @@ class ToDoFragment : BaseFragment() {
                 state: RecyclerView.State?
             ) {
                 super.onLayoutChildren(recycler, state)
-//                viewModel.dairyNum.value = dairyAdapter.itemCount
+                viewModel.completeTodoNum.value = completeAdapter.itemCount
             }
 
             override fun canScrollVertically(): Boolean {       // 解决scroll嵌套的滑动卡顿问题
@@ -72,6 +74,21 @@ class ToDoFragment : BaseFragment() {
     private fun init() {
         initView()
         getTodoData()
+        observer()
+    }
+
+    private fun observer() {
+        viewModel.notCompleteTodoNum.observe(viewLifecycleOwner) {
+            mBinding.root.findViewById<TextView>(R.id.tv_center_text).text =
+                String.format(getString(R.string.not_complete_num), it)
+
+        }
+
+        viewModel.completeTodoNum.observe(viewLifecycleOwner) {
+            mBinding.root.findViewById<TextView>(R.id.tv_complete_center_text).text =
+                String.format(getString(R.string.complete_num), it)
+
+        }
     }
 
     private fun initView() {
@@ -89,13 +106,13 @@ class ToDoFragment : BaseFragment() {
 
     private fun getTodoData() {
         lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.getNotCompleteTodoList().collect {
+            viewModel.getNotCompleteTodoList().collectLatest {
                 notCompleteAdapter.submitData(it)
             }
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.getCompleteTodoList().collect {
+            viewModel.getCompleteTodoList().collectLatest {
                 completeAdapter.submitData(it)
             }
         }

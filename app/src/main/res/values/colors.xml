@@ -55,4 +55,5 @@
 
     <!--    TodoAdapter-->
     <color name="topDivider">#eef1f6</color>
+    <color name="completeText">#c2c2c2</color>
 </resources>

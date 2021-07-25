@@ -2,11 +2,14 @@ package com.tw.longerrelationship.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -17,7 +20,11 @@ import com.tw.longerrelationship.logic.model.EmergencyLevel
 import com.tw.longerrelationship.logic.model.ToDoItem
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.views.activity.MainActivity
+import com.tw.longerrelationship.views.activity.ToDoEditActivity
 
+
+// TODO: 2021/7/15 只展示5个Item数据的问题
+// TODO: 2021/7/25 长按删除待办事项
 class TodoAdapter(val context: Context) :
     PagingDataAdapter<ToDoItem, TodoAdapter.ViewHolder>(COMPARATOR) {
 
@@ -26,18 +33,8 @@ class TodoAdapter(val context: Context) :
         holder.apply {
             textContent.text = toDoItem.content
             emergencyType.text = EmergencyLevel.converterMap[toDoItem.emergencyLevel.level]
-            yearMonth.text = getYearAndDay(toDoItem.createTime)
-            hour.text = getHourMinuteTime(toDoItem.createTime)
-
-            if (toDoItem.complete) {
-                iconComplete.setDrawable(R.drawable.ic_complete)
-            }else{
-                iconComplete.setDrawable(R.drawable.ic_not_complete)
-                iconComplete.setOnClickListener {
-                    if (!toDoItem.complete)
-                        (context as MainActivity).setTodoComplete(toDoItem.id!!)
-                }
-            }
+            yearMonth.text = getYearAndDay(toDoItem.changeTime)
+            hour.text = getHourMinuteTime(toDoItem.changeTime)
 
             when (toDoItem.emergencyLevel.level) {
                 0 -> {
@@ -75,6 +72,30 @@ class TodoAdapter(val context: Context) :
                     emergencyType.setColorForText(R.color.importantAndUrgent)
                 }
             }
+
+            if (toDoItem.complete) {
+                iconComplete.setDrawable(R.drawable.ic_complete)
+                ctContent.background = ContextCompat.getDrawable(context, R.drawable.rip_complete_dairy)
+                textContent.paintFlags = textContent.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                R.color.completeText.also {
+                    textContent.setColorForText(it)
+                    yearMonth.setColorForText(it)
+                    hour.setColorForText(it)
+                    emergencyType.setColorForText(it)
+                }
+            } else {
+                iconComplete.setDrawable(R.drawable.ic_not_complete)
+                iconComplete.setOnClickListener {
+                    if (!toDoItem.complete)
+                        (context as MainActivity).setTodoComplete(toDoItem.id!!)
+                }
+                itemView.setOnClickListener {
+                    val intent = Intent(context, ToDoEditActivity::class.java)
+                    intent.putExtra(TODO_ID, toDoItem.id)
+                    (context as MainActivity).startActivity(intent)
+                }
+                ctContent.background = ContextCompat.getDrawable(context, R.drawable.rip_dairy)
+            }
         }
     }
 
@@ -87,17 +108,12 @@ class TodoAdapter(val context: Context) :
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val ctContent: ConstraintLayout = itemView.findViewById(R.id.ct_content)
         val textContent: TextView = itemView.findViewById(R.id.tv_content)
         val iconComplete: ImageView = itemView.findViewById(R.id.iv_if_complete)
         val emergencyType: TextView = itemView.findViewById(R.id.tv_emergency_type)
         val yearMonth: TextView = itemView.findViewById(R.id.tv_year_and_month)
         val hour: TextView = itemView.findViewById(R.id.tv_hour)
-
-        init {
-            itemView.setOnClickListener {
-                showToast((context as Activity), "跳转到编辑界面")
-            }
-        }
     }
 
 

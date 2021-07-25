@@ -20,6 +20,8 @@ class MainViewModel(
     private val repository: MainRepository
 ) : ViewModel() {
     val dairyNum = MutableLiveData<Int>()                                            // 笔记数量
+    val notCompleteTodoNum = MutableLiveData<Int>()                                  // 未完成待办数量
+    val completeTodoNum = MutableLiveData<Int>()                                     // 完成的待办数量
     var isFold: MutableLiveData<Boolean> = MutableLiveData()                         // 是否折叠显示
     val ifEnterCheckBoxType: MutableLiveData<Boolean> = MutableLiveData(false)  // 是否进入选择状态
     var tabSelect: Int = 0              // 当前选中的tab  0为笔记  1为待办

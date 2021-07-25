@@ -11,10 +11,10 @@
     tools:targetApi="lollipop">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ct_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="3dp"
-        android:background="@drawable/rip_dairy"
         android:layout_marginStart="5dp">
 
         <ImageView
@@ -52,6 +52,7 @@
             android:layout_height="wrap_content"
             android:maxLines="3"
             android:padding="10dp"
+            android:ellipsize="end"
             app:layout_constraintTop_toTopOf="@id/top_divider" />
 
         <TextView

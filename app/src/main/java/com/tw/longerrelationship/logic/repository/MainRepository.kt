@@ -65,7 +65,11 @@ class MainRepository private constructor(
 
     fun setTodoComplete(id: Int) = todoDao.setTodoComplete(id)
 
-    fun saveToDo(toDoItem: ToDoItem) = todoDao.insertTodo(toDoItem)
+    fun getTodoById(id: Int) = todoDao.getTodoById(id)
+
+    fun saveToDo(toDoItem: ToDoItem) =
+        if (toDoItem.id == null) todoDao.insertTodo(toDoItem)
+        else todoDao.updateTodo(toDoItem)
 
 
     companion object {

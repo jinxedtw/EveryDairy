@@ -32,5 +32,7 @@
     <string name="to_do_type">待办类型</string>
     <string name="select_to_do">请选择待办事项</string>
     <string name="inputToDoHint">请输入办理事项内容进行记录保存!</string>
-    <string name="todonum">%d/300字</string>
+    <string name="todo_num">%d/300字</string>
+    <string name="not_complete_num">未完成(%d项)</string>
+    <string name="complete_num">已完成(%d项)</string>
 </resources>

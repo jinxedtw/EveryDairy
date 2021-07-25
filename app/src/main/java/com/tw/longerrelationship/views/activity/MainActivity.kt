@@ -56,12 +56,15 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initTab() {
+        // TODO: 2021/7/25 切换tab卡顿
         noteFragment = NoteFragment()
         toDoFragment = ToDoFragment()
         tapTitle = arrayListOf("笔记", "待办")
-        fragments = arrayListOf(noteFragment, ToDoFragment())
-        mBinding.includeMain.vpMain.adapter = FragmentAdapter(fragments, this)
+        fragments = arrayListOf(noteFragment, toDoFragment)
 
+        mBinding.includeMain.vpMain.apply {
+            adapter = FragmentAdapter(fragments, this@MainActivity)
+        }
         //TabLayout和ViewPager的绑定
         TabLayoutMediator(
             mBinding.includeMain.tabLayout, mBinding.includeMain.vpMain
@@ -85,7 +88,7 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // 未选择是触发
+                // 未选择时触发
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {

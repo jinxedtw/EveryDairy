@@ -10,6 +10,7 @@ data class ToDoItem(
     val id: Int?,
     val content: String,
     val createTime: Calendar,
+    val changeTime: Calendar,
     val emergencyLevel: EmergencyLevel,
     val complete: Boolean
 )
