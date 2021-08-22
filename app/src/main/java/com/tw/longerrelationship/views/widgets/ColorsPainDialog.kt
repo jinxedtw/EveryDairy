@@ -27,7 +27,6 @@ class ColorsPainDialog(val activity: DairyEditActivity) : DialogFragment() {
         params.gravity = Gravity.BOTTOM
         params.width = WindowManager.LayoutParams.MATCH_PARENT
         window.attributes = params
-        //必须设定的属性，否则无法使dialog铺满屏幕，设置其他颜色会出现黑边
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         activity.closeKeyboard()

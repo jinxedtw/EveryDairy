@@ -6,11 +6,10 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -23,9 +22,11 @@ import com.tw.longerrelationship.databinding.ActivityDairyInfoBinding
 import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.DairyInfoViewModel
+import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 import java.util.*
 
 /**
@@ -153,42 +154,39 @@ class DairyInfoActivity : BaseActivity() {
      * 显示弹出菜单栏
      */
     private fun showPopupMenu() {
-        val popupMenu = PopupMenu(this, mBinding.ivMore)
-        popupMenu.inflate(R.menu.menu_dairy_info_more)
-        popupMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
-            override fun onMenuItemClick(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.it_info -> {
-                        // TODO: 2021/7/9 后面可以用自定义Dialog进行UI美化
+        val location = IntArray(2)
+        mBinding.ivMore.getLocationOnScreen(location)
+
+        QuickPopupBuilder.with(this).contentView(R.layout.layout_dairy_info_popup_menu)
+            .config(
+                QuickPopupConfig().backgroundColor(Color.TRANSPARENT)
+                    .withClick(R.id.tv_info, {
                         AlertDialog.Builder(this@DairyInfoActivity).setTitle("详情")
                             .setMessage(getDateInfo())
                             .setPositiveButton("我知道了", null)
                             .show()
-                        return true
-                    }
-                    R.id.it_copy_content -> {
+                    }, true)
+                    .withClick(R.id.tv_copy_content, {
                         (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).apply {
                             setPrimaryClip(ClipData.newPlainText("日记文本", mBinding.tvContent.text))
                         }
                         showToast(this@DairyInfoActivity, "复制文本成功")
-                    }
-                    R.id.it_stickers -> {
+                    }, true)
+                    .withClick(R.id.tv_stickers, {
                         setStickerDrawable()
-                        sharedPreferences.edit().putInt(STICKER_ID, stickerId % 9 - 1).apply()
-                        showToast(baseContext, "切换成功")
-                        return true
-                    }
-                    R.id.it_delete -> {
+                        sharedPreferences.edit().putInt(STICKER_ID, stickerId % STICKER_NUM - 1).apply()
+                        ToastWithImage.showToast("切换成功",true)
+//                        showToast(baseContext, "切换成功")
+                    }, true)
+                    .withClick(R.id.tv_delete, {
                         viewModel.deleteDairy()
                         finish()
                         showToast(baseContext, "删除成功")
-                        return true
-                    }
-                }
-                return false
-            }
-        })
-        popupMenu.show()
+                    }, true)
+            )
+            .show(
+                location[0] - mBinding.ivMore.width, location[1] + POPUP_WINDOW_HEIGHT + mBinding.ivMore.height
+            )
     }
 
     private fun getDateInfo(): String {
@@ -244,7 +242,9 @@ class DairyInfoActivity : BaseActivity() {
     }
 
     companion object {
+        const val STICKER_NUM: Int = 9
         const val STICKER_ID = "stickerId"
+        const val POPUP_WINDOW_HEIGHT: Int = 160
         val timeConverterMap =
             hashMapOf(1 to "周日", 2 to "周一", 3 to "周二", 4 to "周三", 5 to "周四", 6 to "周五", 7 to "周六")
     }

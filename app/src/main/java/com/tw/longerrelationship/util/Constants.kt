@@ -1,8 +1,5 @@
 package com.tw.longerrelationship.util
 
-import com.tw.longerrelationship.MyApplication
-
-
 /**
  * Constants used throughout the app.
  */

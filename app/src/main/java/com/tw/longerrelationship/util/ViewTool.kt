@@ -17,9 +17,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.net.toUri
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -200,7 +202,7 @@ fun slideToUp(view: View) {
 /**
  * 设置ImageView的图片资源,使用统一的主题
  */
-fun ImageView.setDrawable(res: Int) {
+fun ImageView.setDrawable(@DrawableRes res: Int) {
     setImageDrawable(
         ContextCompat.getDrawable(context, res)
     )

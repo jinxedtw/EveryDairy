@@ -10,6 +10,8 @@
     <color name="black_weak">#202020</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!--    generalColor-->
+    <color name="button_press">#cecece</color>
 
     <!--    MainActivity-->
     <color name="SearchBackground">#ececec</color>
