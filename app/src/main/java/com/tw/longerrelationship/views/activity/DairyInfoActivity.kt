@@ -249,4 +249,5 @@ class DairyInfoActivity : BaseActivity() {
             hashMapOf(1 to "周日", 2 to "周一", 3 to "周二", 4 to "周三", 5 to "周四", 6 to "周五", 7 to "周六")
     }
 
+    // 2
 }
