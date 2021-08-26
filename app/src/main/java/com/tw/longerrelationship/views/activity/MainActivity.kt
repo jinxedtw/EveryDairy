@@ -254,8 +254,6 @@ class MainActivity : BaseActivity() {
         const val DAIRY_SHOW_FOLD = "dairyShowFold"     // 打开日记的方式
         const val ACCOUNT_SEX = "sex"                   // 性别
     }
-
-    // dev 2
 }
 
 
