@@ -3,14 +3,18 @@ package com.tw.longerrelationship.util
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.Animation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.tw.longerrelationship.MyApplication
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.min
 
 
 /**
@@ -189,3 +193,6 @@ inline fun Animation.addAnimListener(
     return animWatcher
 }
 
+fun dp2px(context: Context, dp: Float): Float {
+    return (dp * (context.resources.displayMetrics.densityDpi) / 160)
+}

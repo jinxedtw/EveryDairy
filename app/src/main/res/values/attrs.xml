@@ -9,6 +9,14 @@
     <declare-styleable name="CommonBar">
         <attr name="title" format="string" />
         <attr name="imageOfRight" format="reference" />
-        <attr name="textOfRight" format="string"/>
+        <attr name="textOfRight" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="AngleTextView">
+        <attr name="angle_text_color" format="reference|color" />
+        <attr name="angle_text_size" format="float" />
+        <attr name="angle_text_angles" format="float" />
+        <attr name="angle_text_content" format="string" />
+        <attr name="angle_text_offsetY" format="float" />
     </declare-styleable>
 </resources>

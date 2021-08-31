@@ -17,6 +17,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -208,6 +210,15 @@ fun ImageView.setDrawable(@DrawableRes res: Int) {
     )
 }
 
-fun TextView.setColorForText(res: Int) {
+fun TextView.setColorForText(@ColorRes res: Int) {
     setTextColor(ContextCompat.getColor(context, res))
+}
+
+/**
+ * 设置textView的字重
+ * @param weight 字重
+ */
+fun TextView.setTextWeight(weight: Float) {
+    this.paint.style = Paint.Style.FILL_AND_STROKE;
+    this.paint.strokeWidth = weight
 }

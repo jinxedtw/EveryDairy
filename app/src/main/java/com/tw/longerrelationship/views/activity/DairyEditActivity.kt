@@ -448,6 +448,4 @@ class DairyEditActivity : BaseActivity() {
             return intent?.data
         }
     }
-
-    // dev 1
 }
