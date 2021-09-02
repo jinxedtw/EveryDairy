@@ -120,4 +120,9 @@ class SearchActivity : BaseActivity() {
             }
         }, 50)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        overridePendingTransition(R.anim.animation_right_in,R.anim.animation_left_out)
+    }
 }

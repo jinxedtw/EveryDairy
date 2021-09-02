@@ -9,4 +9,9 @@ class ShowActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show)
     }
+
+    companion object {
+        @JvmField
+        var staticFiled: Int? = null
+    }
 }

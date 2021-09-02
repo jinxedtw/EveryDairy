@@ -136,6 +136,7 @@ class MainActivity : BaseActivity() {
                 }
                 mBinding.includeMain.includeBar.llSearch -> {
                     startActivity(Intent(this.context, SearchActivity::class.java))
+                    overridePendingTransition(R.anim.animation_left_in,R.anim.animation_right_out)
                 }
                 // 点击navigation头部
                 mBinding.navigation.getHeaderView(0) -> {

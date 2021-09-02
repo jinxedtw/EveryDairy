@@ -8,6 +8,7 @@ import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
@@ -141,6 +142,16 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
 
     fun getDairyItem(position: Int): DairyItem? {
         return super.getItem(position)
+    }
+
+    /**
+     * View依附到Window
+     */
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.itemView.clearAnimation()
+
+        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.scale_in_scroll))
     }
 
 
