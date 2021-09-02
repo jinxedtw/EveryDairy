@@ -149,9 +149,12 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
      */
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        holder.itemView.clearAnimation()
 
-        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.scale_in_scroll))
+        if(holder.itemViewType==1){
+            holder.itemView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.anim_scroll_to_right))
+        }else{
+            holder.itemView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.anim_scale_in_center))
+        }
     }
 
 

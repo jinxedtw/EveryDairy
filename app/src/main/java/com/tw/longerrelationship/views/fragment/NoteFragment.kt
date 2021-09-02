@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
 import android.widget.TextView
@@ -37,6 +38,7 @@ class NoteFragment : BaseFragment() {
                 super.onLayoutChildren(recycler, state)
                 viewModel.dairyNum.value = dairyAdapter.itemCount
             }
+
             override fun canScrollVertically(): Boolean {       // 解决scroll嵌套的滑动卡顿问题
                 return false
             }
@@ -115,22 +117,28 @@ class NoteFragment : BaseFragment() {
     }
 
     private fun changeRecyclerView() {
-        val animation = AnimationUtils.loadAnimation(context, R.anim.scale_in_scroll)
-        val layoutAnimationController = LayoutAnimationController(animation)
-        layoutAnimationController.order = LayoutAnimationController.ORDER_NORMAL
-        mBinding.rvDairy.layoutAnimation = layoutAnimationController
+        val layoutAnimationController: LayoutAnimationController
+        val animation: Animation
 
         if (viewModel.isFold.value!!) {
             mBinding.rvDairy.apply {
                 layoutManager = linearLayoutManager
                 (adapter as DairyAdapter).type = 1
             }
+            animation = AnimationUtils.loadAnimation(context, R.anim.anim_scroll_to_right)
+            layoutAnimationController = LayoutAnimationController(animation)
+            layoutAnimationController.order = LayoutAnimationController.ORDER_NORMAL
         } else {
             mBinding.rvDairy.apply {
                 layoutManager = gridLayoutManager
                 (adapter as DairyAdapter).type = 2
             }
+            animation = AnimationUtils.loadAnimation(context, R.anim.anim_scale_in_center)
+            layoutAnimationController = LayoutAnimationController(animation)
+            layoutAnimationController.order = LayoutAnimationController.ORDER_NORMAL
         }
+
+        mBinding.rvDairy.layoutAnimation = layoutAnimationController
     }
 
     /**
