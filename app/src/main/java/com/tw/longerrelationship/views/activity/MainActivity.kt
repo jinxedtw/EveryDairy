@@ -104,6 +104,11 @@ class MainActivity : BaseActivity() {
         sharedPreferences.getInt(ACCOUNT_SEX, 0).apply {
             changeHeadImage(this)
         }
+        sharedPreferences.getString(RECOVER_CONTENT,"").also {
+            if (!it.isNullOrEmpty()){
+                showToast(baseContext, it)
+            }
+        }
 
         mBinding.navigation.setNavigationItemSelectedListener {
             when (it.itemId) {

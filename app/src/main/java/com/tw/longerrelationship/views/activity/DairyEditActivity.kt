@@ -347,6 +347,16 @@ class DairyEditActivity : BaseActivity() {
         ColorsPainDialog(this).show(supportFragmentManager, "dialog")
     }
 
+    /**
+     * 保存意外关闭的数据
+     */
+    override fun onStop() {
+        super.onStop()
+        if (!TextUtils.isEmpty(viewModel.dairyContent.value)){
+            sharedPreferences.edit().putString(RECOVER_CONTENT,viewModel.dairyContent.value!!).apply()
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         locationService.unregisterListener(locationListener) //注销掉监听

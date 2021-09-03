@@ -20,7 +20,7 @@ abstract class BaseActivity : AppCompatActivity() {
     /**
      * 日志输出标志
      */
-    val tag: String = this.javaClass.simpleName
+    private val tag: String = this.javaClass.simpleName
     var root: View? = null                                  // 根布局
 
     val sharedPreferences: SharedPreferences by lazy {
