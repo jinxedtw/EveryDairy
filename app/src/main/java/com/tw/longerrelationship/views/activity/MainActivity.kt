@@ -18,7 +18,9 @@ import com.tw.longerrelationship.viewmodel.MainViewModel
 import com.tw.longerrelationship.views.fragment.BaseFragment
 import com.tw.longerrelationship.views.fragment.NoteFragment
 import com.tw.longerrelationship.views.fragment.ToDoFragment
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -47,7 +49,6 @@ class MainActivity : BaseActivity() {
 
     private fun observe() {
         viewModel.isFold.observe(this) {
-            // TODO 添加切换动画
             changeDairyShowTypeIcon()
         }
         viewModel.ifEnterCheckBoxType.observe(this) {
@@ -98,17 +99,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initView() {
-        sharedPreferences.getBoolean(DAIRY_SHOW_FOLD, true).apply {
-            viewModel.isFold.value = this
-        }
-        sharedPreferences.getInt(ACCOUNT_SEX, 0).apply {
-            changeHeadImage(this)
-        }
-        sharedPreferences.getString(RECOVER_CONTENT,"").also {
-            if (!it.isNullOrEmpty()){
-                showToast(baseContext, it)
-            }
-        }
+        viewModel.isFold.value = dairyShowFold
+
+        changeHeadImage(accountSex)
 
         mBinding.navigation.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -136,12 +129,11 @@ class MainActivity : BaseActivity() {
                 }
                 mBinding.includeMain.includeBar.ivDisplay -> {
                     viewModel.isFold.value = !viewModel.isFold.value!!
-                    sharedPreferences.edit().putBoolean(DAIRY_SHOW_FOLD, viewModel.isFold.value!!)
-                        .apply()
+                    dairyShowFold = viewModel.isFold.value!!
                 }
                 mBinding.includeMain.includeBar.llSearch -> {
                     startActivity(Intent(this.context, SearchActivity::class.java))
-                    overridePendingTransition(R.anim.animation_left_in,R.anim.animation_right_out)
+                    overridePendingTransition(R.anim.animation_left_in, R.anim.animation_right_out)
                 }
                 // 点击navigation头部
                 mBinding.navigation.getHeaderView(0) -> {
@@ -150,7 +142,7 @@ class MainActivity : BaseActivity() {
                             arrayOf("男", "女")
                         ) { dialog, which ->
                             changeHeadImage(which)
-                            sharedPreferences.edit().putInt(ACCOUNT_SEX, which).apply()
+                            accountSex = which
                             dialog.cancel()
                         }.show()
                 }
@@ -258,7 +250,23 @@ class MainActivity : BaseActivity() {
 
     companion object {
         const val DAIRY_SHOW_FOLD = "dairyShowFold"     // 打开日记的方式
-        const val ACCOUNT_SEX = "sex"                   // 性别
+        const val ACCOUNT_SEX = "sex"                   // 性别      0:man   1:woman
+
+        var accountSex: Int
+            get() = DataStoreUtils.readIntData(ACCOUNT_SEX)
+            set(value) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    DataStoreUtils.saveIntData(ACCOUNT_SEX, value)
+                }
+            }
+
+        var dairyShowFold: Boolean
+            get() = DataStoreUtils.readBooleanData(DAIRY_SHOW_FOLD, true)
+            set(value) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    DataStoreUtils.saveBooleanData(DAIRY_SHOW_FOLD, value)
+                }
+            }
     }
 }
 

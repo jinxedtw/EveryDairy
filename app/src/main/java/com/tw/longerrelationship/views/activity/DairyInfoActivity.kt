@@ -23,6 +23,8 @@ import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.DairyInfoViewModel
 import com.tw.longerrelationship.views.widgets.ToastWithImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import razerdp.basepopup.QuickPopupBuilder
@@ -35,7 +37,6 @@ import java.util.*
  */
 class DairyInfoActivity : BaseActivity() {
     private lateinit var mBinding: ActivityDairyInfoBinding
-    private var stickerId = 0
     private var dairyId = -1
     private val layoutManager by lazy {
         object : GridLayoutManager(this, 3) {
@@ -72,7 +73,6 @@ class DairyInfoActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun initView() {
-        stickerId = sharedPreferences.getInt(STICKER_ID, 0)
         setStickerDrawable()
         mBinding.rvPhotoList.apply {
             addItemDecoration(SpacesItemDecoration(60))
@@ -109,7 +109,7 @@ class DairyInfoActivity : BaseActivity() {
 
     private fun setStickerDrawable() {
         val resID = resources.getIdentifier(
-            "ic_sticker_${(++stickerId) % 9}",
+            "ic_sticker_${stickerId % 9}",
             "drawable",
             BuildConfig.APPLICATION_ID
         )
@@ -173,10 +173,9 @@ class DairyInfoActivity : BaseActivity() {
                         showToast(this@DairyInfoActivity, "复制文本成功")
                     }, true)
                     .withClick(R.id.tv_stickers, {
+                        stickerId++
                         setStickerDrawable()
-                        sharedPreferences.edit().putInt(STICKER_ID, stickerId % STICKER_NUM - 1).apply()
-                        ToastWithImage.showToast("切换成功",true)
-//                        showToast(baseContext, "切换成功")
+                        ToastWithImage.showToast("切换成功", true)
                     }, true)
                     .withClick(R.id.tv_delete, {
                         viewModel.deleteDairy()
@@ -242,10 +241,14 @@ class DairyInfoActivity : BaseActivity() {
     }
 
     companion object {
-        const val STICKER_NUM: Int = 9
+        const val STICKER_TOTAL_NUM: Int = 9
         const val STICKER_ID = "stickerId"
         const val POPUP_WINDOW_HEIGHT: Int = 160
         val timeConverterMap =
             hashMapOf(1 to "周日", 2 to "周一", 3 to "周二", 4 to "周三", 5 to "周四", 6 to "周五", 7 to "周六")
+
+        var stickerId: Int
+            get() = DataStoreUtils.readIntData(STICKER_ID)
+            set(value) = DataStoreUtils.saveSyncIntData(STICKER_ID, value)
     }
 }

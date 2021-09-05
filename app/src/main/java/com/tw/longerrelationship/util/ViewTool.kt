@@ -222,3 +222,18 @@ fun TextView.setTextWeight(weight: Float) {
     this.paint.style = Paint.Style.FILL_AND_STROKE;
     this.paint.strokeWidth = weight
 }
+
+/**
+ * 隐藏view
+ */
+fun View?.gone() {
+    this?.visibility = View.GONE
+}
+
+/**
+ * 显示view
+ */
+fun View?.visible() {
+    this?.visibility = View.VISIBLE
+}
+

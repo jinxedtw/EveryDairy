@@ -20,15 +20,15 @@ abstract class BaseActivity : AppCompatActivity() {
     /**
      * 日志输出标志
      */
-    private val tag: String = this.javaClass.simpleName
+    val tag: String = this.javaClass.simpleName
     var root: View? = null                                  // 根布局
 
-    val sharedPreferences: SharedPreferences by lazy {
-        baseContext.getSharedPreferences(
-            Constants.SHARED_PREFERENCES_NAME,
-            Context.MODE_PRIVATE
-        )
-    }
+//    val sharedPreferences: SharedPreferences by lazy {
+//        baseContext.getSharedPreferences(
+//            Constants.SHARED_PREFERENCES_NAME,
+//            Context.MODE_PRIVATE
+//        )
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

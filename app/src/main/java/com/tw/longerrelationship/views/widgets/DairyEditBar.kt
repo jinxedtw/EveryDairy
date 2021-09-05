@@ -74,10 +74,10 @@ class DairyEditBar(context: Context, attributes: AttributeSet) : LinearLayout(co
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.it_set_private -> {
-                    showToast(context, "设为私密")
+                    ToastWithImage.showToast("设为私密成功",true)
                 }
                 R.id.it_set_love -> {
-                    showToast(context, "设为喜爱")
+                    ToastWithImage.showToast("设为喜爱成功",true)
                 }
             }
             true

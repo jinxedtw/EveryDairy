@@ -6,6 +6,7 @@ import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
 import com.tw.longerrelationship.logic.repository.MainRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 

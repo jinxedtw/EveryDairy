@@ -8,7 +8,6 @@ import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.KeyEvent
@@ -35,17 +34,18 @@ import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.DairyEditViewModel
 import com.tw.longerrelationship.views.widgets.ColorsPainDialog
 import com.tw.longerrelationship.views.widgets.IconSelectDialog
+import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 
-/**
- * TODO 意外退出时的恢复上次编辑功能
- */
 class DairyEditActivity : BaseActivity() {
     private var showRvPhotoList: Boolean = true
+    private var isNeedToSaved: Boolean = true        // 日记是否需要保存
+    private var recoveredTitle: String? = null    // 恢复日记标题
+    private var recoveredContent: String? = null    // 恢复日记内容
 
     private lateinit var mBinding: ActivityDairyEditBinding
     private lateinit var locationService: LocationService
@@ -207,6 +207,8 @@ class DairyEditActivity : BaseActivity() {
     private fun initView() {
         pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this)
 
+        tryToRecoverDairy()
+
         mBinding.rvPhotoList.apply {
             addItemDecoration(SpacesItemDecoration(60))
             adapter = pictureSelectAdapter
@@ -220,7 +222,8 @@ class DairyEditActivity : BaseActivity() {
             mBinding.ivLocation,
             mBinding.ivWeather,
             mBinding.ivPainting,
-            mBinding.ivMood
+            mBinding.ivMood,
+            mBinding.clRecover
         ) {
             when (this) {
                 mBinding.ivRecording -> {
@@ -253,6 +256,26 @@ class DairyEditActivity : BaseActivity() {
                 mBinding.ivPainting -> {
                     showColorsDialog()
                 }
+                mBinding.clRecover -> {
+                    AlertDialog.Builder(this@DairyEditActivity).setMessage("是否恢复上次未保存内容?")
+                        .setNegativeButton("放弃") { _, _ ->
+                            lifecycleScope.launch {
+                                DataStoreUtils.removeData(RECOVER_CONTENT, "")
+                                DataStoreUtils.removeData(RECOVER_TITLE, "")
+                            }
+                            mBinding.clRecover.gone()
+                        }
+                        .setPositiveButton("恢复") { _, _ ->
+                            lifecycleScope.launch {
+                                DataStoreUtils.removeData(RECOVER_CONTENT, "")
+                                DataStoreUtils.removeData(RECOVER_TITLE, "")
+                            }
+                            mBinding.clRecover.gone()
+                            recoverDairy()
+                        }
+                        .setNeutralButton("取消", null)
+                        .show()
+                }
             }
         }
     }
@@ -271,7 +294,7 @@ class DairyEditActivity : BaseActivity() {
                 }
             }
         }
-        locationService = MyApplication.locationService
+        locationService = LocationService(MyApplication.context)
         locationService.registerListener(locationListener)
         locationService.setLocationOption(locationService.defaultLocationClientOption)
     }
@@ -319,16 +342,18 @@ class DairyEditActivity : BaseActivity() {
      * 保存日记
      */
     fun saveDairy() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.IO) {
-                viewModel.saveDairy(mBinding.appBar.getTitle())
+        lifecycleScope.launch(Dispatchers.IO) {
+            val result = viewModel.saveDairy(mBinding.appBar.getTitle())
+            if (result.isSuccess) {
+                isNeedToSaved = false
+                DataStoreUtils.removeData(RECOVER_CONTENT, "")
+                DataStoreUtils.removeData(RECOVER_TITLE, "")
+                runOnUiThread { ToastWithImage.showToast("保存成功", true) }
+                finishActivity()
+            } else {
+                runOnUiThread { ToastWithImage.showToast("保存失败", false) }
             }
-            if (result.isSuccess)
-                showToast(baseContext, "保存成功")
-            else
-                showToast(baseContext, "保存失败")
         }
-        finishActivity()
     }
 
     fun finishActivity() {
@@ -347,13 +372,53 @@ class DairyEditActivity : BaseActivity() {
         ColorsPainDialog(this).show(supportFragmentManager, "dialog")
     }
 
-    /**
-     * 保存意外关闭的数据
-     */
-    override fun onStop() {
-        super.onStop()
-        if (!TextUtils.isEmpty(viewModel.dairyContent.value)){
-            sharedPreferences.edit().putString(RECOVER_CONTENT,viewModel.dairyContent.value!!).apply()
+    private fun tryToRecoverDairy() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            DataStoreUtils.readStringFlow(RECOVER_CONTENT).first {
+                if (it.isNotEmpty()) {
+                    recoveredContent = it
+                }
+                true
+            }
+            DataStoreUtils.readStringFlow(RECOVER_TITLE).first {
+                if (it.isNotEmpty()) {
+                    recoveredTitle = it
+                }
+                true
+            }
+
+            if (recoveredTitle != null) {
+                mBinding.clRecover.visible()
+                mBinding.tvRecoverTitle.text = recoveredTitle
+            } else {
+                mBinding.tvRecoverTitle.gone()
+            }
+
+            if (recoveredContent != null) {
+                mBinding.clRecover.visible()
+                mBinding.tvRecoverContent.text = recoveredContent
+            } else {
+                mBinding.tvRecoverContent.gone()
+            }
+        }
+    }
+
+    private fun recoverDairy() {
+        if (recoveredContent != null) {
+            mBinding.etContent.setText(recoveredContent!!)
+            mBinding.etContent.setSelection(recoveredContent!!.length)
+        }
+
+        if (recoveredTitle != null) {
+            mBinding.appBar.setTitle(recoveredTitle!!)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!TextUtils.isEmpty(viewModel.dairyContent.value) && isNeedToSaved) {
+            DataStoreUtils.saveSyncStringData(RECOVER_CONTENT, viewModel.dairyContent.value!!)
+            DataStoreUtils.saveSyncStringData(RECOVER_TITLE, mBinding.appBar.getTitle())
         }
     }
 
@@ -411,6 +476,7 @@ class DairyEditActivity : BaseActivity() {
         } else {
             AlertDialog.Builder(this).setMessage("确定放弃此次编辑?")
                 .setNegativeButton("放弃") { _, _ ->
+                    isNeedToSaved = false
                     super.onBackPressed()
                 }
                 .setPositiveButton("保存") { _, _ ->
@@ -457,5 +523,10 @@ class DairyEditActivity : BaseActivity() {
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
             return intent?.data
         }
+    }
+
+    companion object {
+        const val RECOVER_CONTENT = "recoverContent"     // 恢复日记内容
+        const val RECOVER_TITLE = "recoverTitle"           // 恢复日记标题
     }
 }

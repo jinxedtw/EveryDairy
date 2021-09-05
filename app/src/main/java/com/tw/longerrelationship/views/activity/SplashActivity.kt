@@ -3,6 +3,10 @@ package com.tw.longerrelationship.views.activity
 import android.content.Intent
 import android.view.View
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.util.DataStoreUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * 开屏页面，判断是否是第一次进入App
@@ -11,15 +15,15 @@ class SplashActivity : BaseActivity() {
     override fun init(): View? {
         setContentView(getLayoutId())
 
-        val isFirstOpenApp = sharedPreferences.getBoolean(FIRST_OPEN_APP, true)
-        if (isFirstOpenApp) {
-            sharedPreferences.edit().putBoolean(FIRST_OPEN_APP, false).apply()
-        }
-
         startActivity(
             Intent(
                 this@SplashActivity,
-                if (isFirstOpenApp) GuideActivity::class.java else MainActivity::class.java
+                if (isFirstOpenApp) {
+                    isFirstOpenApp = false
+                    GuideActivity::class.java
+                } else {
+                    MainActivity::class.java
+                }
             )
         )
         finish()
@@ -29,6 +33,14 @@ class SplashActivity : BaseActivity() {
     override fun getLayoutId(): Int = R.layout.activity_splash
 
     companion object {
-        const val FIRST_OPEN_APP = "isFirstOpenApp"
+        private const val FIRST_OPEN_APP = "isFirstOpenApp"
+
+        var isFirstOpenApp: Boolean
+            get() = DataStoreUtils.readBooleanData(FIRST_OPEN_APP, true)
+            set(value) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    DataStoreUtils.saveBooleanData(FIRST_OPEN_APP, value)
+                }
+            }
     }
 }

@@ -7,8 +7,10 @@ import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import com.baidu.mapapi.SDKInitializer
-import com.tw.longerrelationship.help.LocationService
+import androidx.datastore.core.DataStore
+import com.tw.longerrelationship.util.dataStore
 import com.tw.longerrelationship.util.logV
+import androidx.datastore.preferences.core.Preferences
 
 
 class MyApplication : Application() {
@@ -20,7 +22,6 @@ class MyApplication : Application() {
 
         // 初始化百度SDK
         SDKInitializer.initialize(context)
-        locationService = LocationService(context)
 
         // 这里是为了解决传输file://格式的URI报错问题
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -32,6 +33,12 @@ class MyApplication : Application() {
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
-        lateinit var locationService: LocationService
+
+        /**
+         * 获取DataStore实例。
+         */
+        val dataStore: DataStore<Preferences> by lazy {
+            context.dataStore
+        }
     }
 }

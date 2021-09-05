@@ -12,6 +12,7 @@
 
     <!--    generalColor-->
     <color name="button_press">#cecece</color>
+    <color name="blue_app_icon">#81B2D2</color>
 
     <!--    MainActivity-->
     <color name="SearchBackground">#ececec</color>

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.tw.longerrelationship.viewmodel.DairyEditViewModel" />
@@ -24,6 +26,59 @@
             app:layout_constraintTop_toTopOf="parent"
             app:rightImage="@drawable/ic_more_list" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_recover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_app_icon"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <TextView
+                android:id="@+id/tv_recover_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上次未保存内容"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_recover_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_recover_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@id/tv_recover_content"
+                app:layout_constraintLeft_toLeftOf="@id/tv_recover_tips"
+                app:layout_constraintTop_toBottomOf="@id/tv_recover_tips" />
+
+            <TextView
+                android:id="@+id/tv_recover_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginTop="5dp"
+                app:layout_goneMarginTop="0dp"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/tv_recover_tips"
+                app:layout_constraintTop_toBottomOf="@id/tv_recover_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <EditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
@@ -39,7 +94,7 @@
             android:textCursorDrawable="@drawable/shape_edit_cursor"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/ll_bottom"
-            app:layout_constraintTop_toBottomOf="@id/app_bar"
+            app:layout_constraintTop_toBottomOf="@id/cl_recover"
             tools:layout_editor_absoluteX="178dp" />
 
         <LinearLayout
