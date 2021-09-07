@@ -4,7 +4,6 @@
     android:layout_width="100dp"
     android:clickable="true"
     android:layout_height="100dp"
-    android:background="@drawable/rip_picture_add"
     android:focusable="true">
 
     <ImageView

@@ -6,15 +6,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.Animation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.tw.longerrelationship.MyApplication
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.min
 
 
 /**
@@ -199,5 +196,27 @@ fun dp2px(context: Context, dp: Float): Float {
 
 fun dp2px(context: Context, dp: Int):Int{
     return (dp * (context.resources.displayMetrics.densityDpi) / 160)
+}
+
+/**
+ * 16进制转GRB颜色值方法
+ * @param hex eg: #fe92ec
+ */
+fun toRGB(hex: String) {
+    val color = hex.replace("#", "").toInt(16)
+    val red = color and 0xff0000 shr 16
+    val green = color and 0x00ff00 shr 8
+    val blue = color and 0x0000ff
+    println("red=$red--green=$green--blue=$blue")
+}
+
+/**
+ * GRB转16进制颜色值方法
+ */
+fun toHex(red: Int, green: Int, blue: Int) {
+    val hr = Integer.toHexString(red)
+    val hg = Integer.toHexString(green)
+    val hb = Integer.toHexString(blue)
+    println("#$hr$hg$hb")
 }
 

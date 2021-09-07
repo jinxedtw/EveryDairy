@@ -33,6 +33,16 @@
     <color name="pictureShadow">#66EEA2A4</color>
     <color name="pictureShadowPressed">#EEA2A4</color>
     <color name="pictureType">#dadada</color>
+    <color name="backGroundColor1">#FFFFFF</color>
+    <color name="backGroundColor2">#f9f4dc</color>
+    <color name="backGroundColor3">#f9e9cd</color>
+    <color name="backGroundColor4">#f2cac9</color>
+    <color name="backGroundColor5">#c6dfc8</color>
+    <color name="backGroundColor6">#f2e7e5</color>
+    <color name="backGroundColor7">#63bbd0</color>
+    <color name="backGroundColor8">#f19790</color>
+    <color name="backGroundColor9">#d0deaa</color>
+    <color name="backGroundColor10">#141e1b</color>
 
     <!--    PictureInfoActivity-->
     <color name="TopMask">#66AAA0A0</color>

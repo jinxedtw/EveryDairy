@@ -178,7 +178,6 @@ fun calculateInSampleSize(
 
 /**
  * 弹出动画
- * @param view
  */
 fun slideToUp(view: View) {
     val slide: Animation = TranslateAnimation(
@@ -187,17 +186,12 @@ fun slideToUp(view: View) {
         1.0f, Animation.RELATIVE_TO_SELF, 0.0f
     )
     slide.apply {
-        duration = 300
+        duration = 200
         fillAfter = true
         isFillEnabled = true
     }
 
     view.startAnimation(slide)
-    slide.setAnimationListener(object : Animation.AnimationListener {
-        override fun onAnimationStart(animation: Animation?) {}
-        override fun onAnimationEnd(animation: Animation?) {}
-        override fun onAnimationRepeat(animation: Animation?) {}
-    })
 }
 
 /**

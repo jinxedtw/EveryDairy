@@ -5,7 +5,16 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.RippleDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RectShape
+import android.graphics.drawable.shapes.RoundRectShape
+import android.graphics.drawable.shapes.Shape
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
@@ -17,8 +26,11 @@ import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.ColorRes
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.graphics.ColorUtils
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +47,8 @@ import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.DairyEditViewModel
 import com.tw.longerrelationship.views.widgets.ColorsPainDialog
+import com.tw.longerrelationship.views.widgets.ColorsPainDialog.Companion.DEFAULT_COLOR_INDEX
+import com.tw.longerrelationship.views.widgets.ColorsPainDialog.Companion.colorList
 import com.tw.longerrelationship.views.widgets.IconSelectDialog
 import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.Dispatchers
@@ -47,9 +61,10 @@ import java.util.*
 class DairyEditActivity : BaseActivity() {
     private var showRvPhotoList: Boolean = true
     private var isNeedToSaved: Boolean = true        // 日记是否需要保存
-    private var recoveredTitle: String? = null    // 恢复日记标题
+    private var recoveredTitle: String? = null      // 恢复日记标题
     private var recoveredContent: String? = null    // 恢复日记内容
 
+    private lateinit var ripperDrawable: RippleDrawable
     private lateinit var mBinding: ActivityDairyEditBinding
     private lateinit var locationService: LocationService
     private lateinit var locationListener: BDAbstractLocationListener
@@ -160,11 +175,16 @@ class DairyEditActivity : BaseActivity() {
         mBinding.viewModel = this.viewModel
         mBinding.etContent.requestFocus()
         observe()
+        initTheme()
         initView()
         addOnSoftKeyBoardVisibleListener()
         initEditText()
         initLocation()
         return mBinding.root
+    }
+
+    private fun initTheme() {
+        setThemeBackGround(colorList[DataStoreUtils.getSyncData(DEFAULT_COLOR_INDEX, 0)])
     }
 
     private fun observe() {
@@ -214,7 +234,7 @@ class DairyEditActivity : BaseActivity() {
      */
     @SuppressLint("SetTextI18n")
     private fun initView() {
-        pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this)
+        pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this, ripperDrawable)
 
         tryToRecoverDairy()
 
@@ -378,7 +398,11 @@ class DairyEditActivity : BaseActivity() {
     }
 
     private fun showColorsDialog() {
-        ColorsPainDialog(this).show(supportFragmentManager, "dialog")
+        ColorsPainDialog(this) { colorRes ->
+            setThemeBackGround(colorRes)
+            pictureSelectAdapter.rippleDrawable = this.ripperDrawable
+            pictureSelectAdapter.notifyItemChanged(pictureSelectAdapter.itemCount - 1)
+        }.show(supportFragmentManager, "dialog")
     }
 
     private fun tryToRecoverDairy() {
@@ -502,11 +526,52 @@ class DairyEditActivity : BaseActivity() {
     }
 
     /**
+     * 设置日记编辑的背景主题
+     * 判断颜色是否是亮色,设置对应主题字体
+     *
+     * todo 自定义背景功能
+     */
+    private fun setThemeBackGround(@ColorRes colorRes: Int) {
+        val color: Int = ContextCompat.getColor(this, colorRes)
+        mBinding.clEditDairy.setBackgroundResource(colorRes)
+        setStatusBarColor(color)
+
+        if (ColorUtils.calculateLuminance(color) > 0.6) {
+            // 亮色
+            setAndroidNativeLightStatusBar(this, true)
+        } else {
+            // 暗色
+            setAndroidNativeLightStatusBar(this, false)
+        }
+
+        val shape = GradientDrawable()
+        shape.color = ColorStateList.valueOf(addColorDepth(color))
+        shape.cornerRadius = dp2px(baseContext, 5f)
+
+        ripperDrawable =
+            RippleDrawable(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.DairyEditHintText)), shape, null)
+    }
+
+    /**
+     * 将原有颜色的R,G,B值依次减去20得到一个更深的颜色
+     */
+    private fun addColorDepth(color: Int): Int {
+        var red = color and 0xff0000 shr 16
+        var green = color and 0x00ff00 shr 8
+        var blue = color and 0x0000ff
+
+        red = if (red - 25 > 0) red - 25 else 0
+        green = if (green - 25 > 0) green - 25 else 0
+        blue = if (blue - 25 > 0) blue - 25 else 0
+        return Color.rgb(red, green, blue)
+    }
+
+    /**
      * 把照片添加到图库
      */
     private fun galleryAddPic() {
         // 保存图片
-        MediaStore.Images.Media.insertImage(contentResolver, pictureFile.toString(), "title", "description");
+        MediaStore.Images.Media.insertImage(contentResolver, pictureFile.toString(), "title", "description")
         // 更新图库
         MediaScannerConnection.scanFile(baseContext, arrayOf(pictureFile.toString()), null, null)
     }

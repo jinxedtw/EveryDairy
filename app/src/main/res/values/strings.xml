@@ -40,4 +40,5 @@
     <string name="set_private">设为私密</string>
     <string name="delete_all">全部删除</string>
     <string name="complete">完成</string>
+    <string name="customize_background">自定义背景</string>
 </resources>

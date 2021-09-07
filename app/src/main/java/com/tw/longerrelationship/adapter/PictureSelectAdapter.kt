@@ -1,5 +1,6 @@
 package com.tw.longerrelationship.adapter
 
+import android.graphics.drawable.RippleDrawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +21,8 @@ import com.tw.longerrelationship.views.widgets.PictureTypeSelectDialog
  */
 class PictureSelectAdapter(
     var pictureList: List<Uri>,
-    private val activity: DairyEditActivity
+    private val activity: DairyEditActivity,
+    var rippleDrawable: RippleDrawable
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var parent: ViewGroup? = null
@@ -54,6 +56,10 @@ class PictureSelectAdapter(
                     .into(holder.picture)
 
                 holder.picture.tag = position
+            }
+            is TailViewHolder -> {
+                holder.itemView.background = rippleDrawable
+                holder.itemView.alpha = 0.7f
             }
         }
     }
