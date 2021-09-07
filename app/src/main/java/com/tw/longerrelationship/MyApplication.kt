@@ -3,9 +3,6 @@ package com.tw.longerrelationship
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.os.Build
-import android.os.StrictMode
-import android.os.StrictMode.VmPolicy
 import com.baidu.mapapi.SDKInitializer
 import androidx.datastore.core.DataStore
 import com.tw.longerrelationship.util.dataStore
