@@ -38,4 +38,6 @@
     <string name="complete_num">已完成(%d项)</string>
     <string name="set_love">设为喜爱</string>
     <string name="set_private">设为私密</string>
+    <string name="delete_all">全部删除</string>
+    <string name="complete">完成</string>
 </resources>

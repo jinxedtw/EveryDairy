@@ -19,4 +19,9 @@
         <attr name="angle_text_content" format="string" />
         <attr name="angle_text_offsetY" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="FlowLayout">
+        <attr name="flowLayout_horizontalSpacing" format="dimension"/>
+        <attr name="flowLayout_verticalSpacing" format="dimension"/>
+    </declare-styleable>
 </resources>

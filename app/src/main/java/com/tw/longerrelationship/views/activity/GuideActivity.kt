@@ -10,8 +10,10 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.setAndroidNativeLightStatusBar
+import com.tw.longerrelationship.util.setStatusBarColor
 
 /**
  * 向导页面
@@ -27,6 +29,7 @@ class GuideActivity : AppCompatActivity() {
 
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setAndroidNativeLightStatusBar(this, true)
+        setStatusBarColor(ContextCompat.getColor(this,R.color.blue_app_icon))
 
         setContentView(R.layout.activity_guide)
 

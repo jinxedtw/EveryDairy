@@ -3,7 +3,6 @@ package com.tw.longerrelationship.util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
@@ -12,8 +11,6 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -21,9 +18,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -104,26 +100,29 @@ fun setAndroidNativeLightStatusBar(activity: Activity, dark: Boolean) {
     }
 }
 
+fun Activity.setStatusBarColor(@ColorInt statusColor: Int) {
+    val window = this.window
+    //添加Flag把状态栏设为可绘制模式
+    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    //设置状态栏为透明
+    window.statusBarColor = statusColor
+}
+
 /**
  * 创建用来存储图片的文件，以时间来命名就不会产生命名冲突
  *
  * @return 创建的图片文件的Uri(APP的外部私有目录)
  */
 @SuppressLint("SimpleDateFormat")
-fun createImageFile(context: Context): Uri {
+@Throws(IOException::class)
+fun Context.createImageFile(): File {
     val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-    val imageFileName = "JPEG_" + timeStamp + "_"
-
-    val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_DCIM)
-    var imageFile: File? = null
-
-    try {
-        imageFile = File.createTempFile(imageFileName, ".jpg", storageDir)
-    } catch (e: IOException) {
-        e.printStackTrace()
-    }
-
-    return imageFile!!.toUri()
+    val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    return File.createTempFile(
+        "JPEG_${timeStamp}_", /* prefix */
+        ".jpg", /* suffix */
+        storageDir /* directory */
+    )
 }
 
 

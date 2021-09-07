@@ -13,6 +13,7 @@
     <!--    generalColor-->
     <color name="button_press">#cecece</color>
     <color name="blue_app_icon">#81B2D2</color>
+    <color name="splash_text">#4B5063</color>
 
     <!--    MainActivity-->
     <color name="SearchBackground">#ececec</color>
@@ -55,6 +56,11 @@
     <color name="bg_importantAndNoUrgent">#66F38A1B</color>
     <color name="bg_noImportantAndUrgent">#6679A0F1</color>
     <color name="bg_noImportantAndNoUrgent">#66539EB7</color>
+
+    <!--    SearchActivity-->
+    <color name="flow_item_background">#f6f6f6</color>
+    <color name="flow_item_text">#434343</color>
+    <color name="delete_item_text">#999999</color>
 
     <!--    TodoAdapter-->
     <color name="topDivider">#eef1f6</color>

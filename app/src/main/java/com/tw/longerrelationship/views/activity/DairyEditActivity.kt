@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,6 +18,7 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +40,7 @@ import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
 
 
@@ -74,6 +77,11 @@ class DairyEditActivity : BaseActivity() {
      */
     private lateinit var currentUri: Uri
 
+    /**
+     * 记录相机保存的图片
+     */
+    private lateinit var pictureFile: File
+
     private val viewModel by lazy {
         ViewModelProvider(
             this,
@@ -103,6 +111,7 @@ class DairyEditActivity : BaseActivity() {
                 viewModel.pictureList.add(currentUri)
                 viewModel.isChanged.value = true
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
+                galleryAddPic()
             }
         }
 
@@ -439,7 +448,12 @@ class DairyEditActivity : BaseActivity() {
 
 
     fun openCamera() {
-        currentUri = createImageFile(baseContext)
+        pictureFile = createImageFile()
+        currentUri = FileProvider.getUriForFile(
+            this,
+            "com.example.android.fileprovider",
+            pictureFile
+        )
         toCameraLauncher.launch(currentUri)
     }
 
@@ -486,6 +500,17 @@ class DairyEditActivity : BaseActivity() {
                 .show()
         }
     }
+
+    /**
+     * 把照片添加到图库
+     */
+    private fun galleryAddPic() {
+        // 保存图片
+        MediaStore.Images.Media.insertImage(contentResolver, pictureFile.toString(), "title", "description");
+        // 更新图库
+        MediaScannerConnection.scanFile(baseContext, arrayOf(pictureFile.toString()), null, null)
+    }
+
 
     /**
      * 跳转到[PictureInfoActivity]  协议类

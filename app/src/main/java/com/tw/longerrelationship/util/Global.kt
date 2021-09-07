@@ -196,3 +196,8 @@ inline fun Animation.addAnimListener(
 fun dp2px(context: Context, dp: Float): Float {
     return (dp * (context.resources.displayMetrics.densityDpi) / 160)
 }
+
+fun dp2px(context: Context, dp: Int):Int{
+    return (dp * (context.resources.displayMetrics.densityDpi) / 160)
+}
+

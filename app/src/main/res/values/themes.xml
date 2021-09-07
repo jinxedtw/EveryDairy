@@ -18,10 +18,8 @@
 
     <!--     开屏页启动样式-->
     <style name="launchTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <!--        <item name="android:windowBackground">@android:color/transparent</item>-->
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:screenOrientation">portrait</item>
+        <item name="android:windowBackground">@drawable/bg_launch_plus</item>
+        <item name="android:statusBarColor">@color/blue_app_icon</item>
     </style>
 
     <!-- 透明弹出框-->

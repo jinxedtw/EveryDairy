@@ -23,13 +23,6 @@ abstract class BaseActivity : AppCompatActivity() {
     val tag: String = this.javaClass.simpleName
     var root: View? = null                                  // 根布局
 
-//    val sharedPreferences: SharedPreferences by lazy {
-//        baseContext.getSharedPreferences(
-//            Constants.SHARED_PREFERENCES_NAME,
-//            Context.MODE_PRIVATE
-//        )
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logD(tag, "onCreate()")
@@ -120,11 +113,9 @@ abstract class BaseActivity : AppCompatActivity() {
      * 关闭软键盘
      */
     fun closeKeyboard(windowToken: IBinder) {
-        if (isSoftShowing())
-            (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                windowToken,                              // 关闭软键盘
-                0
-            )
+        if (isSoftShowing()) {
+            (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(windowToken, 0)
+        }
     }
 
     /**

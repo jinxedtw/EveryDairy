@@ -22,12 +22,6 @@ class MyApplication : Application() {
 
         // 初始化百度SDK
         SDKInitializer.initialize(context)
-
-        // 这里是为了解决传输file://格式的URI报错问题
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val builder = VmPolicy.Builder()
-            StrictMode.setVmPolicy(builder.build())
-        }
     }
 
     companion object {
