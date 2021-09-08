@@ -30,6 +30,16 @@ android {
                 }
             }
         }
+        debug{
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            defaultConfig {
+                ndk {
+                    abiFilters "armeabi-v7a"
+                }
+            }
+        }
     }
 
     buildFeatures {
