@@ -1,7 +1,7 @@
 package com.tw.longerrelationship.views.activity
 
 import android.content.Intent
-import android.view.View
+import androidx.databinding.ViewDataBinding
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.DataStoreUtils
 import kotlinx.coroutines.CoroutineScope
@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 /**
  * 开屏页面，判断是否是第一次进入App
  */
-class SplashActivity : BaseActivity() {
-    override fun init(): View? {
+class SplashActivity : BaseActivity<ViewDataBinding>() {
+    override fun init() {
         setContentView(getLayoutId())
 
         startActivity(
@@ -27,7 +27,6 @@ class SplashActivity : BaseActivity() {
             )
         )
         finish()
-        return null
     }
 
     override fun getLayoutId(): Int = R.layout.activity_splash

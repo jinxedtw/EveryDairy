@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,8 +26,7 @@ import java.lang.StringBuilder
 import java.util.*
 
 
-class SearchActivity : BaseActivity() {
-    private lateinit var mBinding: ActivitySearchBinding
+class SearchActivity : BaseActivity<ActivitySearchBinding>() {
     private var searchHistoryString: StringBuilder = StringBuilder()
 
     private val viewModel by lazy {
@@ -40,10 +38,9 @@ class SearchActivity : BaseActivity() {
 
     private var dairyAdapter: DairyAdapter = DairyAdapter(this)
 
-    override fun init(): View {
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+    override fun init() {
+        initBinding()
         initView()
-        return mBinding.root
     }
 
     private fun initView() {

@@ -1,27 +1,42 @@
 package com.tw.longerrelationship.views.activity
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.*
+import org.w3c.dom.Text
 
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     /**
      * 日志输出标志
      */
-    val tag: String = this.javaClass.simpleName
-    var root: View? = null                                  // 根布局
+    protected val tag: String = this.javaClass.simpleName
+
+    /**
+     * 根布局
+     */
+    protected var root: View? = null
+    protected lateinit var mBinding: T
+    private lateinit var mAppBar: ConstraintLayout
+    private lateinit var mLayoutContent: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +46,79 @@ abstract class BaseActivity : AppCompatActivity() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setAndroidNativeLightStatusBar(this, true)
 
-        root = init()
-        setUpViews()
+        init()
     }
 
-    private fun setUpViews() {
-        val leaveIcon = findViewById<ImageView>(R.id.iv_leave)
-        leaveIcon?.setOnClickListener { finishAndTryCloseSoftKeyboard() }
+    /**
+     * 初始化Binding
+     * 有普通初始化[initBinding]和带appBar两种初始化方式 [initBindingWithAppBar]
+     */
+    fun initBinding() {
+        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+        root = mBinding.root
     }
 
-    fun finishAndTryCloseSoftKeyboard() {
+    /**
+     * 设置有统一appBar样式的布局
+     */
+    fun initBindingWithAppBar() {
+        setContentView(R.layout.activity_base)
+        mAppBar = findViewById(R.id.cl_app_bar)
+        mLayoutContent = findViewById(R.id.fl_content)
+        mBinding = DataBindingUtil.inflate(layoutInflater, getLayoutId(), mLayoutContent, true)
+        findViewById<ImageView>(R.id.iv_leave)?.setOnClickListener { finishAndTryCloseSoftKeyboard() }
+        root = mBinding.root
+    }
+
+    fun setAppBarTitle(title: String) {
+        findViewById<TextView>(R.id.tv_appbar_title).text = title
+    }
+
+    fun setAppBarRightText(text: String, onClick: View.OnClickListener?) {
+        findViewById<TextView>(R.id.tv_right).apply {
+            this.text = text
+            this.visibility = View.VISIBLE
+            setOnClickListener(onClick)
+        }
+    }
+
+    fun setAppBarRightImage(@DrawableRes res: Int, onClick: View.OnClickListener?) {
+        findViewById<ImageView>(R.id.iv_right).apply {
+            setDrawable(res)
+            setOnClickListener(onClick)
+        }
+    }
+
+    /**
+     * 自定义appbar右边布局
+     * 按照装入顺着从右到左摆放在appbar中
+     *
+     * todo 该方法有问题，会导致views无法显示，怀疑   API constraintSet.applyTo(mAppBar)
+     */
+    fun setAppBarRightLayout(vararg views: View) {
+        var lastViewId = 0
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(mAppBar)
+        views.forEach {
+            val params: ConstraintLayout.LayoutParams = ConstraintLayout.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            )
+            it.id = View.generateViewId()
+            // 等同于  layout_constraintRight_toRightOf="lastView"
+            lastViewId = if (lastViewId == 0) ConstraintSet.PARENT_ID else lastViewId
+            constraintSet.connect(it.id, ConstraintSet.RIGHT, lastViewId, ConstraintSet.RIGHT)
+            // 左右设置10dp的padding
+            it.setPadding(dp2px(baseContext, 10), 0, dp2px(baseContext, 10), 0)
+            it.layoutParams = params
+            lastViewId = it.id
+            mAppBar.addView(it)
+            constraintSet.applyTo(mAppBar)
+            constraintSet.clone(mAppBar)
+        }
+    }
+
+    protected fun finishAndTryCloseSoftKeyboard() {
         if (isSoftShowing()) {
             closeKeyboard(root!!.windowToken)
             root!!.handler.postDelayed({
@@ -121,7 +199,7 @@ abstract class BaseActivity : AppCompatActivity() {
     /**
      * 子类可以通过重写该方法进行一些初始化操作
      */
-    abstract fun init(): View?
+    abstract fun init()
 
 
     /**

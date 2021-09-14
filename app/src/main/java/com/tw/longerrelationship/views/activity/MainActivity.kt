@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.View
 import android.widget.ImageView
 import androidx.core.view.GravityCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
@@ -20,12 +19,11 @@ import com.tw.longerrelationship.views.fragment.NoteFragment
 import com.tw.longerrelationship.views.fragment.ToDoFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.*
 
-class MainActivity : BaseActivity() {
-    private lateinit var mBinding: ActivityMainBinding
+
+class MainActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var tapTitle: List<String>
     private lateinit var fragments: List<BaseFragment>
     private lateinit var toDoFragment: ToDoFragment
@@ -38,13 +36,12 @@ class MainActivity : BaseActivity() {
         ).get(MainViewModel::class.java)
     }
 
-    override fun init(): View {
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+    override fun init() {
         requestSDCardWritePermission(this)
+        initBinding()
         initTab()
         initView()
         observe()
-        return mBinding.root
     }
 
     private fun observe() {

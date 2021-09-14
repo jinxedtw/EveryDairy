@@ -1,7 +1,7 @@
 package com.tw.longerrelationship.views.activity
 
-import android.view.View
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
@@ -20,8 +20,7 @@ import kotlinx.coroutines.launch
 /**
  * [ToDoFragment]点击编辑跳转至该activity
  */
-class ToDoEditActivity : BaseActivity() {
-    private lateinit var mBinding: ActivityToDoEditBinding
+class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
     private val todoId by lazy {
         intent.getIntExtra(TODO_ID, -1)
     }
@@ -32,13 +31,28 @@ class ToDoEditActivity : BaseActivity() {
         ).get(ToDoEditViewModel::class.java)
     }
 
-    override fun init(): View {
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+    override fun init() {
+        initBindingWithAppBar()
         mBinding.viewModel = viewModel
+        initAppBar()
         initView()
         initEditText()
         observer()
-        return mBinding.root
+    }
+
+    private fun initAppBar() {
+        setAppBarTitle("待办事项")
+        setAppBarRightText("保存") {
+            if (viewModel.todoContent.value == null) {
+                showToast(this, "请输入事项内容")
+            } else {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.saveToDo()
+                }
+                finishAndTryCloseSoftKeyboard()
+            }
+        }
+
     }
 
     private fun observer() {
@@ -62,17 +76,6 @@ class ToDoEditActivity : BaseActivity() {
 
     private fun initView() {
         mBinding.etTodo.requestFocus()
-
-        mBinding.commonBar.setRightClickAction {
-            if (viewModel.todoContent.value == null) {
-                showToast(this, "请输入事项内容")
-            } else {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.saveToDo()
-                }
-                finishAndTryCloseSoftKeyboard()
-            }
-        }
 
         setOnClickListeners(mBinding.tvSelectTodo, mBinding.ivArrowDown) {
             showPopupMenu()

@@ -9,9 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,8 +21,6 @@ import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.DairyInfoViewModel
 import com.tw.longerrelationship.views.widgets.ToastWithImage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import razerdp.basepopup.QuickPopupBuilder
@@ -35,8 +31,7 @@ import java.util.*
  * 日记详情界面
  * 从[MainActivity]点击单项日记跳转，点击编辑跳转到[DairyEditActivity]
  */
-class DairyInfoActivity : BaseActivity() {
-    private lateinit var mBinding: ActivityDairyInfoBinding
+class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
     private var dairyId = -1
     private val layoutManager by lazy {
         object : GridLayoutManager(this, 3) {
@@ -57,12 +52,11 @@ class DairyInfoActivity : BaseActivity() {
      */
     private val toPictureInfoLauncher = registerForActivityResult(ToPictureInfoResultContract()) {}
 
-    override fun init(): View {
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+    override fun init() {
+        initBinding()
         initView()
         click()
         observe()
-        return mBinding.root
     }
 
     private fun observe() {

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.view.MotionEvent
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.tw.longerrelationship.R
@@ -16,9 +15,8 @@ import com.tw.longerrelationship.viewmodel.PictureInfoViewModel
 /**
  * TODO 多指操作,放大缩小图片
  */
-class PictureInfoActivity : BaseActivity() {
+class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
     private var ifCanDelete: Boolean = true
-    private lateinit var mBinding: ActivityPictureInfoBinding
     private var current: Int = -1
 
     private val viewModel by lazy {
@@ -28,14 +26,13 @@ class PictureInfoActivity : BaseActivity() {
         ).get(PictureInfoViewModel::class.java)
     }
 
-    override fun init(): View {
+    override fun init() {
         setAndroidNativeLightStatusBar(this, false)
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+        initBinding()
         makeStatusBarTransparent(this)
         observe()
         initParams()
         initView()
-        return mBinding.root
     }
 
     private fun observe() {

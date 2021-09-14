@@ -8,13 +8,8 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.RectShape
-import android.graphics.drawable.shapes.RoundRectShape
-import android.graphics.drawable.shapes.Shape
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
@@ -32,7 +27,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.ColorUtils
 import androidx.core.widget.doOnTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -58,14 +52,13 @@ import java.io.File
 import java.util.*
 
 
-class DairyEditActivity : BaseActivity() {
+class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     private var showRvPhotoList: Boolean = true
     private var isNeedToSaved: Boolean = true        // 日记是否需要保存
     private var recoveredTitle: String? = null      // 恢复日记标题
     private var recoveredContent: String? = null    // 恢复日记内容
 
     private lateinit var ripperDrawable: RippleDrawable
-    private lateinit var mBinding: ActivityDairyEditBinding
     private lateinit var locationService: LocationService
     private lateinit var locationListener: BDAbstractLocationListener
     private lateinit var pictureSelectAdapter: PictureSelectAdapter
@@ -170,8 +163,8 @@ class DairyEditActivity : BaseActivity() {
         }
     }
 
-    override fun init(): View {
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+    override fun init() {
+        initBinding()
         mBinding.viewModel = this.viewModel
         mBinding.etContent.requestFocus()
         observe()
@@ -180,7 +173,6 @@ class DairyEditActivity : BaseActivity() {
         addOnSoftKeyBoardVisibleListener()
         initEditText()
         initLocation()
-        return mBinding.root
     }
 
     private fun initTheme() {
