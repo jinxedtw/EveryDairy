@@ -3,7 +3,7 @@ package com.tw.longerrelationship.views.activity
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.tw.longerrelationship.R
-import com.tw.longerrelationship.util.DataStoreUtils
+import com.tw.longerrelationship.util.DataStoreUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,10 +35,10 @@ class SplashActivity : BaseActivity<ViewDataBinding>() {
         private const val FIRST_OPEN_APP = "isFirstOpenApp"
 
         var isFirstOpenApp: Boolean
-            get() = DataStoreUtils.readBooleanData(FIRST_OPEN_APP, true)
+            get() = DataStoreUtil.readBooleanData(FIRST_OPEN_APP, true)
             set(value) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    DataStoreUtils.saveBooleanData(FIRST_OPEN_APP, value)
+                    DataStoreUtil.saveBooleanData(FIRST_OPEN_APP, value)
                 }
             }
     }

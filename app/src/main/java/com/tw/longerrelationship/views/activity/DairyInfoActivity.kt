@@ -242,7 +242,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
             hashMapOf(1 to "周日", 2 to "周一", 3 to "周二", 4 to "周三", 5 to "周四", 6 to "周五", 7 to "周六")
 
         var stickerId: Int
-            get() = DataStoreUtils.readIntData(STICKER_ID)
-            set(value) = DataStoreUtils.saveSyncIntData(STICKER_ID, value)
+            get() = DataStoreUtil.readIntData(STICKER_ID)
+            set(value) = DataStoreUtil.saveSyncIntData(STICKER_ID, value)
     }
 }

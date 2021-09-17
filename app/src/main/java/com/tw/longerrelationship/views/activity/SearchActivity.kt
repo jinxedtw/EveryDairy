@@ -56,7 +56,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
      */
     private fun initFlowLayout() {
         lifecycleScope.launch {
-            DataStoreUtils.getData(SEARCH_HISTORY, "").first {
+            DataStoreUtil.getData(SEARCH_HISTORY, "").first {
                 if (it.isNotEmpty()) {
                     parseStringToText(it)
                 }
@@ -148,7 +148,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
                         .setNegativeButton("取消", null)
                         .setPositiveButton("确认") { _, _ ->
                             lifecycleScope.launch {
-                                DataStoreUtils.removeData(SEARCH_HISTORY, "")
+                                DataStoreUtil.removeData(SEARCH_HISTORY, "")
                             }
                             mBinding.flowLayout.gone()
                             mBinding.tvDeleteAll.gone()
@@ -183,7 +183,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
                 if (!searchHistoryString.contains(v.text.toString())) {
                     lifecycleScope.launch {                         // 保存关键词
                         searchHistoryString.insert(0, "${v.text}$$")
-                        DataStoreUtils.putData(SEARCH_HISTORY, searchHistoryString.toString())
+                        DataStoreUtil.putData(SEARCH_HISTORY, searchHistoryString.toString())
                     }
                 }
             }

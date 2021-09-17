@@ -30,25 +30,6 @@ fun setOnClickListeners(vararg v: View?, block: View.() -> Unit) {
 }
 
 /**
- * 获取手机厂商
- *
- * @return  手机厂商
- * eg: Realme
- */
-fun getDeviceBrand(): String {
-    return Build.BRAND
-}
-
-/**
- * 获取当前手机系统版本号
- *
- * @return  系统版本号
- */
-fun getSystemVersion(): String {
-    return Build.VERSION.RELEASE
-}
-
-/**
  * 定位权限动态申请
  */
 fun requestPositioningPermission(context: Activity?) {

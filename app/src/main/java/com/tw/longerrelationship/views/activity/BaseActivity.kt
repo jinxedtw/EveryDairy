@@ -1,10 +1,13 @@
 package com.tw.longerrelationship.views.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
+import android.view.View.OnTouchListener
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -20,7 +23,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.util.*
-import org.w3c.dom.Text
 
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
@@ -45,7 +47,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         // 设置无标题栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setAndroidNativeLightStatusBar(this, true)
-
+        setTouchListener(window.decorView)
         init()
     }
 
@@ -126,6 +128,25 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
             }, 50)
         } else {
             finish()
+        }
+    }
+
+    protected open fun setTouchListener(view: View?) {
+        if (view == null) {
+            return
+        }
+        if (view !is EditText) {
+            view.setOnTouchListener(OnTouchListener { _, _ ->
+                val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                manager.hideSoftInputFromWindow(view.windowToken, 0)
+                false
+            })
+        }
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val innerView = view.getChildAt(i)
+                setTouchListener(innerView)
+            }
         }
     }
 

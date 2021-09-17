@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.ColorItemSelectAdapter
-import com.tw.longerrelationship.util.DataStoreUtils
+import com.tw.longerrelationship.util.DataStoreUtil
 import com.tw.longerrelationship.util.slideToUp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,10 +91,10 @@ class ColorsPainDialog(val activity: DairyEditActivity, val colorSelectCallBack:
         )
 
         var currentColorIndex: Int
-            get() = DataStoreUtils.getSyncData(DEFAULT_COLOR_INDEX, 0)
+            get() = DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0)
             set(value) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    DataStoreUtils.putData(DEFAULT_COLOR_INDEX, value)
+                    DataStoreUtil.putData(DEFAULT_COLOR_INDEX, value)
                 }
             }
     }

@@ -11,7 +11,7 @@ import java.io.IOException
 import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
-object DataStoreUtils {
+object DataStoreUtil {
 
     @Suppress("UNCHECKED_CAST")
     fun <U> getSyncData(key: String, default: U): U {

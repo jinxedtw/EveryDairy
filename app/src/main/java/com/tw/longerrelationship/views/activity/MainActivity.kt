@@ -250,18 +250,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         const val ACCOUNT_SEX = "sex"                   // 性别      0:man   1:woman
 
         var accountSex: Int
-            get() = DataStoreUtils.readIntData(ACCOUNT_SEX)
+            get() = DataStoreUtil.readIntData(ACCOUNT_SEX)
             set(value) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    DataStoreUtils.saveIntData(ACCOUNT_SEX, value)
+                    DataStoreUtil.saveIntData(ACCOUNT_SEX, value)
                 }
             }
 
         var dairyShowFold: Boolean
-            get() = DataStoreUtils.readBooleanData(DAIRY_SHOW_FOLD, true)
+            get() = DataStoreUtil.readBooleanData(DAIRY_SHOW_FOLD, true)
             set(value) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    DataStoreUtils.saveBooleanData(DAIRY_SHOW_FOLD, value)
+                    DataStoreUtil.saveBooleanData(DAIRY_SHOW_FOLD, value)
                 }
             }
     }

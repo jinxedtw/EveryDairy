@@ -176,7 +176,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     }
 
     private fun initTheme() {
-        setThemeBackGround(colorList[DataStoreUtils.getSyncData(DEFAULT_COLOR_INDEX, 0)])
+        setThemeBackGround(colorList[DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0)])
     }
 
     private fun observe() {
@@ -281,15 +281,15 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                     AlertDialog.Builder(this@DairyEditActivity).setMessage("是否恢复上次未保存内容?")
                         .setNegativeButton("放弃") { _, _ ->
                             lifecycleScope.launch {
-                                DataStoreUtils.removeData(RECOVER_CONTENT, "")
-                                DataStoreUtils.removeData(RECOVER_TITLE, "")
+                                DataStoreUtil.removeData(RECOVER_CONTENT, "")
+                                DataStoreUtil.removeData(RECOVER_TITLE, "")
                             }
                             mBinding.clRecover.gone()
                         }
                         .setPositiveButton("恢复") { _, _ ->
                             lifecycleScope.launch {
-                                DataStoreUtils.removeData(RECOVER_CONTENT, "")
-                                DataStoreUtils.removeData(RECOVER_TITLE, "")
+                                DataStoreUtil.removeData(RECOVER_CONTENT, "")
+                                DataStoreUtil.removeData(RECOVER_TITLE, "")
                             }
                             mBinding.clRecover.gone()
                             recoverDairy()
@@ -367,8 +367,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             val result = viewModel.saveDairy(mBinding.appBar.getTitle())
             if (result.isSuccess) {
                 isNeedToSaved = false
-                DataStoreUtils.removeData(RECOVER_CONTENT, "")
-                DataStoreUtils.removeData(RECOVER_TITLE, "")
+                DataStoreUtil.removeData(RECOVER_CONTENT, "")
+                DataStoreUtil.removeData(RECOVER_TITLE, "")
                 runOnUiThread { ToastWithImage.showToast("保存成功", true) }
                 finishActivity()
             } else {
@@ -399,13 +399,13 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
     private fun tryToRecoverDairy() {
         lifecycleScope.launch(Dispatchers.Main) {
-            DataStoreUtils.readStringFlow(RECOVER_CONTENT).first {
+            DataStoreUtil.readStringFlow(RECOVER_CONTENT).first {
                 if (it.isNotEmpty()) {
                     recoveredContent = it
                 }
                 true
             }
-            DataStoreUtils.readStringFlow(RECOVER_TITLE).first {
+            DataStoreUtil.readStringFlow(RECOVER_TITLE).first {
                 if (it.isNotEmpty()) {
                     recoveredTitle = it
                 }
@@ -442,8 +442,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     override fun onPause() {
         super.onPause()
         if (!TextUtils.isEmpty(viewModel.dairyContent.value) && isNeedToSaved) {
-            DataStoreUtils.saveSyncStringData(RECOVER_CONTENT, viewModel.dairyContent.value!!)
-            DataStoreUtils.saveSyncStringData(RECOVER_TITLE, mBinding.appBar.getTitle())
+            DataStoreUtil.saveSyncStringData(RECOVER_CONTENT, viewModel.dairyContent.value!!)
+            DataStoreUtil.saveSyncStringData(RECOVER_TITLE, mBinding.appBar.getTitle())
         }
     }
 
