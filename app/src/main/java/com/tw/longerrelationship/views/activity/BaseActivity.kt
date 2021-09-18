@@ -5,11 +5,8 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.IBinder
-import android.view.View
+import android.view.*
 import android.view.View.OnTouchListener
-import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -22,7 +19,10 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.tw.longerrelationship.R
-import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.dp2px
+import com.tw.longerrelationship.util.logD
+import com.tw.longerrelationship.util.setAndroidNativeLightStatusBar
+import com.tw.longerrelationship.util.setDrawable
 
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
@@ -136,9 +136,16 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
             return
         }
         if (view !is EditText) {
-            view.setOnTouchListener(OnTouchListener { _, _ ->
-                val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                manager.hideSoftInputFromWindow(view.windowToken, 0)
+            view.setOnTouchListener(OnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        manager.hideSoftInputFromWindow(view.windowToken, 0)
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        v.performClick()
+                    }
+                }
                 false
             })
         }

@@ -51,7 +51,7 @@ abstract class BaseFragment : Fragment() {
      *  Hook方法,将传入的View实例原封不动返回。
      */
     fun onCreateView(view: View): View {
-        logD(TAG, "BaseFragment-->onCreateView()")
+        logD(TAG, "onCreateView()")
         return view
     }
 
@@ -77,7 +77,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        logD(TAG, "BaseFragment-->onDestroyView()")
+        logD(TAG, "onDestroyView()")
     }
 
     override fun onDestroy() {
