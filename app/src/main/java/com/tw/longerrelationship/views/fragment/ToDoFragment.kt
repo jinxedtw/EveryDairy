@@ -4,27 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.TodoAdapter
 import com.tw.longerrelationship.databinding.FragmentTodoBinding
 import com.tw.longerrelationship.viewmodel.MainViewModel
-import com.tw.longerrelationship.views.activity.MainActivity
+import com.tw.longerrelationship.views.activity.HomeActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 
 /**
  * 待办事项列表
  */
 class ToDoFragment : BaseFragment() {
     private lateinit var mBinding: FragmentTodoBinding
-    private lateinit var mActivity: MainActivity
+    private lateinit var mActivity: HomeActivity
     private lateinit var notCompleteAdapter: TodoAdapter
     private lateinit var completeAdapter: TodoAdapter
     private val viewModel by lazy {
@@ -67,7 +64,7 @@ class ToDoFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         mBinding = FragmentTodoBinding.inflate(layoutInflater, container, false)
-        mActivity = activity as MainActivity
+        mActivity = activity as HomeActivity
         init()
         return super.onCreateView(mBinding.root)
     }

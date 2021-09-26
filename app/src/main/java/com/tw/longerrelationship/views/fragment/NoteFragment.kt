@@ -17,7 +17,7 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.DairyAdapter
 import com.tw.longerrelationship.databinding.FragmentNoteBinding
 import com.tw.longerrelationship.viewmodel.MainViewModel
-import com.tw.longerrelationship.views.activity.MainActivity
+import com.tw.longerrelationship.views.activity.HomeActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class NoteFragment : BaseFragment() {
     private lateinit var mBinding: FragmentNoteBinding
     private lateinit var dairyAdapter: DairyAdapter
-    private lateinit var mActivity: MainActivity
+    private lateinit var mActivity: HomeActivity
     private val linearLayoutManager by lazy {
         object : LinearLayoutManager(activity) {
             override fun onLayoutChildren(              // 这里重写使之监听recyclerView的布局完成,修改UI
@@ -67,7 +67,7 @@ class NoteFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mActivity = activity as MainActivity
+        mActivity = activity as HomeActivity
         dairyAdapter = DairyAdapter(mActivity)
         mBinding = FragmentNoteBinding.inflate(layoutInflater, container, false)
         init()

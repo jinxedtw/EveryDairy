@@ -48,7 +48,7 @@ class GuideActivity : AppCompatActivity() {
         button = (findViewById<Button>(R.id.bt_start)).apply {
             startAnimation(getAnim().apply { startOffset = 3000 })
             setOnClickListener {
-                startActivity(Intent(this@GuideActivity, MainActivity::class.java))
+                startActivity(Intent(this@GuideActivity, HomeActivity::class.java))
                 finish()
             }
         }

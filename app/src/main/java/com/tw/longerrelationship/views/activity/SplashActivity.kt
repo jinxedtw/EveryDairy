@@ -22,7 +22,7 @@ class SplashActivity : BaseActivity<ViewDataBinding>() {
                     isFirstOpenApp = false
                     GuideActivity::class.java
                 } else {
-                    MainActivity::class.java
+                    HomeActivity::class.java
                 }
             )
         )

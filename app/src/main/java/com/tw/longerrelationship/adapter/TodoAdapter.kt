@@ -1,6 +1,5 @@
 package com.tw.longerrelationship.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
@@ -19,7 +18,7 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.EmergencyLevel
 import com.tw.longerrelationship.logic.model.ToDoItem
 import com.tw.longerrelationship.util.*
-import com.tw.longerrelationship.views.activity.MainActivity
+import com.tw.longerrelationship.views.activity.HomeActivity
 import com.tw.longerrelationship.views.activity.ToDoEditActivity
 
 
@@ -87,12 +86,12 @@ class TodoAdapter(val context: Context) :
                 iconComplete.setDrawable(R.drawable.ic_not_complete)
                 iconComplete.setOnClickListener {
                     if (!toDoItem.complete)
-                        (context as MainActivity).setTodoComplete(toDoItem.id!!)
+                        (context as HomeActivity).setTodoComplete(toDoItem.id!!)
                 }
                 itemView.setOnClickListener {
                     val intent = Intent(context, ToDoEditActivity::class.java)
                     intent.putExtra(TODO_ID, toDoItem.id)
-                    (context as MainActivity).startActivity(intent)
+                    (context as HomeActivity).startActivity(intent)
                 }
                 ctContent.background = ContextCompat.getDrawable(context, R.drawable.rip_dairy)
             }

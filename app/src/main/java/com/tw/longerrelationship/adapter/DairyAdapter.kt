@@ -21,7 +21,7 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.util.getComparedTime
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
-import com.tw.longerrelationship.views.activity.MainActivity
+import com.tw.longerrelationship.views.activity.HomeActivity
 
 
 class DairyAdapter(val context: Context, var type: Int = 1) :
@@ -184,7 +184,7 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
                 initMap()
                 setSelectItem(this.layoutPosition)
                 (context.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator).vibrate(1000)
-                (context as MainActivity).entryCheckType(true)
+                (context as HomeActivity).entryCheckType(true)
                 true
             }
         }
@@ -201,7 +201,7 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
                 initMap()
                 setSelectItem(this.layoutPosition)
                 (context.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator).vibrate(1000)
-                (context as MainActivity).entryCheckType(true)
+                (context as HomeActivity).entryCheckType(true)
                 true
             }
         }

@@ -29,7 +29,7 @@ import java.util.*
 
 /**
  * 日记详情界面
- * 从[MainActivity]点击单项日记跳转，点击编辑跳转到[DairyEditActivity]
+ * 从[HomeActivity]点击单项日记跳转，点击编辑跳转到[DairyEditActivity]
  */
 class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
     private var dairyId = -1

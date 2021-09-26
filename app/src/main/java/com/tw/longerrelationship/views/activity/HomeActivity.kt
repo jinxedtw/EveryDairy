@@ -1,5 +1,7 @@
 package com.tw.longerrelationship.views.activity
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
@@ -23,7 +25,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class MainActivity : BaseActivity<ActivityMainBinding>() {
+class HomeActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var tapTitle: List<String>
     private lateinit var fragments: List<BaseFragment>
     private lateinit var toDoFragment: ToDoFragment
@@ -34,6 +36,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             this,
             InjectorUtils.getMainViewModelFactory()
         ).get(MainViewModel::class.java)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setFlBtAnim()
     }
 
     override fun init() {
@@ -61,7 +68,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         fragments = arrayListOf(noteFragment, toDoFragment)
 
         mBinding.includeMain.vpMain.apply {
-            adapter = FragmentAdapter(fragments, this@MainActivity)
+            adapter = FragmentAdapter(fragments, this@HomeActivity)
         }
         //TabLayout和ViewPager的绑定
         TabLayoutMediator(
@@ -104,6 +111,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             when (it.itemId) {
                 R.id.it_pictures -> showToast(this, "我点了图库")
                 R.id.it_about -> showToast(this, "我点了关于")
+                R.id.it_secret -> startActivity(Intent(this, SecretActivity::class.java))
             }
             return@setNavigationItemSelectedListener true
         }
@@ -134,7 +142,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 }
                 // 点击navigation头部
                 mBinding.navigation.getHeaderView(0) -> {
-                    AlertDialog.Builder(this@MainActivity)
+                    AlertDialog.Builder(this@HomeActivity)
                         .setItems(
                             arrayOf("男", "女")
                         ) { dialog, which ->
@@ -147,7 +155,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     entryCheckType(false)
                 }
                 mBinding.includeMain.includeCheckBar.tvDelete -> {
-                    AlertDialog.Builder(this@MainActivity).setMessage("确定删除所选笔记吗")
+                    AlertDialog.Builder(this@HomeActivity).setMessage("确定删除所选笔记吗")
                         .setNegativeButton("取消", null).setPositiveButton("确认") { _, _ ->
                             noteFragment.deleteDairy()
                             entryCheckType(false)
@@ -159,15 +167,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 mBinding.includeMain.fbEdit -> {
                     // 新建笔记或新建待办的入口
                     if (viewModel.tabSelect == 0)
-                        startActivity(Intent(this@MainActivity, DairyEditActivity::class.java))
+                        startActivity(Intent(this@HomeActivity, DairyEditActivity::class.java))
                     else
-                        startActivity(Intent(this@MainActivity, ToDoEditActivity::class.java))
+                        startActivity(Intent(this@HomeActivity, ToDoEditActivity::class.java))
                 }
                 mBinding.includeMain.includeBar.tvFilter -> {
 
                 }
             }
         }
+    }
+
+    /**
+     * 设置浮动按钮的动画
+     */
+    private fun setFlBtAnim() {
+        val animatorSet = AnimatorSet()
+        val rotationAnim1 = ObjectAnimator.ofFloat(mBinding.includeMain.fbEdit, "rotationY", 90f, -30f)
+        val rotationAnim2 = ObjectAnimator.ofFloat(mBinding.includeMain.fbEdit, "rotationY", -30f, 0f)
+        animatorSet.play(rotationAnim1).before(rotationAnim2)
+        animatorSet.duration = 500
+        animatorSet.start()
     }
 
     override fun getLayoutId(): Int = R.layout.activity_main
