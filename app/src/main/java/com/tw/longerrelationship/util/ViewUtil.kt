@@ -18,8 +18,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -209,11 +207,21 @@ fun TextView.setColorForText(@ColorRes res: Int) {
 
 /**
  * 设置textView的字重
- * @param weight 字重
+ * @param weight 字重  单位 px
  */
 fun TextView.setTextWeight(weight: Float) {
     this.paint.style = Paint.Style.FILL_AND_STROKE;
     this.paint.strokeWidth = weight
+}
+
+fun TextView.setMiddleWeight() {
+    this.paint.style = Paint.Style.FILL_AND_STROKE
+    this.paint.strokeWidth = resources.displayMetrics.density * 0.5f
+}
+
+fun TextView.setBoldWeight() {
+    this.paint.style = Paint.Style.FILL_AND_STROKE
+    this.paint.strokeWidth = resources.displayMetrics.density * 0.8f
 }
 
 /**
