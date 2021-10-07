@@ -24,4 +24,12 @@
         <attr name="flowLayout_horizontalSpacing" format="dimension"/>
         <attr name="flowLayout_verticalSpacing" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="YoloTextView">
+        <attr name="YoloTextStyle">
+            <enum name="normal" value="0" />
+            <enum name="middle" value="1" />
+            <enum name="bold" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>

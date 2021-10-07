@@ -1,111 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    tools:context=".views.activity.ShowActivity">
+    android:layout_height="wrap_content">
 
-    <com.tw.longerrelationship.views.widgets.AngleTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_light"
-        app:angle_text_angles="200"
-        app:angle_text_color="@color/colorPrimary"
-        app:angle_text_content="长夜漫漫,唯剑作伴"
-        app:angle_text_offsetY="50"
-        app:angle_text_size="22"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".views.activity.ShowActivity">
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_1"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <com.tw.longerrelationship.views.widgets.AngleTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_light"
+            android:visibility="gone"
+            app:angle_text_angles="200"
+            app:angle_text_color="@color/colorPrimary"
+            app:angle_text_content="长夜漫漫,唯剑作伴"
+            app:angle_text_offsetY="50"
+            app:angle_text_size="22"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_2"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0.2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   不设置" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_3"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0.4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_4"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0.6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0.2" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_5"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0.8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0.4" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_6"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重1.0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0.6" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_7"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重1.5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重0.8" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_8"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重2.0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重1.0" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_9"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重2.5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重1.5" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/tv_10"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重2.0" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:text="啦啦啦啦啦啦 abcdefgABCDEFG   bold"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重2.5" />
+
+        <TextView
+            android:id="@+id/tv_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   字重5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="啦啦啦啦啦啦 abcdefgABCDEFG   bold"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="Android 设备不仅有不同的屏幕尺寸（手机、平板电脑、电视等），而且其屏幕也有不同的像素尺寸。也就是说，有可能一部设备的屏幕为每平方英寸 160 像素，而另一部设备的屏幕在相同的空间内可以容纳 480 像素。如果您不考虑像素密度的这些差异，系统可能会缩放图片（导致图片变模糊），或者图片可能会以完全错误的尺寸显示。
+
+本页向您介绍如何设计应用来支持不同的像素密度，那就是使用分辨率无关度量单位，并针对每种像素密度提供备用位图资源。" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="Android 设备不仅有不同的屏幕尺寸（手机、平板电脑、电视等），而且其屏幕也有不同的像素尺寸。也就是说，有可能一部设备的屏幕为每平方英寸 160 像素，而另一部设备的屏幕在相同的空间内可以容纳 480 像素。如果您不考虑像素密度的这些差异，系统可能会缩放图片（导致图片变模糊），或者图片可能会以完全错误的尺寸显示。
+
+本页向您介绍如何设计应用来支持不同的像素密度，那就是使用分辨率无关度量单位，并针对每种像素密度提供备用位图资源。"
+            android:textStyle="bold" />
+
+        <com.tw.longerrelationship.views.widgets.YoloTextView
+            android:id="@+id/text_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="Android 设备不仅有不同的屏幕尺寸（手机、平板电脑、电视等），而且其屏幕也有不同的像素尺寸。也就是说，有可能一部设备的屏幕为每平方英寸 160 像素，而另一部设备的屏幕在相同的空间内可以容纳 480 像素。如果您不考虑像素密度的这些差异，系统可能会缩放图片（导致图片变模糊），或者图片可能会以完全错误的尺寸显示。
+
+本页向您介绍如何设计应用来支持不同的像素密度，那就是使用分辨率无关度量单位，并针对每种像素密度提供备用位图资源。"
+            app:YoloTextStyle="middle" />
+
+        <com.tw.longerrelationship.views.widgets.YoloTextView
+            android:id="@+id/text_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="Android 设备不仅有不同的屏幕尺寸（手机、平板电脑、电视等），而且其屏幕也有不同的像素尺寸。也就是说，有可能一部设备的屏幕为每平方英寸 160 像素，而另一部设备的屏幕在相同的空间内可以容纳 480 像素。如果您不考虑像素密度的这些差异，系统可能会缩放图片（导致图片变模糊），或者图片可能会以完全错误的尺寸显示。
+
+本页向您介绍如何设计应用来支持不同的像素密度，那就是使用分辨率无关度量单位，并针对每种像素密度提供备用位图资源。"
+            app:YoloTextStyle="bold" />
+
+        <com.tw.longerrelationship.views.widgets.YoloTextView
+            android:id="@+id/text_adaptation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/TopMask"
+            android:padding="10dp"
+            android:text="字体适配"
+            android:textSize="11dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>
