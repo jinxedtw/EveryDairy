@@ -538,7 +538,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
         val shape = GradientDrawable()
         shape.color = ColorStateList.valueOf(addColorDepth(color))
-        shape.cornerRadius = dp2px(baseContext, 5f)
+        shape.cornerRadius = dp2px(5f)
 
         ripperDrawable =
             RippleDrawable(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.DairyEditHintText)), shape, null)

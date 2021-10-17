@@ -34,17 +34,18 @@
         <activity android:name=".views.activity.PictureInfoActivity" />
         <activity android:name=".views.activity.SearchActivity" />
         <activity android:name=".views.activity.DairyInfoActivity" />
+        <activity android:name=".views.activity.SecretActivity"/>
         <activity
             android:name=".views.activity.DairyEditActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".views.activity.SplashActivity"
             android:theme="@style/launchTheme">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".views.activity.HomeActivity"

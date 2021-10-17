@@ -126,9 +126,9 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                     val bool = !viewModel.ifFavorites.value!!
                     viewModel.ifFavorites.value = bool
                     if (bool) {
-                        showToast(this@DairyInfoActivity, "已收藏")
+                        ToastWithImage.showToast("已收藏",true)
                     } else {
-                        showToast(this@DairyInfoActivity, "已取消收藏")
+                        ToastWithImage.showToast("已取消收藏",true)
                     }
                     viewModel.favoriteDairy(dairyId)
                 }

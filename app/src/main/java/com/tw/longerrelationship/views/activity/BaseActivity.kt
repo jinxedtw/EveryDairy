@@ -111,7 +111,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
             lastViewId = if (lastViewId == 0) ConstraintSet.PARENT_ID else lastViewId
             constraintSet.connect(it.id, ConstraintSet.RIGHT, lastViewId, ConstraintSet.RIGHT)
             // 左右设置10dp的padding
-            it.setPadding(dp2px(baseContext, 10), 0, dp2px(baseContext, 10), 0)
+            it.setPadding(dp2px(10), 0, dp2px(10), 0)
             it.layoutParams = params
             lastViewId = it.id
             mAppBar.addView(it)
@@ -131,7 +131,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    protected open fun setTouchListener(view: View?) {
+    private fun setTouchListener(view: View?) {
         if (view == null) {
             return
         }

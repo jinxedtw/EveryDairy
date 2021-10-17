@@ -10,6 +10,7 @@ import android.view.View
 import android.view.animation.Animation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.tw.longerrelationship.MyApplication.Companion.context
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -171,11 +172,11 @@ inline fun Animation.addAnimListener(
     return animWatcher
 }
 
-fun dp2px(context: Context, dp: Float): Float {
+fun dp2px(dp: Float): Float {
     return (dp * (context.resources.displayMetrics.densityDpi) / 160)
 }
 
-fun dp2px(context: Context, dp: Int):Int{
+fun dp2px(dp: Int): Int {
     return (dp * (context.resources.displayMetrics.densityDpi) / 160)
 }
 

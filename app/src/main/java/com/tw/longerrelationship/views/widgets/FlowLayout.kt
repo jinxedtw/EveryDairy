@@ -22,9 +22,9 @@ class FlowLayout(context: Context, attrs: AttributeSet?) : ViewGroup(context, at
     private fun initAttrs(attrs: AttributeSet?) {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.FlowLayout, 0, 0)
         mHorizontalSpacing =
-            typedArray.getDimension(R.styleable.FlowLayout_flowLayout_horizontalSpacing, dp2px(context, DEFAULT_HORIZONTAL_SPACING)).toInt()
+            typedArray.getDimension(R.styleable.FlowLayout_flowLayout_horizontalSpacing, dp2px(DEFAULT_HORIZONTAL_SPACING)).toInt()
         mVerticalSpacing =
-            typedArray.getDimension(R.styleable.FlowLayout_flowLayout_verticalSpacing, dp2px(context, DEFAULT_VERTICAL_SPACING)).toInt()
+            typedArray.getDimension(R.styleable.FlowLayout_flowLayout_verticalSpacing, dp2px(DEFAULT_VERTICAL_SPACING)).toInt()
         typedArray.recycle()
     }
 

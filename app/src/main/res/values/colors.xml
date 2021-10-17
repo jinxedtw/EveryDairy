@@ -22,6 +22,7 @@
     <color name="drawer_header">#202020</color>
     <color name="topDividerText">#bfbfbf</color>
     <color name="topDividerLine">#eeeeee</color>
+    <color name="toastText">#222425</color>
 
     <!--    DairyEditActivity-->
     <color name="DairyEditIcon">#656565</color>

@@ -58,7 +58,7 @@ class AngleTextView(context: Context, attrs: AttributeSet?) : View(context, attr
             isAntiAlias = true
             color = textColor
             typeface = Typeface.DEFAULT_BOLD
-            textSize = dp2px(context, mTextSize)
+            textSize = dp2px(mTextSize)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 letterSpacing = 0.1.toFloat()
             }
