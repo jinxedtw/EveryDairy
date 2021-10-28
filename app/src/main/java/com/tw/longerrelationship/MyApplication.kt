@@ -15,21 +15,21 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         logV("程序可用最大内存:", (Runtime.getRuntime().maxMemory() / 1024).toString() + "k")
-        context = this
+        appContext=this
 
         // 初始化百度SDK
-        SDKInitializer.initialize(context)
+        SDKInitializer.initialize(applicationContext)
     }
 
     companion object {
         @SuppressLint("StaticFieldLeak")
-        lateinit var context: Context
+        lateinit var appContext: Context
 
         /**
          * 获取DataStore实例。
          */
         val dataStore: DataStore<Preferences> by lazy {
-            context.dataStore
+            appContext.dataStore
         }
     }
 }

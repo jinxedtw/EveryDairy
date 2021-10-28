@@ -1,13 +1,10 @@
 package com.tw.longerrelationship.views.activity
 
 import android.widget.PopupMenu
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.tw.longerrelationship.MyApplication.Companion.context
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivityToDoEditBinding
 import com.tw.longerrelationship.logic.model.EmergencyLevel
@@ -114,7 +111,7 @@ class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
                 mBinding.tvSelectTodo.text = "重要紧急"
                 mBinding.tvSelectTodo.setColorForText(R.color.importantAndUrgent)
                 mBinding.etTodo.background = ContextCompat.getDrawable(
-                    context,
+                    applicationContext,
                     (R.drawable.shape_todo_edit_bg_level4)
                 )
                 viewModel.emergencyLevel = EmergencyLevel.ImportantAndUrgent
@@ -124,7 +121,7 @@ class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
                 mBinding.tvSelectTodo.text = "重要不紧急"
                 mBinding.tvSelectTodo.setColorForText(R.color.importantAndNoUrgent)
                 mBinding.etTodo.background = ContextCompat.getDrawable(
-                    context,
+                    applicationContext,
                     (R.drawable.shape_todo_edit_bg_level3)
                 )
                 viewModel.emergencyLevel = EmergencyLevel.ImportantNoUrgent
@@ -134,7 +131,7 @@ class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
                 mBinding.tvSelectTodo.text = "不重要紧急"
                 mBinding.tvSelectTodo.setColorForText(R.color.noImportantAndUrgent)
                 mBinding.etTodo.background = ContextCompat.getDrawable(
-                    context,
+                    applicationContext,
                     (R.drawable.shape_todo_edit_bg_level2)
                 )
                 viewModel.emergencyLevel = EmergencyLevel.NoImportantUrgent
@@ -144,7 +141,7 @@ class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
                 mBinding.tvSelectTodo.text = "不重要不紧急"
                 mBinding.tvSelectTodo.setColorForText(R.color.noImportantAndNoUrgent)
                 mBinding.etTodo.background = ContextCompat.getDrawable(
-                    context,
+                    applicationContext,
                     (R.drawable.shape_todo_edit_bg_level1)
                 )
                 viewModel.emergencyLevel = EmergencyLevel.NoImportantNoUrgent

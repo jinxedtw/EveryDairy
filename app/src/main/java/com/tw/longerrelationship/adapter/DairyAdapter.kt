@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Vibrator
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +20,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.DairyItem
+import com.tw.longerrelationship.util.TextFormatHelper
 import com.tw.longerrelationship.util.getComparedTime
+import com.tw.longerrelationship.util.gone
+import com.tw.longerrelationship.util.visible
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
 import com.tw.longerrelationship.views.activity.HomeActivity
 
 
-class DairyAdapter(val context: Context, var type: Int = 1) :
+class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: Boolean = true) :
     PagingDataAdapter<DairyItem, RecyclerView.ViewHolder>(COMPARATOR) {
+    private var dairyKey: String? = null
     var checkBoxMap = HashMap<Int, Boolean>()           // 保存checkBox状态
     val checkedNum = MutableLiveData<Int>()
     var isShowBox = false
@@ -49,30 +54,44 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
             is FoldViewHolder -> {
                 val content = StringBuilder()
                 holder.time.text = getComparedTime(dairyItem.createTime)
-                holder.time.visibility = View.VISIBLE
+                holder.time.visible()
                 holder.checkBox.setOnClickListener {
                     setSelectItem(position)
                 }
-                for (i in dairyItem.uriList.indices)
+                for (i in dairyItem.uriList.indices){
                     content.append("[图片]")
-                if (dairyItem.content != null)
+                }
+                if (dairyItem.content != null) {
                     content.append(dairyItem.content)
-                holder.content.text = content
+                }
+                if (dairyKey!=null){
+                    holder.content.text = Html.fromHtml(TextFormatHelper.formatKeyWordColor(dairyKey!!, content.toString()))
+                }else{
+                    holder.content.text = content
+                }
+
 
                 if (dairyItem.title?.isNotEmpty() == true) {
-                    holder.title.visibility = View.VISIBLE
-                    holder.title.text = dairyItem.title
+                    holder.title.visible()
+                    if (dairyKey != null) {
+                        holder.title.text =
+                            Html.fromHtml(TextFormatHelper.formatKeyWordColor(dairyKey!!, dairyItem.title))
+                    } else {
+                        holder.title.text = dairyItem.title
+                    }
                 } else {
-                    holder.title.visibility = View.GONE
+                    holder.title.gone()
                 }
 
                 if (isShowBox) {
-                    if (holder.title.visibility == View.GONE)
-                        holder.time.visibility = View.GONE
-                    holder.checkBox.visibility = View.VISIBLE
+                    if (holder.title.visibility == View.GONE) {
+                        holder.time.gone()
+                    }
+                    holder.checkBox.visible()
                     holder.checkBox.isChecked = checkBoxMap[position]!!
-                } else
-                    holder.checkBox.visibility = View.GONE
+                } else {
+                    holder.checkBox.gone()
+                }
             }
 
             is UnfoldViewHolder -> {
@@ -144,18 +163,25 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
         return super.getItem(position)
     }
 
+    /** 设置关键字 */
+    fun setDairyKey(key: String) {
+        if (dairyKey!=key){
+            dairyKey = key
+            notifyDataSetChanged()
+        }
+    }
+
     /**
      * View依附到Window
      */
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-
-        if(holder.itemViewType==1){
-            holder.itemView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.anim_scroll_to_right))
-        }else{
-            holder.itemView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.anim_scale_in_center))
-        }
-    }
+//    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+//        super.onViewAttachedToWindow(holder)
+//        if (holder.itemViewType == 1) {
+//            holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_scroll_to_right))
+//        } else {
+//            holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_scale_in_center))
+//        }
+//    }
 
 
     companion object {
@@ -180,12 +206,14 @@ class DairyAdapter(val context: Context, var type: Int = 1) :
         val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
 
         init {
-            itemView.setOnLongClickListener {
-                initMap()
-                setSelectItem(this.layoutPosition)
-                (context.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator).vibrate(1000)
-                (context as HomeActivity).entryCheckType(true)
-                true
+            if (isHomeActivity) {
+                itemView.setOnLongClickListener {
+                    initMap()
+                    setSelectItem(this.layoutPosition)
+                    (context.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator).vibrate(1000)
+                    (context as HomeActivity).entryCheckType(true)
+                    true
+                }
             }
         }
     }

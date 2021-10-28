@@ -36,7 +36,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         ).get(SearchViewModel::class.java)
     }
 
-    private var dairyAdapter: DairyAdapter = DairyAdapter(this)
+    private var dairyAdapter: DairyAdapter = DairyAdapter(this,isHomeActivity = false)
 
     override fun init() {
         initBinding()
@@ -119,7 +119,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
             mBinding.includeSearchBar.ivCancer,
             mBinding.ivDelete,
             mBinding.tvDeleteAll,
-            mBinding.tvComplete
+            mBinding.tvComplete,
+            mBinding.includeSearchBar.clSearchBar
         ) {
             when (this) {
                 mBinding.includeSearchBar.tvCancer -> {
@@ -156,6 +157,13 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
                             mBinding.ivDelete.visible()
                         }
                         .show()
+                }
+                mBinding.includeSearchBar.clSearchBar->{
+                    mBinding.includeSearchBar.etSearch.requestFocus()
+                    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
+                        mBinding.includeSearchBar.etSearch,
+                        0
+                    )
                 }
             }
         }
@@ -194,6 +202,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
     private fun getKeyDairy(key: String) {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getKeyDairy(key).collect {
+                dairyAdapter.setDairyKey(key)
                 dairyAdapter.submitData(it)
             }
         }

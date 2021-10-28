@@ -38,34 +38,34 @@ class TodoAdapter(val context: Context) :
             when (toDoItem.emergencyLevel.level) {
                 0 -> {
                     itemView.background = ContextCompat.getDrawable(
-                        MyApplication.context,
+                        MyApplication.appContext,
                         (R.drawable.rip_todo_level0)
                     )
                 }
                 1 -> {
                     itemView.background = ContextCompat.getDrawable(
-                        MyApplication.context,
+                        MyApplication.appContext,
                         (R.drawable.rip_todo_level1)
                     )
                     emergencyType.setColorForText(R.color.noImportantAndNoUrgent)
                 }
                 2 -> {
                     itemView.background = ContextCompat.getDrawable(
-                        MyApplication.context,
+                        MyApplication.appContext,
                         (R.drawable.rip_todo_level2)
                     )
                     emergencyType.setColorForText(R.color.noImportantAndUrgent)
                 }
                 3 -> {
                     itemView.background = ContextCompat.getDrawable(
-                        MyApplication.context,
+                        MyApplication.appContext,
                         (R.drawable.rip_todo_level3)
                     )
                     emergencyType.setColorForText(R.color.importantAndNoUrgent)
                 }
                 4 -> {
                     itemView.background = ContextCompat.getDrawable(
-                        MyApplication.context,
+                        MyApplication.appContext,
                         (R.drawable.rip_todo_level4)
                     )
                     emergencyType.setColorForText(R.color.importantAndUrgent)

@@ -3,14 +3,13 @@ package com.tw.longerrelationship.util
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
 import android.view.animation.Animation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.tw.longerrelationship.MyApplication.Companion.context
+import com.tw.longerrelationship.MyApplication.Companion.appContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -173,11 +172,11 @@ inline fun Animation.addAnimListener(
 }
 
 fun dp2px(dp: Float): Float {
-    return (dp * (context.resources.displayMetrics.densityDpi) / 160)
+    return (dp * (appContext.resources.displayMetrics.densityDpi) / 160)
 }
 
 fun dp2px(dp: Int): Int {
-    return (dp * (context.resources.displayMetrics.densityDpi) / 160)
+    return (dp * (appContext.resources.displayMetrics.densityDpi) / 160)
 }
 
 /**

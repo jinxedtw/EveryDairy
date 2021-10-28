@@ -13,8 +13,8 @@ import com.tw.longerrelationship.logic.viewModelFactory.*
 object InjectorUtils {
 
     private fun getMainRepository() = MainRepository.getInstance(
-        AppDataBase.getInstance(MyApplication.context).dairyDao(),
-        AppDataBase.getInstance(MyApplication.context).toDoDao()
+        AppDataBase.getInstance(MyApplication.appContext).dairyDao(),
+        AppDataBase.getInstance(MyApplication.appContext).toDoDao()
     )
 
     fun getMainViewModelFactory() = MainViewModelFactory(getMainRepository())
