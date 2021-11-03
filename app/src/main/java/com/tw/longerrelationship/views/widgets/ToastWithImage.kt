@@ -26,7 +26,7 @@ object ToastWithImage {
         toastView.findViewById<TextView>(R.id.tv_toast_content).text = msg
         toast!!.view = toastView
         toast!!.duration = if (isShowLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-        toast!!.setGravity(Gravity.BOTTOM, 0, dp2px(56))
+        toast!!.setGravity(Gravity.CENTER, 0, dp2px(-100))
         toast!!.show()
     }
 
