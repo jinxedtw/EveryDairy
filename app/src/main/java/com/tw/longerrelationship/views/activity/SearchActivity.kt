@@ -205,7 +205,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         }
 
         mBinding.includeSearchBar.etSearch.textChangeFlow()
-            .sample(300)
+            .debounce(300)
             .flatMapLatest {
                 Log.d("www", "防抖后的文本=$it")
                 dairyAdapter.refresh()
