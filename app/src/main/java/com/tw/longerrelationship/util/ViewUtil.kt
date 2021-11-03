@@ -18,6 +18,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import com.tw.longerrelationship.R
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -237,4 +238,31 @@ fun View?.gone() {
 fun View?.visible() {
     this?.visibility = View.VISIBLE
 }
+
+
+/** 防抖 */
+const val FAST_CLICK_TRIGGER = 300
+
+inline fun View.onDebounceClickListener(crossinline block: () -> Unit) {
+    // 如果不是快速点击，则响应点击逻辑
+    setOnClickListener { if (!it.isFastClick()) block() }
+}
+
+// 判断是否快速点击
+fun View.isFastClick(): Boolean {
+    val currentTime = System.currentTimeMillis()
+    return if (currentTime - triggerTime >= FAST_CLICK_TRIGGER) {
+        triggerTime = currentTime
+        false
+    } else {
+        true
+    }
+}
+
+// 记录上次点击时间
+private var View.triggerTime: Long
+    get() = tag as? Long ?: 0L
+    set(value) {
+        tag = value
+    }
 

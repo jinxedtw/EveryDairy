@@ -2,16 +2,21 @@ package com.tw.longerrelationship.views.activity
 
 import android.app.AlertDialog
 import android.os.Handler
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.DairyAdapter
@@ -19,8 +24,9 @@ import com.tw.longerrelationship.databinding.ActivitySearchBinding
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.viewmodel.SearchViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onSuccess
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 import java.util.*
@@ -36,7 +42,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         ).get(SearchViewModel::class.java)
     }
 
-    private var dairyAdapter: DairyAdapter = DairyAdapter(this,isHomeActivity = false)
+    private var dairyAdapter: DairyAdapter = DairyAdapter(this, isHomeActivity = false)
 
     override fun init() {
         initBinding()
@@ -44,7 +50,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
     }
 
     private fun initView() {
-        click()
+        initEvent()
         showKeyboard()
         initEditText()
         initFlowLayout()
@@ -113,7 +119,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         }
     }
 
-    private fun click() {
+    private fun initEvent() {
         setOnClickListeners(
             mBinding.includeSearchBar.tvCancer,
             mBinding.includeSearchBar.ivCancer,
@@ -158,7 +164,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
                         }
                         .show()
                 }
-                mBinding.includeSearchBar.clSearchBar->{
+                mBinding.includeSearchBar.clSearchBar -> {
                     mBinding.includeSearchBar.etSearch.requestFocus()
                     (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
                         mBinding.includeSearchBar.etSearch,
@@ -197,6 +203,23 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
             }
             return@setOnEditorActionListener false
         }
+
+        mBinding.includeSearchBar.etSearch.textChangeFlow()
+            .sample(300)
+            .flatMapLatest {
+                Log.d("www", "防抖后的文本=$it")
+                dairyAdapter.refresh()
+                viewModel.getKeyDairy(it.toString())
+            }
+            .flowOn(Dispatchers.IO)
+            .onEach {
+                mBinding.tvHistory.gone()                       // 隐藏历史搜索相关控件
+                mBinding.ivDelete.gone()
+                mBinding.flowLayout.gone()
+                dairyAdapter.submitData(it)
+            }
+            .launchIn(lifecycleScope)
+
     }
 
     private fun getKeyDairy(key: String) {
@@ -207,6 +230,32 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
             }
         }
     }
+
+    // 构建输入框文字回调流
+    private fun EditText.textChangeFlow(): Flow<CharSequence> = callbackFlow {
+        // 构建输入框监听器
+        val watcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            // 在文本变化后向流发射数据
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Log.d("www", "text=${s}")
+                s?.let {
+                    if (it.isNotEmpty()){
+                        trySend(it)
+                    }else{
+                        lifecycleScope.launch {
+                            dairyAdapter.submitData(PagingData.empty())
+                        }
+                    }
+                }
+            }
+        }
+        addTextChangedListener(watcher) // 设置输入框监听器
+        awaitClose { removeTextChangedListener(watcher) } // 阻塞以保证流一直运行
+    }
+
 
     /**
      * 显示键盘
