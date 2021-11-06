@@ -75,7 +75,7 @@ class MainRepository private constructor(
 
 
     // ------------------------------网络请求
-    suspend fun requestWeather() = netWorker.getNowWeather("beijing")
+    suspend fun requestWeather() = netWorker.getNowWeather("ip")
 
 
     companion object {

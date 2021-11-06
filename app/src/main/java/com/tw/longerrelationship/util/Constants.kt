@@ -16,4 +16,5 @@ object Constants {
     const val KEY_ACCOUNT_SEX = "sex"                   // 性别    0:man 1:woman
     const val KEY_RECOVER_CONTENT = "recoverContent"    // 恢复日记内容
     const val KEY_RECOVER_TITLE = "recoverTitle"        // 恢复日记标题
+    const val KEY_DAIRY_PASSWORD = "dairyPassword"
 }

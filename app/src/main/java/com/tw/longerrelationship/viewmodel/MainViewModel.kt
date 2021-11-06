@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import com.tw.longerrelationship.views.fragment.NoteFragment
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.logic.model.ToDoItem
+import com.tw.longerrelationship.logic.network.TotalNetwork
 import com.tw.longerrelationship.logic.repository.MainRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -47,4 +48,6 @@ class MainViewModel(
 
     fun setTodoComplete(id: Int) = repository.setTodoComplete(id)
 
+
+    suspend fun requestWeather() = repository.requestWeather()
 }

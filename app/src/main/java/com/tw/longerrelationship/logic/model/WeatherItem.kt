@@ -1,26 +1,26 @@
 package com.tw.longerrelationship.logic.model
 
-data class WeatherItem (
+data class WeatherItem(
     val results: List<Result>
 )
 
-data class Result (
-    val location: Location,
-    val now: Now,
-    val lastUpdate: String
+data class Result(
+    val location: Location? = null,
+    val now: Now? = null,
+    val lastUpdate: String? = null
 )
 
-data class Location (
-    val id: String,
-    val name: String,
-    val country: String,
-    val path: String,
-    val timezone: String,
-    val timezoneOffset: String
+data class Location(
+    val id: String? = null,
+    val name: String? = null,
+    val country: String? = null,
+    val path: String? = null,
+    val timezone: String? = null,
+    val timezoneOffset: String? = null
 )
 
-data class Now (
-    val text: String,
-    val code: String,
-    val temperature: String
+data class Now(
+    val text: String? = null,
+    val code: String? = null,
+    val temperature: String? = null
 )

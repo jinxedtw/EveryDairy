@@ -2,6 +2,7 @@ package com.tw.longerrelationship.views.activity
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
@@ -114,6 +115,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
         viewModel.isFold.value = dairyShowFold
         changeHeadImage(accountSex)
@@ -175,6 +177,18 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                 }
                 mBinding.includeMain.includeBar.tvFilter -> {
 
+                }
+            }
+        }
+
+        // 获取天气
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.requestWeather()?.apply {
+                if (this.results.isNullOrEmpty()) return@apply
+                runOnUiThread {
+                    mBinding.includeDrawer.tvCity.text = results.first().location?.name?:"--"
+                    mBinding.includeDrawer.tvTemperature.text ="${results.first().now?.temperature?:"--"}°"
+                    mBinding.includeDrawer.tvWeather.text=results.first().now?.text?:"--"
                 }
             }
         }

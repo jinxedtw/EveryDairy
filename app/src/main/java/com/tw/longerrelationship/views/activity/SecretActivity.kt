@@ -1,16 +1,10 @@
 package com.tw.longerrelationship.views.activity
 
-import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivitySecretBinding
-import com.tw.longerrelationship.logic.network.TotalNetwork
-import com.tw.longerrelationship.util.DataStoreUtil
-import com.tw.longerrelationship.util.CipherUtil
-import com.tw.longerrelationship.util.setOnClickListeners
-import com.tw.longerrelationship.util.showToast
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants.KEY_DAIRY_PASSWORD
 import kotlinx.coroutines.launch
 
 class SecretActivity : BaseActivity<ActivitySecretBinding>() {
@@ -24,26 +18,19 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
         setOnClickListeners(
             mBinding.btSetComplete,
             mBinding.btLogin,
-            mBinding.btRequestWeather
         ) {
             when (this) {
                 mBinding.btSetComplete -> {
                     handlePassword()
                 }
                 mBinding.btLogin -> {
-                    val encodeStr = DataStoreUtil.getSyncData(DAIRY_PASSWORD, "")
+                    val encodeStr = DataStoreUtil.getSyncData(KEY_DAIRY_PASSWORD, "")
 
                     val key = CipherUtil.getAESKey(mBinding.etLogin.text.toString())
                     if (CipherUtil.decryptAES(encodeStr, key).equals(SECRET_STRING)) {
                         showToast(this@SecretActivity, "登录成功")
                     }
 
-                }
-                mBinding.btRequestWeather -> {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val result =  TotalNetwork.getInstance().getNowWeather("ip")
-                        Log.d(this@SecretActivity.tag, "返回结果: $result")
-                    }
                 }
             }
         }
@@ -54,10 +41,7 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
 
         lifecycleScope.launch {
             if (mBinding.etInputPassword.text.isNotEmpty()) {
-                DataStoreUtil.putData(
-                    DAIRY_PASSWORD,
-                    CipherUtil.encryptAES(SECRET_STRING, key)
-                )
+                DataStoreUtil.putData(KEY_DAIRY_PASSWORD, CipherUtil.encryptAES(SECRET_STRING, key))
             }
         }
     }
@@ -66,8 +50,7 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
     override fun getLayoutId(): Int = R.layout.activity_secret
 
     companion object {
-        const val DAIRY_PASSWORD = "dairy_password"
-        const val SECRET_STRING = "阿巴阿巴阿巴嘟嘟嘟啦啦啦啦"
+        private const val SECRET_STRING = "阿巴阿巴阿巴嘟嘟嘟啦啦啦啦"
         const val ENCODE_STRING = "encode_string"
     }
 }
