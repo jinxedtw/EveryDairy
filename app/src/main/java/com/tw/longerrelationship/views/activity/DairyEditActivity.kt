@@ -39,6 +39,11 @@ import com.tw.longerrelationship.databinding.ActivityDairyEditBinding
 import com.tw.longerrelationship.help.LocationService
 import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
+import com.tw.longerrelationship.util.Constants.INTENT_DAIRY_ID
+import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_LIST
+import com.tw.longerrelationship.util.Constants.KEY_RECOVER_CONTENT
+import com.tw.longerrelationship.util.Constants.KEY_RECOVER_TITLE
 import com.tw.longerrelationship.viewmodel.DairyEditViewModel
 import com.tw.longerrelationship.views.widgets.ColorsPainDialog
 import com.tw.longerrelationship.views.widgets.ColorsPainDialog.Companion.DEFAULT_COLOR_INDEX
@@ -65,7 +70,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     private val layoutManager = GridLayoutManager(this, 3)
 
     private val dairyId by lazy {
-        intent.getIntExtra(DAIRY_ID, -1)
+        intent.getIntExtra(INTENT_DAIRY_ID, -1)
     }
     private val moodDialog: IconSelectDialog by lazy {
         IconSelectDialog(this, R.style.Dialog, 2) { drawable, iconId ->
@@ -281,15 +286,15 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                     AlertDialog.Builder(this@DairyEditActivity).setMessage("是否恢复上次未保存内容?")
                         .setNegativeButton("放弃") { _, _ ->
                             lifecycleScope.launch {
-                                DataStoreUtil.removeData(RECOVER_CONTENT, "")
-                                DataStoreUtil.removeData(RECOVER_TITLE, "")
+                                DataStoreUtil.removeData(KEY_RECOVER_CONTENT, "")
+                                DataStoreUtil.removeData(KEY_RECOVER_TITLE, "")
                             }
                             mBinding.clRecover.gone()
                         }
                         .setPositiveButton("恢复") { _, _ ->
                             lifecycleScope.launch {
-                                DataStoreUtil.removeData(RECOVER_CONTENT, "")
-                                DataStoreUtil.removeData(RECOVER_TITLE, "")
+                                DataStoreUtil.removeData(KEY_RECOVER_CONTENT, "")
+                                DataStoreUtil.removeData(KEY_RECOVER_TITLE, "")
                             }
                             mBinding.clRecover.gone()
                             recoverDairy()
@@ -368,8 +373,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             val result = viewModel.saveDairy(mBinding.appBar.getTitle())
             if (result.isSuccess) {
                 isNeedToSaved = false
-                DataStoreUtil.removeData(RECOVER_CONTENT, "")
-                DataStoreUtil.removeData(RECOVER_TITLE, "")
+                DataStoreUtil.removeData(KEY_RECOVER_CONTENT, "")
+                DataStoreUtil.removeData(KEY_RECOVER_TITLE, "")
                 runOnUiThread { ToastWithImage.showToast("保存成功", true) }
                 finishActivity()
             } else {
@@ -400,13 +405,13 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
     private fun tryToRecoverDairy() {
         lifecycleScope.launch(Dispatchers.Main) {
-            DataStoreUtil.readStringFlow(RECOVER_CONTENT).first {
+            DataStoreUtil.readStringFlow(KEY_RECOVER_CONTENT).first {
                 if (it.isNotEmpty()) {
                     recoveredContent = it
                 }
                 true
             }
-            DataStoreUtil.readStringFlow(RECOVER_TITLE).first {
+            DataStoreUtil.readStringFlow(KEY_RECOVER_TITLE).first {
                 if (it.isNotEmpty()) {
                     recoveredTitle = it
                 }
@@ -443,8 +448,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     override fun onPause() {
         super.onPause()
         if (!TextUtils.isEmpty(viewModel.dairyContent.value) && isNeedToSaved) {
-            DataStoreUtil.saveSyncStringData(RECOVER_CONTENT, viewModel.dairyContent.value!!)
-            DataStoreUtil.saveSyncStringData(RECOVER_TITLE, mBinding.appBar.getTitle())
+            DataStoreUtil.saveSyncStringData(KEY_RECOVER_CONTENT, viewModel.dairyContent.value!!)
+            DataStoreUtil.saveSyncStringData(KEY_RECOVER_TITLE, mBinding.appBar.getTitle())
         }
     }
 
@@ -492,8 +497,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
     fun pictureInfoActivityJump(index: Int) {
         val bundle = Bundle().apply {
-            putParcelableArrayList(PICTURE_LIST, viewModel.pictureList)
-            putInt(CURRENT_PICTURE, index)
+            putParcelableArrayList(INTENT_PICTURE_LIST, viewModel.pictureList)
+            putInt(INTENT_CURRENT_PICTURE, index)
         }
         toPictureInfoLauncher.launch(bundle)
     }
@@ -606,10 +611,5 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
             return intent?.data
         }
-    }
-
-    companion object {
-        const val RECOVER_CONTENT = "recoverContent"     // 恢复日记内容
-        const val RECOVER_TITLE = "recoverTitle"           // 恢复日记标题
     }
 }

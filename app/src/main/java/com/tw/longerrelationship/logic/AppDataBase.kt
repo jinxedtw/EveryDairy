@@ -9,7 +9,7 @@ import com.tw.longerrelationship.logic.dao.DairyDao
 import com.tw.longerrelationship.logic.dao.ToDoDao
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.logic.model.ToDoItem
-import com.tw.longerrelationship.util.DATABASE_NAME
+import com.tw.longerrelationship.util.Constants.DATABASE_NAME
 
 /**
  * App数据库

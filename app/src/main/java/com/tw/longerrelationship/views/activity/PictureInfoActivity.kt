@@ -10,6 +10,9 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.ImageAdapter
 import com.tw.longerrelationship.databinding.ActivityPictureInfoBinding
 import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
+import com.tw.longerrelationship.util.Constants.INTENT_IF_CAN_DELETE
+import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_LIST
 import com.tw.longerrelationship.viewmodel.PictureInfoViewModel
 
 /**
@@ -50,10 +53,10 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
         val data = intent.extras
         if (data != null) {
             viewModel.uriList =
-                data.getParcelableArrayList(PICTURE_LIST) ?: ArrayList()
-            viewModel.currentPicture.postValue(data.getInt(CURRENT_PICTURE))
-            current = data.getInt(CURRENT_PICTURE)
-            ifCanDelete = data.getBoolean(IF_CAN_DELETE, true)
+                data.getParcelableArrayList(INTENT_PICTURE_LIST) ?: ArrayList()
+            viewModel.currentPicture.postValue(data.getInt(INTENT_CURRENT_PICTURE))
+            current = data.getInt(INTENT_CURRENT_PICTURE)
+            ifCanDelete = data.getBoolean(INTENT_IF_CAN_DELETE, true)
         }
     }
 

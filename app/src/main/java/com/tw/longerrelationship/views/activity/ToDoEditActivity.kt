@@ -9,6 +9,7 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivityToDoEditBinding
 import com.tw.longerrelationship.logic.model.EmergencyLevel
 import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants.INTENT_TODO_ID
 import com.tw.longerrelationship.viewmodel.ToDoEditViewModel
 import com.tw.longerrelationship.views.fragment.ToDoFragment
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
  */
 class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
     private val todoId by lazy {
-        intent.getIntExtra(TODO_ID, -1)
+        intent.getIntExtra(INTENT_TODO_ID, -1)
     }
     private val viewModel by lazy {
         ViewModelProvider(

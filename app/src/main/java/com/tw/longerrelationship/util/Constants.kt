@@ -1,22 +1,19 @@
 package com.tw.longerrelationship.util
 
-/**
- * Constants used throughout the app.
- */
-const val DATABASE_NAME = "longer-relationship-db"
-const val PICTURE_LIST = "pictureList"          // 图片列表
-const val CURRENT_PICTURE = "currentPicture"    // 当前图片
-const val IF_CAN_DELETE = "ifCanDelete"         // 是否可以删除图片
-const val DAIRY_ID = "dairyId"
-const val TODO_ID = "todoId"
-
 object Constants {
-
-    object ItemViewType {
-        const val UNKNOWN = 0               //未知类型，使用EmptyViewHolder容错处理
-        const val PICTURE_SELECT_TAIL = 1   //图片选择尾部增加的类型
-        const val PICTURE_SELECT = 2        //图片选择,一般类型
-    }
-
     const val SHARED_PREFERENCES_NAME: String = "app_preferences"
+    const val DATABASE_NAME = "longer-relationship-db"
+
+    /** intent传输键 */
+    const val INTENT_PICTURE_LIST = "pictureList"
+    const val INTENT_CURRENT_PICTURE = "currentPicture"    // 当前图片
+    const val INTENT_DAIRY_ID = "dairyId"
+    const val INTENT_TODO_ID = "todoId"
+    const val INTENT_IF_CAN_DELETE = "ifCanDelete"         // 是否可以删除图片
+
+    /**  dataStore的存储键 */
+    const val KEY_DAIRY_SHOW_FOLD = "dairyShowFold"     // 展示方式
+    const val KEY_ACCOUNT_SEX = "sex"                   // 性别    0:man 1:woman
+    const val KEY_RECOVER_CONTENT = "recoverContent"    // 恢复日记内容
+    const val KEY_RECOVER_TITLE = "recoverTitle"        // 恢复日记标题
 }

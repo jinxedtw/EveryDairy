@@ -19,6 +19,10 @@ import com.tw.longerrelationship.adapter.PictureShowAdapter
 import com.tw.longerrelationship.databinding.ActivityDairyInfoBinding
 import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
+import com.tw.longerrelationship.util.Constants.INTENT_DAIRY_ID
+import com.tw.longerrelationship.util.Constants.INTENT_IF_CAN_DELETE
+import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_LIST
 import com.tw.longerrelationship.viewmodel.DairyInfoViewModel
 import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.flow.collect
@@ -43,7 +47,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
     private val viewModel: DairyInfoViewModel by lazy {
         ViewModelProvider(
             this,
-            InjectorUtils.getDairyInfoViewModelFactory(intent.getIntExtra(DAIRY_ID, -1))
+            InjectorUtils.getDairyInfoViewModelFactory(intent.getIntExtra(INTENT_DAIRY_ID, -1))
         ).get(DairyInfoViewModel::class.java)
     }
 
@@ -174,7 +178,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                     .withClick(R.id.tv_share, {
                         // TODO: 2021/11/4 后面做成分享文本和图片
                         shareText(mBinding.tvContent.text.toString())
-                    },true)
+                    }, true)
                     .withClick(R.id.tv_delete, {
                         viewModel.deleteDairy()
                         finish()
@@ -205,9 +209,9 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
 
     fun pictureInfoActivityJump(index: Int) {
         val bundle = Bundle().apply {
-            putParcelableArrayList(PICTURE_LIST, viewModel.pictureList)
-            putInt(CURRENT_PICTURE, index)
-            putBoolean(IF_CAN_DELETE, false)
+            putParcelableArrayList(INTENT_PICTURE_LIST, viewModel.pictureList)
+            putInt(INTENT_CURRENT_PICTURE, index)
+            putBoolean(INTENT_IF_CAN_DELETE, false)
         }
         toPictureInfoLauncher.launch(bundle)
     }
@@ -217,7 +221,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
      */
     private fun jumpToDairyEditActivity() {
         val intent = Intent(this, DairyEditActivity::class.java)
-        intent.putExtra(DAIRY_ID, dairyId)
+        intent.putExtra(INTENT_DAIRY_ID, dairyId)
 
         startActivity(intent)
     }

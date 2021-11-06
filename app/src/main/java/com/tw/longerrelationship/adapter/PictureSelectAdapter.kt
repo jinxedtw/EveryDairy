@@ -34,7 +34,7 @@ class PictureSelectAdapter(
 
         this.parent = parent
 
-        return if (viewType == Constants.ItemViewType.PICTURE_SELECT_TAIL)
+        return if (viewType == PICTURE_SELECT_TAIL)
             TailViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.layout_picture_select_tail, parent, false
@@ -71,9 +71,9 @@ class PictureSelectAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return if (position == pictureList.size && position != 9)
-            Constants.ItemViewType.PICTURE_SELECT_TAIL
+            PICTURE_SELECT_TAIL
         else
-            Constants.ItemViewType.PICTURE_SELECT
+            PICTURE_SELECT
 
     }
 
@@ -104,4 +104,9 @@ class PictureSelectAdapter(
         }
     }
 
+    companion object {
+        const val UNKNOWN = 0               //未知类型，使用EmptyViewHolder容错处理
+        const val PICTURE_SELECT_TAIL = 1   //图片选择尾部增加的类型
+        const val PICTURE_SELECT = 2        //图片选择,一般类型
+    }
 }

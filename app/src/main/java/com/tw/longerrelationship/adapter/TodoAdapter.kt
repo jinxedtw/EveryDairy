@@ -18,6 +18,7 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.EmergencyLevel
 import com.tw.longerrelationship.logic.model.ToDoItem
 import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants.INTENT_TODO_ID
 import com.tw.longerrelationship.views.activity.HomeActivity
 import com.tw.longerrelationship.views.activity.ToDoEditActivity
 
@@ -90,7 +91,7 @@ class TodoAdapter(val context: Context) :
                 }
                 itemView.setOnClickListener {
                     val intent = Intent(context, ToDoEditActivity::class.java)
-                    intent.putExtra(TODO_ID, toDoItem.id)
+                    intent.putExtra(INTENT_TODO_ID, toDoItem.id)
                     (context as HomeActivity).startActivity(intent)
                 }
                 ctContent.background = ContextCompat.getDrawable(context, R.drawable.rip_dairy)

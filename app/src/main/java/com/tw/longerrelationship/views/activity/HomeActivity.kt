@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.View
-import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +23,8 @@ import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SETT
 import com.tw.longerrelationship.adapter.FragmentAdapter
 import com.tw.longerrelationship.databinding.ActivityMainBinding
 import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants.KEY_ACCOUNT_SEX
+import com.tw.longerrelationship.util.Constants.KEY_DAIRY_SHOW_FOLD
 import com.tw.longerrelationship.viewmodel.MainViewModel
 import com.tw.longerrelationship.views.fragment.BaseFragment
 import com.tw.longerrelationship.views.fragment.NoteFragment
@@ -295,22 +296,19 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     companion object {
-        const val DAIRY_SHOW_FOLD = "dairyShowFold"     // 打开日记的方式
-        const val ACCOUNT_SEX = "sex"                   // 性别      0:man   1:woman
-
         var accountSex: Int
-            get() = DataStoreUtil.readIntData(ACCOUNT_SEX)
+            get() = DataStoreUtil.readIntData(KEY_ACCOUNT_SEX)
             set(value) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    DataStoreUtil.saveIntData(ACCOUNT_SEX, value)
+                    DataStoreUtil.saveIntData(KEY_ACCOUNT_SEX, value)
                 }
             }
 
         var dairyShowFold: Boolean
-            get() = DataStoreUtil.readBooleanData(DAIRY_SHOW_FOLD, true)
+            get() = DataStoreUtil.readBooleanData(KEY_DAIRY_SHOW_FOLD, true)
             set(value) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    DataStoreUtil.saveBooleanData(DAIRY_SHOW_FOLD, value)
+                    DataStoreUtil.saveBooleanData(KEY_ACCOUNT_SEX, value)
                 }
             }
     }
