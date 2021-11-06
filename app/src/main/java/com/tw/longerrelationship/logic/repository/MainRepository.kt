@@ -7,6 +7,7 @@ import com.tw.longerrelationship.logic.dao.DairyDao
 import com.tw.longerrelationship.logic.dao.ToDoDao
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.logic.model.ToDoItem
+import com.tw.longerrelationship.logic.network.TotalNetwork
 import kotlinx.coroutines.flow.Flow
 
 
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.Flow
  */
 class MainRepository private constructor(
     private val dairyDao: DairyDao,
-    private val todoDao: ToDoDao
+    private val todoDao: ToDoDao,
+    private val netWorker: TotalNetwork
 ) {
     // -----------------------------笔记相关接口
     fun getDairyById(id: Int) = dairyDao.getDairyById(id)
@@ -72,15 +74,19 @@ class MainRepository private constructor(
         else todoDao.updateTodo(toDoItem)
 
 
+    // ------------------------------网络请求
+    suspend fun requestWeather() = netWorker.getNowWeather("beijing")
+
+
     companion object {
         private const val PAGE_SIZE = 50
 
         @Volatile
         private var instance: MainRepository? = null
 
-        fun getInstance(dairyDao: DairyDao, toDoDao: ToDoDao): MainRepository {
+        fun getInstance(dairyDao: DairyDao, toDoDao: ToDoDao, netWorker: TotalNetwork): MainRepository {
             return instance ?: synchronized(this) {
-                instance ?: MainRepository(dairyDao, toDoDao)
+                instance ?: MainRepository(dairyDao, toDoDao, netWorker)
             }
         }
     }

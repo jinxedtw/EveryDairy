@@ -1,4 +1,4 @@
-package com.tw.longerrelationship.util
+package com.tw.longerrelationship.help
 
 object TextFormatHelper {
 

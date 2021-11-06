@@ -15,6 +15,8 @@
     <color name="button_press">#cecece</color>
     <color name="blue_app_icon">#81B2D2</color>
     <color name="splash_text">#4B5063</color>
+    <color name="button_selectable">#99CCCCCC</color>
+    <color name="drawer_title_color">#222425</color>
 
     <!--    MainActivity-->
     <color name="SearchBackground">#ececec</color>

@@ -318,6 +318,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         locationService = LocationService(MyApplication.appContext)
         locationService.registerListener(locationListener)
         locationService.setLocationOption(locationService.defaultLocationClientOption)
+        locationService.start()
     }
 
     /**

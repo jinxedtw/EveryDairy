@@ -161,7 +161,7 @@ fun Activity.shareImage(bitmap: Bitmap?) {
 }
 
 
-/** 分享扫描结果 */
+/** 分享文本 */
 fun Activity.shareText(text: String) {
     val intent = Intent()
     intent.action = Intent.ACTION_SEND

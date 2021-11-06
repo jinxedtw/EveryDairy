@@ -25,15 +25,8 @@
             app:viewModel="@{viewModel}" />
 
         <!--  抽屉布局-->
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigation"
-            android:layout_width="240dp"
-            app:itemIconTint="#515151"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/layout_drawer_header"
-            app:menu="@menu/menu_main_drawer" />
-
+        <include
+            android:id="@+id/include_drawer"
+            layout="@layout/layout_drawer_header"/>
     </androidx.drawerlayout.widget.DrawerLayout>
-
 </layout>

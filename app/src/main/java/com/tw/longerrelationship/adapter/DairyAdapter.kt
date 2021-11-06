@@ -9,7 +9,6 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.DairyItem
-import com.tw.longerrelationship.util.TextFormatHelper
+import com.tw.longerrelationship.help.TextFormatHelper
 import com.tw.longerrelationship.util.getComparedTime
 import com.tw.longerrelationship.util.gone
 import com.tw.longerrelationship.util.visible

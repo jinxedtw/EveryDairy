@@ -9,9 +9,18 @@ import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.adapter.DrawerItemAdapter
+import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_ABOUT
+import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_DAILY
+import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_FAVORITES
+import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_HELP
+import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_PICTURE
+import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SECRET
+import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SETTING
 import com.tw.longerrelationship.adapter.FragmentAdapter
 import com.tw.longerrelationship.databinding.ActivityMainBinding
 import com.tw.longerrelationship.util.*
@@ -30,6 +39,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var fragments: List<BaseFragment>
     private lateinit var toDoFragment: ToDoFragment
     private lateinit var noteFragment: NoteFragment
+    private lateinit var mDrawerAdapter: DrawerItemAdapter
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -48,6 +58,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         initBinding()
         initTab()
         initView()
+        initDrawer()
         observe()
     }
 
@@ -104,17 +115,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initView() {
         viewModel.isFold.value = dairyShowFold
-
         changeHeadImage(accountSex)
-
-        mBinding.navigation.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.it_pictures -> showToast(this, "我点了图库")
-                R.id.it_about -> showToast(this, "我点了关于")
-                R.id.it_secret -> startActivity(Intent(this, SecretActivity::class.java))
-            }
-            return@setNavigationItemSelectedListener true
-        }
 
         // 设置点击事件
         setOnClickListeners(
@@ -122,7 +123,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
             mBinding.includeMain.includeBar.ivDisplay,
             mBinding.includeMain.includeBar.llSearch,
             mBinding.includeMain.includeBar.tvFilter,
-            mBinding.navigation.getHeaderView(0),
+            mBinding.includeDrawer.ivHead,
             mBinding.includeMain.fbEdit,
             mBinding.includeMain.includeCheckBar.ivClose,
             mBinding.includeMain.includeCheckBar.tvDelete,
@@ -141,7 +142,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                     overridePendingTransition(R.anim.animation_left_in, R.anim.animation_right_out)
                 }
                 // 点击navigation头部
-                mBinding.navigation.getHeaderView(0) -> {
+                mBinding.includeDrawer.ivHead -> {
                     AlertDialog.Builder(this@HomeActivity)
                         .setItems(
                             arrayOf("男", "女")
@@ -178,6 +179,40 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
+    private fun initDrawer() {
+        //传入侧拉栏数据
+        val list = listOf(
+            DrawerItemAdapter.DrawerLayoutBean(R.string.pictures, R.drawable.ic_photo_album, DRAWER_PICTURE),
+            DrawerItemAdapter.DrawerLayoutBean(R.string.daily_plan, R.drawable.ic_survey, DRAWER_DAILY),
+            DrawerItemAdapter.DrawerLayoutBean(R.string.love, R.drawable.ic_favorites, DRAWER_FAVORITES),
+            DrawerItemAdapter.DrawerLayoutBean(R.string.secret, R.drawable.ic_secret, DRAWER_SECRET),
+            DrawerItemAdapter.DrawerLayoutBean(R.string.help, R.drawable.ic_help, DRAWER_HELP),
+            DrawerItemAdapter.DrawerLayoutBean(R.string.about, R.drawable.ic_about, DRAWER_ABOUT),
+            DrawerItemAdapter.DrawerLayoutBean(R.string.setting, R.drawable.ic_settings, DRAWER_SETTING),
+        )
+        mDrawerAdapter = DrawerItemAdapter(list)
+        mBinding.includeDrawer.rvDrawer.layoutManager = LinearLayoutManager(applicationContext)
+        mBinding.includeDrawer.rvDrawer.isNestedScrollingEnabled = false
+        mBinding.includeDrawer.rvDrawer.adapter = mDrawerAdapter
+        mDrawerAdapter.setClickListener(object : DrawerItemAdapter.OnItemClickListener {
+            override fun onClick(view: View, position: Int) {
+                when (list[position].type) {
+                    DRAWER_PICTURE -> showToast(this@HomeActivity, "我点了图库")
+                    DRAWER_ABOUT -> showToast(this@HomeActivity, "我点了关于")
+                    3 -> {
+                    }
+                    DRAWER_SECRET -> startActivity(Intent(this@HomeActivity, SecretActivity::class.java))
+                    5 -> {
+                    }
+                    6 -> {
+                    }
+                    DRAWER_SETTING -> {
+                    }
+                }
+            }
+        })
+    }
+
     /**
      * 设置浮动按钮的动画
      */
@@ -203,14 +238,14 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     private fun enterOrExitCheckBoxType(boolean: Boolean) {
         if (boolean) {
             mBinding.includeMain.vpMain.isUserInputEnabled = false              // 禁止左右滑动
-            mBinding.includeMain.tabLayout.visibility = View.GONE
-            mBinding.includeMain.includeBar.root.visibility = View.GONE
-            mBinding.includeMain.includeCheckBar.root.visibility = View.VISIBLE
+            mBinding.includeMain.tabLayout.gone()
+            mBinding.includeMain.includeBar.root.gone()
+            mBinding.includeMain.includeCheckBar.root.visible()
         } else {
             mBinding.includeMain.vpMain.isUserInputEnabled = true
-            mBinding.includeMain.includeBar.root.visibility = View.VISIBLE
-            mBinding.includeMain.tabLayout.visibility = View.VISIBLE
-            mBinding.includeMain.includeCheckBar.root.visibility = View.GONE
+            mBinding.includeMain.includeBar.root.visible()
+            mBinding.includeMain.tabLayout.visible()
+            mBinding.includeMain.includeCheckBar.root.gone()
         }
     }
 
@@ -221,14 +256,8 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
      */
     private fun changeHeadImage(type: Int) {
         when (type) {
-            0 -> {
-                mBinding.navigation.getHeaderView(0)
-                    .findViewById<ImageView>(R.id.iv_head).setDrawable(R.drawable.ic_boy)
-            }
-            1 -> {
-                mBinding.navigation.getHeaderView(0)
-                    .findViewById<ImageView>(R.id.iv_head).setDrawable(R.drawable.ic_girl)
-            }
+            0 -> mBinding.includeDrawer.ivHead.setDrawable(R.drawable.ic_boy)
+            1 -> mBinding.includeDrawer.ivHead.setDrawable(R.drawable.ic_girl)
         }
     }
 

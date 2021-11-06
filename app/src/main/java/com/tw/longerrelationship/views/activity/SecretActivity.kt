@@ -1,12 +1,16 @@
 package com.tw.longerrelationship.views.activity
 
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivitySecretBinding
+import com.tw.longerrelationship.logic.network.TotalNetwork
 import com.tw.longerrelationship.util.DataStoreUtil
 import com.tw.longerrelationship.util.CipherUtil
 import com.tw.longerrelationship.util.setOnClickListeners
 import com.tw.longerrelationship.util.showToast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class SecretActivity : BaseActivity<ActivitySecretBinding>() {
@@ -19,7 +23,8 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
     private fun initView() {
         setOnClickListeners(
             mBinding.btSetComplete,
-            mBinding.btLogin
+            mBinding.btLogin,
+            mBinding.btRequestWeather
         ) {
             when (this) {
                 mBinding.btSetComplete -> {
@@ -28,24 +33,30 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
                 mBinding.btLogin -> {
                     val encodeStr = DataStoreUtil.getSyncData(DAIRY_PASSWORD, "")
 
-                    val key=CipherUtil.getAESKey(mBinding.etLogin.text.toString())
+                    val key = CipherUtil.getAESKey(mBinding.etLogin.text.toString())
                     if (CipherUtil.decryptAES(encodeStr, key).equals(SECRET_STRING)) {
                         showToast(this@SecretActivity, "登录成功")
                     }
 
+                }
+                mBinding.btRequestWeather -> {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val result =  TotalNetwork.getInstance().getNowWeather("ip")
+                        Log.d(this@SecretActivity.tag, "返回结果: $result")
+                    }
                 }
             }
         }
     }
 
     private fun handlePassword() {
-        val key =  CipherUtil.getAESKey(mBinding.etInputPassword.text.toString())
+        val key = CipherUtil.getAESKey(mBinding.etInputPassword.text.toString())
 
         lifecycleScope.launch {
             if (mBinding.etInputPassword.text.isNotEmpty()) {
                 DataStoreUtil.putData(
                     DAIRY_PASSWORD,
-                    CipherUtil.encryptAES(SECRET_STRING,key)
+                    CipherUtil.encryptAES(SECRET_STRING, key)
                 )
             }
         }

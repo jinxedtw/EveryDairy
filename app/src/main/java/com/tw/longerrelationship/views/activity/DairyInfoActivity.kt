@@ -126,9 +126,9 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                     val bool = !viewModel.ifFavorites.value!!
                     viewModel.ifFavorites.value = bool
                     if (bool) {
-                        ToastWithImage.showToast("已收藏",true)
+                        ToastWithImage.showToast("已收藏", true)
                     } else {
-                        ToastWithImage.showToast("已取消收藏",true)
+                        ToastWithImage.showToast("已取消收藏", true)
                     }
                     viewModel.favoriteDairy(dairyId)
                 }
@@ -171,6 +171,10 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                         setStickerDrawable()
                         ToastWithImage.showToast("切换成功", true)
                     }, true)
+                    .withClick(R.id.tv_share, {
+                        // TODO: 2021/11/4 后面做成分享文本和图片
+                        shareText(mBinding.tvContent.text.toString())
+                    },true)
                     .withClick(R.id.tv_delete, {
                         viewModel.deleteDairy()
                         finish()
@@ -237,7 +241,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
     companion object {
         const val STICKER_TOTAL_NUM: Int = 9
         const val STICKER_ID = "stickerId"
-        const val POPUP_WINDOW_HEIGHT: Int = 160
+        const val POPUP_WINDOW_HEIGHT: Int = 200
         val timeConverterMap =
             hashMapOf(1 to "周日", 2 to "周一", 3 to "周二", 4 to "周三", 5 to "周四", 6 to "周五", 7 to "周六")
 

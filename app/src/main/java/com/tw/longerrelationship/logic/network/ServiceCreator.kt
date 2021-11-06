@@ -11,7 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory
  * 网络服务类,配置okhttp拦截器和Retrofit相关参数
  */
 object ServiceCreator {
-    private const val BASE_URL = "https://www.wanandroid.com/"
+    private const val BASE_URL = "https://api.seniverse.com/v3/weather/"
+
+    /** 天气Api私钥 */
+    const val weatherApiSecreteKey = "SI3QcOEUfSKmdZqVt"
 
     /**
      * 配置OkhttpClient,添加拦截器
@@ -23,7 +26,7 @@ object ServiceCreator {
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(httpClient)
-        // 这里的Gson转化器作用
+        // 这里的Gson转化器作用s
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
