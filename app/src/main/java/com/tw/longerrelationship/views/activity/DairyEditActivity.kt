@@ -319,6 +319,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                 } else {
                     mBinding.tvLocationInfo.text = location?.addrStr
                 }
+                // 获取结果后关闭定位,节省电量
+                stopLocationService()
             }
         }
         locationService = LocationService(MyApplication.appContext)
@@ -458,8 +460,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        locationService.unregisterListener(locationListener) //注销掉监听
-        locationService.stop() //停止定位服务
+        stopLocationService()
     }
 
     /**
@@ -567,14 +568,18 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         return Color.rgb(red, green, blue)
     }
 
-    /**
-     * 把照片添加到图库
-     */
+    /** 把照片添加到图库*/
     private fun galleryAddPic() {
         // 保存图片
         MediaStore.Images.Media.insertImage(contentResolver, pictureFile.toString(), "title", "description")
         // 更新图库
         MediaScannerConnection.scanFile(baseContext, arrayOf(pictureFile.toString()), null, null)
+    }
+
+    /** 停止定位服务 */
+    private fun stopLocationService(){
+        locationService.unregisterListener(locationListener)
+        locationService.stop()
     }
 
 

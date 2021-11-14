@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.Html
 import android.view.LayoutInflater
@@ -209,7 +211,12 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
                 itemView.setOnLongClickListener {
                     initMap()
                     setSelectItem(this.layoutPosition)
-                    (context.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator).vibrate(1000)
+                    val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+                    } else {
+                        vibrator.vibrate(200)
+                    }
                     (context as HomeActivity).entryCheckType(true)
                     true
                 }

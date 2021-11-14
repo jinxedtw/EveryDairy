@@ -24,7 +24,7 @@ object DataStoreUtil {
             res as U
         }catch (e:Exception){
             e.printStackTrace()
-            showToast("dataStore  getData error")
+            showToast("dataStore  getData error",debugMode = true)
             default
         }
     }
@@ -43,7 +43,7 @@ object DataStoreUtil {
             data as Flow<U>
         }catch (e:Exception){
             e.printStackTrace()
-            showToast("dataStore  getData error")
+            showToast("dataStore  getData error",debugMode = true)
             flow { emit(default) }
         }
     }
@@ -60,7 +60,7 @@ object DataStoreUtil {
             }
         }catch (e:Exception){
             e.printStackTrace()
-            showToast("dataStore error")
+            showToast("dataStore error",debugMode = true)
         }
     }
 
