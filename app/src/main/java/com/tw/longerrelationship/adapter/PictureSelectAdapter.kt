@@ -87,7 +87,7 @@ class PictureSelectAdapter(
         init {
             pictureAdd.setOnClickListener {
                 if (pictureList.size == 9)
-                    showToast(activity, "最多只能添加9张图片哦(^_^)")
+                    showToast("最多只能添加9张图片哦(^_^)")
                 else
                     PictureTypeSelectDialog(activity).show()
             }

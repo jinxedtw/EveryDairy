@@ -2,10 +2,7 @@ package com.tw.longerrelationship.util
 
 import androidx.datastore.preferences.core.*
 import com.tw.longerrelationship.MyApplication.Companion.dataStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.lang.reflect.Type
@@ -14,39 +11,56 @@ import kotlin.reflect.KClass
 object DataStoreUtil {
 
     @Suppress("UNCHECKED_CAST")
-    fun <U> getSyncData(key: String, default: U): U {
-        val res = when (default) {
-            is Long -> readLongData(key, default)
-            is String -> readStringData(key, default)
-            is Int -> readIntData(key, default)
-            is Boolean -> readBooleanData(key, default)
-            is Float -> readFloatData(key, default)
-            else -> throw IllegalArgumentException("This type can be saved into DataStore")
+    fun <U> getSyncData(key: String, default: U): U? {
+        return try {
+            val res = when (default) {
+                is Long -> readLongData(key, default)
+                is String -> readStringData(key, default)
+                is Int -> readIntData(key, default)
+                is Boolean -> readBooleanData(key, default)
+                is Float -> readFloatData(key, default)
+                else -> throw IllegalArgumentException("This type can be saved into DataStore")
+            }
+            res as U
+        }catch (e:Exception){
+            e.printStackTrace()
+            showToast("dataStore  getData error")
+            default
         }
-        return res as U
     }
 
     @Suppress("UNCHECKED_CAST")
     fun <U> getData(key: String, default: U): Flow<U> {
-        val data = when (default) {
-            is Long -> readLongFlow(key, default)
-            is String -> readStringFlow(key, default)
-            is Int -> readIntFlow(key, default)
-            is Boolean -> readBooleanFlow(key, default)
-            is Float -> readFloatFlow(key, default)
-            else -> throw IllegalArgumentException("This type can be saved into DataStore")
+        return try {
+            val data = when (default) {
+                is Long -> readLongFlow(key, default)
+                is String -> readStringFlow(key, default)
+                is Int -> readIntFlow(key, default)
+                is Boolean -> readBooleanFlow(key, default)
+                is Float -> readFloatFlow(key, default)
+                else -> throw IllegalArgumentException("This type can be saved into DataStore")
+            }
+            data as Flow<U>
+        }catch (e:Exception){
+            e.printStackTrace()
+            showToast("dataStore  getData error")
+            flow { emit(default) }
         }
-        return data as Flow<U>
     }
 
     suspend fun <U> putData(key: String, value: U) {
-        when (value) {
-            is Long -> saveLongData(key, value)
-            is String -> saveStringData(key, value)
-            is Int -> saveIntData(key, value)
-            is Boolean -> saveBooleanData(key, value)
-            is Float -> saveFloatData(key, value)
-            else -> throw IllegalArgumentException("This type can be saved into DataStore")
+        try {
+            when (value) {
+                is Long -> saveLongData(key, value)
+                is String -> saveStringData(key, value)
+                is Int -> saveIntData(key, value)
+                is Boolean -> saveBooleanData(key, value)
+                is Float -> saveFloatData(key, value)
+                else -> throw IllegalArgumentException("This type can be saved into DataStore")
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+            showToast("dataStore error")
         }
     }
 

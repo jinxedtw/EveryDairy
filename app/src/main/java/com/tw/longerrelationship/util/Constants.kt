@@ -17,4 +17,5 @@ object Constants {
     const val KEY_RECOVER_CONTENT = "recoverContent"    // 恢复日记内容
     const val KEY_RECOVER_TITLE = "recoverTitle"        // 恢复日记标题
     const val KEY_DAIRY_PASSWORD = "dairyPassword"
+    const val KEY_STICKER_ID = "stickerId"
 }

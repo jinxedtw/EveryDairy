@@ -80,7 +80,7 @@ object NetworkUtil {
     }
 
     fun showNetworkUnavailableToast(context: Context) {
-        showToast(context, "Network unavailable, please open the network!", Toast.LENGTH_LONG)
+        showToast("Network unavailable, please open the network!", Toast.LENGTH_LONG)
     }
 
     private fun getActiveNetworkInfo(context: Context?): NetworkInfo? {

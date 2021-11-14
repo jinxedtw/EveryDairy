@@ -3,6 +3,7 @@ package com.tw.longerrelationship.views.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -12,6 +13,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -181,7 +183,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     }
 
     private fun initTheme() {
-        setThemeBackGround(colorList[DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0)])
+        setThemeBackGround(colorList[DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0)?:0])
     }
 
     private fun observe() {
@@ -313,8 +315,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         locationListener = object : BDAbstractLocationListener() {
             override fun onReceiveLocation(location: BDLocation?) {
                 if (location?.locType ?: 0 == 62) {
-                    showToast(baseContext, "定位失败,请检查定位系统是否已经开启")
-                    mBinding.tvLocationInfo.text = "无位置信息"
+                    mBinding.tvLocationInfo.text = "定位失败,请检查定位系统是否已经开启"
                 } else {
                     mBinding.tvLocationInfo.text = location?.addrStr
                 }
@@ -370,16 +371,18 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
      */
     fun saveDairy() {
         lifecycleScope.launch(Dispatchers.IO) {
-            val result = viewModel.saveDairy(mBinding.appBar.getTitle())
-            if (result.isSuccess) {
-                isNeedToSaved = false
-                DataStoreUtil.removeData(KEY_RECOVER_CONTENT, "")
-                DataStoreUtil.removeData(KEY_RECOVER_TITLE, "")
-                runOnUiThread { ToastWithImage.showToast("保存成功", true) }
-                finishActivity()
-            } else {
-                runOnUiThread { ToastWithImage.showToast("保存失败", false) }
-            }
+//            for (i in 1..100){
+                val result = viewModel.saveDairy(mBinding.appBar.getTitle())
+                if (result.isSuccess) {
+                    isNeedToSaved = false
+                    DataStoreUtil.removeData(KEY_RECOVER_CONTENT, "")
+                    DataStoreUtil.removeData(KEY_RECOVER_TITLE, "")
+                    runOnUiThread { ToastWithImage.showToast("保存成功", true) }
+                    finishActivity()
+                } else {
+                    runOnUiThread { ToastWithImage.showToast("保存失败", false) }
+                }
+//            }
         }
     }
 

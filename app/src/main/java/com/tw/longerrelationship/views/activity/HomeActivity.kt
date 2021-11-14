@@ -212,8 +212,8 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         mDrawerAdapter.setClickListener(object : DrawerItemAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 when (list[position].type) {
-                    DRAWER_PICTURE -> showToast(this@HomeActivity, "我点了图库")
-                    DRAWER_ABOUT -> showToast(this@HomeActivity, "我点了关于")
+                    DRAWER_PICTURE -> showToast( "我点了图库")
+                    DRAWER_ABOUT -> showToast("我点了关于")
                     3 -> {
                     }
                     DRAWER_SECRET -> startActivity(Intent(this@HomeActivity, SecretActivity::class.java))
@@ -311,10 +311,10 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
 
     companion object {
         var accountSex: Int
-            get() = DataStoreUtil.readIntData(KEY_ACCOUNT_SEX)
+            get() = DataStoreUtil.getSyncData(KEY_ACCOUNT_SEX,0)?:0
             set(value) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    DataStoreUtil.saveIntData(KEY_ACCOUNT_SEX, value)
+                    DataStoreUtil.putData(KEY_ACCOUNT_SEX, value)
                 }
             }
 

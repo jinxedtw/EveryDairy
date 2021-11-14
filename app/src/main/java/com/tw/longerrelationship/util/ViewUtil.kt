@@ -18,6 +18,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import com.tw.longerrelationship.MyApplication.Companion.appContext
 import com.tw.longerrelationship.R
 import java.io.File
 import java.io.IOException
@@ -58,8 +59,8 @@ fun bitmapRound(mBitmap: Bitmap, index: Float): Bitmap? {
 /**
  * 封装Toast
  */
-fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(context, message, duration).show()
+fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(appContext, message, duration).show()
 }
 
 /**

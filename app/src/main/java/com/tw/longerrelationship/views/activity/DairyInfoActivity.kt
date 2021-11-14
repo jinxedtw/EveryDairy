@@ -23,6 +23,7 @@ import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
 import com.tw.longerrelationship.util.Constants.INTENT_DAIRY_ID
 import com.tw.longerrelationship.util.Constants.INTENT_IF_CAN_DELETE
 import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_LIST
+import com.tw.longerrelationship.util.Constants.KEY_STICKER_ID
 import com.tw.longerrelationship.viewmodel.DairyInfoViewModel
 import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.flow.collect
@@ -107,7 +108,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
 
     private fun setStickerDrawable() {
         val resID = resources.getIdentifier(
-            "ic_sticker_${stickerId % 9}",
+            "ic_sticker_${stickerId % STICKER_TOTAL_NUM}",
             "drawable",
             BuildConfig.APPLICATION_ID
         )
@@ -168,7 +169,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                         (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).apply {
                             setPrimaryClip(ClipData.newPlainText("日记文本", mBinding.tvContent.text))
                         }
-                        showToast(this@DairyInfoActivity, "复制文本成功")
+                        ToastWithImage.showToast( "复制文本成功",true)
                     }, true)
                     .withClick(R.id.tv_stickers, {
                         stickerId++
@@ -182,7 +183,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                     .withClick(R.id.tv_delete, {
                         viewModel.deleteDairy()
                         finish()
-                        showToast(baseContext, "删除成功")
+                        ToastWithImage.showToast( "删除成功",true)
                     }, true)
             )
             .show(
@@ -244,13 +245,11 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
 
     companion object {
         const val STICKER_TOTAL_NUM: Int = 9
-        const val STICKER_ID = "stickerId"
         const val POPUP_WINDOW_HEIGHT: Int = 200
-        val timeConverterMap =
-            hashMapOf(1 to "周日", 2 to "周一", 3 to "周二", 4 to "周三", 5 to "周四", 6 to "周五", 7 to "周六")
+        val timeConverterMap = hashMapOf(1 to "周日", 2 to "周一", 3 to "周二", 4 to "周三", 5 to "周四", 6 to "周五", 7 to "周六")
 
         var stickerId: Int
-            get() = DataStoreUtil.readIntData(STICKER_ID)
-            set(value) = DataStoreUtil.saveSyncIntData(STICKER_ID, value)
+            get() = DataStoreUtil.readIntData(KEY_STICKER_ID)
+            set(value) = DataStoreUtil.saveSyncIntData(KEY_STICKER_ID, value)
     }
 }

@@ -42,7 +42,7 @@ class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
         setAppBarTitle("待办事项")
         setAppBarRightText("保存") {
             if (viewModel.todoContent.value == null) {
-                showToast(this, "请输入事项内容")
+                showToast( "请输入事项内容")
             } else {
                 lifecycleScope.launch(Dispatchers.IO) {
                     viewModel.saveToDo()

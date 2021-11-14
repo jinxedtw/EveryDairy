@@ -28,7 +28,7 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
 
                     val key = CipherUtil.getAESKey(mBinding.etLogin.text.toString())
                     if (CipherUtil.decryptAES(encodeStr, key).equals(SECRET_STRING)) {
-                        showToast(this@SecretActivity, "登录成功")
+                        showToast("登录成功")
                     }
 
                 }

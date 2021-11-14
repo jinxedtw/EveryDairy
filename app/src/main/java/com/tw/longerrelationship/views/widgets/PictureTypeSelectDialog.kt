@@ -53,7 +53,7 @@ class PictureTypeSelectDialog : Dialog {
                     dismiss()
                 }
                 llPaint -> {
-                    showToast(activity, "点击画板")
+                    showToast("点击画板")
                     dismiss()
                 }
             }

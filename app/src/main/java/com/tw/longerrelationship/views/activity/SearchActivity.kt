@@ -105,7 +105,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
             }
             findViewById<TextView>(R.id.tv_history).text = it
             findViewById<ImageView>(R.id.iv_item_delete).setOnClickListener {
-                showToast(this@SearchActivity, "itemDelete")
+                showToast("itemDelete")
             }
         }
 
