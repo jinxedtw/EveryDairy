@@ -3,7 +3,6 @@ package com.tw.longerrelationship.views.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -13,7 +12,6 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -368,12 +366,10 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         }
     }
 
-    /**
-     * 保存日记
-     */
+    /** 保存日记 */
     fun saveDairy() {
         lifecycleScope.launch(Dispatchers.IO) {
-//            for (i in 1..100){
+            for (i in 1..100){
                 val result = viewModel.saveDairy(mBinding.appBar.getTitle())
                 if (result.isSuccess) {
                     isNeedToSaved = false
@@ -384,7 +380,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                 } else {
                     runOnUiThread { ToastWithImage.showToast("保存失败", false) }
                 }
-//            }
+            }
         }
     }
 

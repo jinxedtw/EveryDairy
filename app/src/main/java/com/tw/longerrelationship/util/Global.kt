@@ -34,7 +34,7 @@ fun setOnClickListeners(vararg v: View?, block: View.() -> Unit) {
  */
 fun requestPositioningPermission(context: Activity?) {
     // 网络定位
-    try {
+    runCatching {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
                     context!!,
@@ -48,11 +48,10 @@ fun requestPositioningPermission(context: Activity?) {
                 )
             }
         }
-    } catch (e: SecurityException) {
-    }
+    }.onFailure {}
 
     // GPS定位
-    try {
+    runCatching {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
                     context!!,
@@ -66,8 +65,7 @@ fun requestPositioningPermission(context: Activity?) {
                 )
             }
         }
-    } catch (e: SecurityException) {
-    }
+    }.onFailure { }
 }
 
 /**
@@ -199,5 +197,18 @@ fun toHex(red: Int, green: Int, blue: Int) {
     val hg = Integer.toHexString(green)
     val hb = Integer.toHexString(blue)
     println("#$hr$hg$hb")
+}
+
+/** 打印代码块的执行时间 */
+inline fun <T> T.runtimeLog(block: T.() -> Unit) {
+    val startTime = System.currentTimeMillis()
+    block()
+    logD("执行时间", "${System.currentTimeMillis() - startTime}ms")
+}
+
+inline fun runtimeLog(block: () -> Unit){
+    val startTime = System.currentTimeMillis()
+    block()
+    logD("执行时间", "${System.currentTimeMillis() - startTime}ms")
 }
 

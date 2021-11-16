@@ -1,6 +1,9 @@
 package com.tw.longerrelationship.views.fragment
 
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
+import android.os.MessageQueue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +11,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -151,9 +155,14 @@ class NoteFragment : BaseFragment() {
     }
 
     private fun getDairyData() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.getAllDairy().collect {
-                dairyAdapter.submitData(it)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Looper.getMainLooper().queue.addIdleHandler {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    viewModel.getAllDairy().collect {
+                        dairyAdapter.submitData(it)
+                    }
+                }
+                true
             }
         }
     }

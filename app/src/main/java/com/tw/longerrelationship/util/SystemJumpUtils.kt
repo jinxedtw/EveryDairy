@@ -1,7 +1,9 @@
 package com.tw.longerrelationship.util
 
+import android.Manifest
 import android.app.Activity
 import android.content.*
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.CalendarContract
@@ -9,9 +11,14 @@ import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.provider.Settings.ACTION_WIFI_SETTINGS
 import android.telephony.PhoneNumberUtils
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.tw.longerrelationship.MyApplication.Companion.appContext
 import com.tw.longerrelationship.views.widgets.ToastWithImage
+import java.io.InputStream
+import java.lang.Exception
 import java.util.*
 
 
@@ -37,10 +44,14 @@ fun Context.copyText(data: String?) {
 
 /** 打电话 */
 fun Activity.callPhone(tel: String) {
-    val intent = Intent(Intent.ACTION_DIAL)
-    val data = Uri.parse("tel:${tel}")
-    intent.data = data
-    startActivity(intent)
+    if (PhoneNumberUtils.isGlobalPhoneNumber(tel)) {
+        val intent = Intent(Intent.ACTION_DIAL)
+        val data = Uri.parse("tel:${tel}")
+        intent.data = data
+        startActivity(intent)
+    } else {
+        ToastWithImage.showToast("无效的电话号码", false)
+    }
 }
 
 /** 发送邮件 */
@@ -57,7 +68,9 @@ fun Activity.sendEmail(address: String) {
 fun Activity.savePicToAlbum(bitmap: Bitmap?) {
     if (bitmap != null) {
         MediaStore.Images.Media.insertImage(this.contentResolver, bitmap, "title", "description")
-        ToastWithImage.showToast("Saved", true)
+        ToastWithImage.showToast("已保存", true)
+    } else {
+        ToastWithImage.showToast("保存失败", true)
     }
 }
 
@@ -67,6 +80,8 @@ fun Activity.sendSMS(phoneNumber: String, message: String?) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:$phoneNumber"))
         intent.putExtra("sms_body", message)
         startActivity(intent)
+    } else {
+        ToastWithImage.showToast("无效的电话号码", false)
     }
 }
 
@@ -137,35 +152,72 @@ fun Activity.openBrowser(url: String) {
         mUrl = "http:${url}"
     }
 
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mUrl))
-    startActivity(intent)
+    openIntent(action = Intent.ACTION_VIEW, uri = Uri.parse(mUrl))
 }
 
 /** 分享图片 */
 fun Activity.shareImage(bitmap: Bitmap?) {
-    if (bitmap == null) return
+    if (bitmap == null) {
+        ToastWithImage.showToast("分享失败", false)
+        return
+    }
 
-    val intent = Intent()
-    intent.action = Intent.ACTION_SEND
-    val uri = Uri.parse(
-        MediaStore.Images.Media.insertImage(
-            contentResolver,
-            bitmap,
-            "IMG" + Calendar.getInstance().time,
-            null
+    if (ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
+        try {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            val uri = Uri.parse(
+                MediaStore.Images.Media.insertImage(
+                    contentResolver,
+                    bitmap,
+                    "IMG" + Calendar.getInstance().time,
+                    null
+                )
+            )
+            intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_STREAM, uri)
+            startActivity(Intent.createChooser(intent, "title"))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ToastWithImage.showToast("分享失败", false)
+        }
+    } else {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            1
         )
-    )
-    intent.type = "image/*"
-    intent.putExtra(Intent.EXTRA_STREAM, uri)
-    startActivity(Intent.createChooser(intent, "title"))
+    }
 }
 
 
-/** 分享文本 */
+/** 分享扫描结果 */
 fun Activity.shareText(text: String) {
     val intent = Intent()
     intent.action = Intent.ACTION_SEND
     intent.putExtra(Intent.EXTRA_TEXT, text)
     intent.type = "text/plain"
     startActivity(Intent.createChooser(intent, "scan Result"))
+}
+
+
+fun Activity.openIntent(action: String? = null, type: String? = null, uri: Uri? = null) {
+    Intent()
+        .apply {
+            action?.let { this.action = it }
+            uri?.let { this.data = it }
+            type?.let { this.type = it }
+        }
+        .let { intent ->
+            packageManager?.let {
+                if (intent.resolveActivity(it) != null)
+                    startActivity(intent)
+                else
+                    ToastWithImage.showToast("无法找到对应Intent", false)
+            }
+        }
 }

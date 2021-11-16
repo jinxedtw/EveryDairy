@@ -5,8 +5,6 @@ import com.tw.longerrelationship.MyApplication.Companion.dataStore
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
-import java.lang.reflect.Type
-import kotlin.reflect.KClass
 
 object DataStoreUtil {
 
