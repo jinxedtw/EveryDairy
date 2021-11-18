@@ -1,12 +1,10 @@
 package com.tw.longerrelationship
 
 import android.annotation.SuppressLint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.reflect.KClass
@@ -53,6 +51,24 @@ fun foo(): Flow<Int> = flow { // flow builder
 //    }
 //    // Collect the flow
 //    foo().collect { value -> println(value) }
+//}
+
+//fun main() {
+//    GlobalScope.launch(Dispatchers.Default){
+//        val startTime  = System.currentTimeMillis()
+//        for (i in 0..3){
+//            async { requestNetwork(startTime) }
+//        }
+//        println("执行完请求")
+//    }
+//    runBlocking {
+//        delay(5000)
+//    }
+//}
+//
+//suspend fun requestNetwork(startTime:Long){
+//    delay(500)
+//    println(System.currentTimeMillis()-startTime)
 //}
 
 val <T : Any> T.kClass: KClass<T>

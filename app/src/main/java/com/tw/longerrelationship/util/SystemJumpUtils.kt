@@ -6,6 +6,8 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
+import android.os.Environment
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.provider.MediaStore
@@ -18,6 +20,7 @@ import androidx.fragment.app.Fragment
 import com.tw.longerrelationship.MyApplication.Companion.appContext
 import com.tw.longerrelationship.views.widgets.ToastWithImage
 import java.io.InputStream
+import java.io.OutputStream
 import java.lang.Exception
 import java.util.*
 
@@ -65,12 +68,42 @@ fun Activity.sendEmail(address: String) {
 }
 
 /** 保存图片到相册 */
-fun Activity.savePicToAlbum(bitmap: Bitmap?) {
-    if (bitmap != null) {
-        MediaStore.Images.Media.insertImage(this.contentResolver, bitmap, "title", "description")
-        ToastWithImage.showToast("已保存", true)
-    } else {
-        ToastWithImage.showToast("保存失败", true)
+fun Activity.savePicToAlbum(bitmap: Bitmap?){
+    if (bitmap == null){
+        ToastWithImage.showToast("保存失败",false)
+    }
+
+    runCatching {
+        val filename = "IMG_${System.currentTimeMillis()}.jpg"
+        var fos: OutputStream?
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            var imageUri: Uri?
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                put(MediaStore.Video.Media.IS_PENDING, 1)
+            }
+
+            contentResolver.also { resolver ->
+                imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                fos = imageUri?.let { resolver.openOutputStream(it) }
+            }
+
+            fos?.use { bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, it) }
+
+            contentValues.clear()
+            contentValues.put(MediaStore.Video.Media.IS_PENDING, 0)
+            contentResolver.update(imageUri!!, contentValues, null, null)
+        }else{
+            MediaStore.Images.Media.insertImage(this.contentResolver, bitmap, "", "")
+        }
+    }.onFailure {
+        it.printStackTrace()
+        ToastWithImage.showToast("保存失败",false)
+    }.onSuccess {
+        ToastWithImage.showToast("保存成功",true)
     }
 }
 
