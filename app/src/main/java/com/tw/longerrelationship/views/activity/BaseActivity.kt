@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
 import android.view.*
 import android.view.View.OnTouchListener
@@ -222,6 +223,15 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         if (isSoftShowing()) {
             (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(windowToken, 0)
         }
+    }
+
+    /** 显示键盘 */
+    fun showKeyboard(view:View) {
+        // 界面未构建完成时无法弹出键盘,需要开个延时
+        Handler(this.mainLooper).postDelayed({
+            view.requestFocus()
+            (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(view, 0)
+        }, 400)
     }
 
     /**

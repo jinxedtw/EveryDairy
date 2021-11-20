@@ -51,7 +51,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
 
     private fun initView() {
         initEvent()
-        showKeyboard()
+        showKeyboard(mBinding.includeSearchBar.etSearch)
         initEditText()
         initFlowLayout()
         initRecyclerView()
@@ -254,21 +254,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         }
         addTextChangedListener(watcher) // 设置输入框监听器
         awaitClose { removeTextChangedListener(watcher) } // 阻塞以保证流一直运行
-    }
-
-
-    /**
-     * 显示键盘
-     */
-    private fun showKeyboard() {
-        // 界面未构建完成时无法弹出键盘,需要开个延时
-        Handler(this.mainLooper).postDelayed({
-            mBinding.includeSearchBar.etSearch.requestFocus()
-            (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(
-                mBinding.includeSearchBar.etSearch,
-                0
-            )
-        }, 400)
     }
 
     override fun onDestroy() {

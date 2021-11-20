@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.view.Gravity
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -307,6 +308,11 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         lifecycleScope.launch(Dispatchers.IO) {
             viewModel.setTodoComplete(id)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mBinding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
     companion object {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.tw.longerrelationship.viewmodel.DairyEditViewModel" />
@@ -31,9 +32,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rip_recover_dairy"
             android:orientation="vertical"
+            android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/app_bar">
 
@@ -41,8 +42,8 @@
                 android:id="@+id/tv_recover_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上次未保存内容"
                 android:layout_marginBottom="10dp"
+                android:text="上次未保存内容"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@id/tv_recover_title"
@@ -66,35 +67,46 @@
                 android:id="@+id/tv_recover_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_marginTop="5dp"
-                app:layout_goneMarginTop="0dp"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/tv_recover_tips"
-                app:layout_constraintTop_toBottomOf="@id/tv_recover_title" />
+                app:layout_constraintTop_toBottomOf="@id/tv_recover_title"
+                app:layout_goneMarginTop="0dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/et_content"
+        <ScrollView
+            android:id="@+id/sv_edit_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="@string/recording_today"
-            android:text="@={viewModel.dairyContent}"
-            android:textColor="@color/EditText"
-            android:textCursorDrawable="@drawable/shape_edit_cursor"
-            android:textSize="16sp"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:clickable="true"
+            android:overScrollMode="never"
+            android:scrollbarSize="2dp"
             app:layout_constraintBottom_toTopOf="@id/ll_bottom"
             app:layout_constraintTop_toBottomOf="@id/cl_recover"
-            tools:layout_editor_absoluteX="178dp" />
+            android:focusable="true">
+
+            <EditText
+                android:id="@+id/et_content"
+                android:minHeight="250dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="@string/recording_today"
+                android:text="@={viewModel.dairyContent}"
+                android:textColor="@color/EditText"
+                android:textCursorDrawable="@drawable/shape_edit_cursor"
+                android:textSize="16sp" />
+        </ScrollView>
+
 
         <LinearLayout
             android:id="@+id/ll_bottom"
@@ -106,7 +118,7 @@
             android:layout_marginBottom="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_content">
+            app:layout_constraintTop_toBottomOf="@id/sv_edit_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_text_and_count"

@@ -156,14 +156,14 @@ class NoteFragment : BaseFragment() {
 
     private fun getDairyData() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Looper.getMainLooper().queue.addIdleHandler {
+//            Looper.getMainLooper().queue.addIdleHandler {
                 lifecycleScope.launch(Dispatchers.Main) {
                     viewModel.getAllDairy().collect {
                         dairyAdapter.submitData(it)
                     }
                 }
-                true
-            }
+//                true
+//            }
         }
     }
 

@@ -13,11 +13,13 @@ import android.graphics.drawable.RippleDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,6 +28,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.GravityCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -171,7 +174,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     override fun init() {
         initBinding()
         mBinding.viewModel = this.viewModel
-        mBinding.etContent.requestFocus()
+        showKeyboard(mBinding.etContent)
         observe()
         initTheme()
         initView()
@@ -181,7 +184,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     }
 
     private fun initTheme() {
-        setThemeBackGround(colorList[DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0)?:0])
+        setThemeBackGround(colorList[DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0) ?: 0])
     }
 
     private fun observe() {
@@ -369,18 +372,18 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     /** 保存日记 */
     fun saveDairy() {
         lifecycleScope.launch(Dispatchers.IO) {
-            for (i in 1..100){
-                val result = viewModel.saveDairy(mBinding.appBar.getTitle())
-                if (result.isSuccess) {
-                    isNeedToSaved = false
-                    DataStoreUtil.removeData(KEY_RECOVER_CONTENT, "")
-                    DataStoreUtil.removeData(KEY_RECOVER_TITLE, "")
-                    runOnUiThread { ToastWithImage.showToast("保存成功", true) }
-                    finishActivity()
-                } else {
-                    runOnUiThread { ToastWithImage.showToast("保存失败", false) }
-                }
+//            for (i in 1..100){
+            val result = viewModel.saveDairy(mBinding.appBar.getTitle())
+            if (result.isSuccess) {
+                isNeedToSaved = false
+                DataStoreUtil.removeData(KEY_RECOVER_CONTENT, "")
+                DataStoreUtil.removeData(KEY_RECOVER_TITLE, "")
+                runOnUiThread { ToastWithImage.showToast("保存成功", true) }
+                finishActivity()
+            } else {
+                runOnUiThread { ToastWithImage.showToast("保存失败", false) }
             }
+//            }
         }
     }
 
@@ -573,7 +576,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     }
 
     /** 停止定位服务 */
-    private fun stopLocationService(){
+    private fun stopLocationService() {
         locationService.unregisterListener(locationListener)
         locationService.stop()
     }
