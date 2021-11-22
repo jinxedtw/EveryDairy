@@ -8,22 +8,85 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <ImageView
+            android:id="@+id/iv_leave"
+            android:layout_width="wrap_content"
+            android:layout_height="41dp"
+            android:paddingStart="10dp"
+            android:paddingTop="11dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/ic_left_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_bar"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_main_search"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/iv_leave"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/et_url"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@null"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_red_heart"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_red_heart" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/Divider"
+            app:layout_constraintTop_toBottomOf="@id/ll_bar" />
+
 
         <com.tw.longerrelationship.views.widgets.AnimateHorizontalProgressBar
             android:id="@+id/progress_bar"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             app:ahp_backgroundColor="@color/white"
-            app:ahp_progressColor="@color/colorPrimary" />
+            app:ahp_progressColor="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/divider_line" />
 
         <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_marginStart="3dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="3dp" />
+            android:layout_marginEnd="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_bar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -25,13 +25,14 @@
                 android:src="@drawable/ic_left_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/tv_appbar_title"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:textColor="@color/black_weak"
                 android:textSize="@dimen/app_bar_text_size"
                 android:textStyle="bold"
@@ -42,12 +43,12 @@
                 android:id="@+id/tv_right"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:background="@drawable/rip_common"
                 android:gravity="center"
-                android:textColor="@color/black_weak"
                 android:padding="15dp"
+                android:textColor="@color/black_weak"
                 android:textSize="@dimen/app_bar_text_size"
                 android:visibility="gone"
-                android:background="@drawable/rip_common"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,9 +57,9 @@
                 android:id="@+id/iv_right"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:background="@drawable/rip_common"
                 android:padding="15dp"
                 android:visibility="gone"
-                android:background="@drawable/rip_common"
                 app:layout_constraintBottom_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -72,10 +73,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
-            android:background="@color/white"
             android:id="@+id/fl_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@color/white" />
     </LinearLayout>
 </layout>

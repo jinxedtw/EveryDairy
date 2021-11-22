@@ -9,6 +9,8 @@ import android.webkit.WebView
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivityBrowserBinding
 import com.tw.longerrelationship.help.WebViewInitHelper
+import com.tw.longerrelationship.util.setOnClickListeners
+import com.tw.longerrelationship.views.widgets.ToastWithImage
 
 /** 网页跳转 */
 class BrowserActivity : BaseActivity<ActivityBrowserBinding>() {
@@ -42,8 +44,7 @@ class BrowserActivity : BaseActivity<ActivityBrowserBinding>() {
 
 
     override fun init() {
-        initBindingWithAppBar()
-        setAppBarTitle(websiteTitle)
+        initBinding()
         initView()
         loadUrl()
     }
@@ -51,6 +52,15 @@ class BrowserActivity : BaseActivity<ActivityBrowserBinding>() {
     override fun getLayoutId(): Int = R.layout.activity_browser
 
     private fun initView() {
+        setOnClickListeners(mBinding.ivLeave, mBinding.ivRedHeart) {
+            when (this) {
+                mBinding.ivLeave -> finish()
+                mBinding.ivRedHeart -> ToastWithImage.showToast("收藏成功",true)
+            }
+        }
+
+        mBinding.etUrl.text = websiteUrl
+
         mBinding.webView.apply {
             scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
             isVerticalScrollBarEnabled = true
@@ -67,6 +77,11 @@ class BrowserActivity : BaseActivity<ActivityBrowserBinding>() {
     }
 
     inner class WebChromeClientImpl : WebChromeClient() {
+        override fun onReceivedTitle(view: WebView?, title: String?) {
+            super.onReceivedTitle(view, title)
+            mBinding.etUrl.text = title
+        }
+
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
             if (newProgress == 100) {
