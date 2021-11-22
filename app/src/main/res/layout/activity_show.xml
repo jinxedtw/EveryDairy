@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -10,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".views.activity.ShowActivity">
+        tools:context=".test.ShowActivity">
 
         <com.tw.longerrelationship.views.widgets.AngleTextView
             android:layout_width="wrap_content"
@@ -144,42 +143,6 @@
             android:text="Android 设备不仅有不同的屏幕尺寸（手机、平板电脑、电视等），而且其屏幕也有不同的像素尺寸。也就是说，有可能一部设备的屏幕为每平方英寸 160 像素，而另一部设备的屏幕在相同的空间内可以容纳 480 像素。如果您不考虑像素密度的这些差异，系统可能会缩放图片（导致图片变模糊），或者图片可能会以完全错误的尺寸显示。
 
 本页向您介绍如何设计应用来支持不同的像素密度，那就是使用分辨率无关度量单位，并针对每种像素密度提供备用位图资源。"
-            android:textStyle="bold" />
-
-        <com.tw.longerrelationship.views.widgets.YoloTextView
-            android:id="@+id/text_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="Android 设备不仅有不同的屏幕尺寸（手机、平板电脑、电视等），而且其屏幕也有不同的像素尺寸。也就是说，有可能一部设备的屏幕为每平方英寸 160 像素，而另一部设备的屏幕在相同的空间内可以容纳 480 像素。如果您不考虑像素密度的这些差异，系统可能会缩放图片（导致图片变模糊），或者图片可能会以完全错误的尺寸显示。
-
-本页向您介绍如何设计应用来支持不同的像素密度，那就是使用分辨率无关度量单位，并针对每种像素密度提供备用位图资源。"
-            app:YoloTextStyle="middle" />
-
-        <com.tw.longerrelationship.views.widgets.YoloTextView
-            android:id="@+id/text_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="Android 设备不仅有不同的屏幕尺寸（手机、平板电脑、电视等），而且其屏幕也有不同的像素尺寸。也就是说，有可能一部设备的屏幕为每平方英寸 160 像素，而另一部设备的屏幕在相同的空间内可以容纳 480 像素。如果您不考虑像素密度的这些差异，系统可能会缩放图片（导致图片变模糊），或者图片可能会以完全错误的尺寸显示。
-
-本页向您介绍如何设计应用来支持不同的像素密度，那就是使用分辨率无关度量单位，并针对每种像素密度提供备用位图资源。"
-            app:YoloTextStyle="bold" />
-
-        <com.tw.longerrelationship.views.widgets.YoloTextView
-            android:id="@+id/text_adaptation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@color/TopMask"
-            android:padding="10dp"
-            android:text="字体适配"
-            android:textSize="11dp"
             android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

@@ -1,19 +1,17 @@
-package com.yl.qrscanner.drawer
+package com.tw.longerrelationship.views.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import com.yl.qrscanner.base.constants.HttpUrlConstants
-import com.yl.qrscanner.base.util.WebViewInitHelper
-import com.yl.qrscanner.databinding.ActivityBrowserBinding
-import com.yl.qrscanner.ui.ToolbarCommonActivity
+import com.tw.longerrelationship.R
+import com.tw.longerrelationship.databinding.ActivityBrowserBinding
+import com.tw.longerrelationship.help.WebViewInitHelper
 
 /** 网页跳转 */
-class BrowserToolbarActivity : ToolbarCommonActivity() {
+class BrowserActivity : BaseActivity<ActivityBrowserBinding>() {
     companion object {
         private const val EXTRA_BROWSER_TITLE = "browser_title"
         private const val EXTRA_BROWSER_URL = "browser_url"
@@ -24,7 +22,7 @@ class BrowserToolbarActivity : ToolbarCommonActivity() {
          */
         fun openBrowserActivity(activity: Activity, title: String, url: String) {
             runCatching {
-                val intent = Intent(activity, BrowserToolbarActivity::class.java).apply {
+                val intent = Intent(activity, BrowserActivity::class.java).apply {
                     putExtra(EXTRA_BROWSER_TITLE, title)
                     putExtra(EXTRA_BROWSER_URL, url)
                 }
@@ -35,7 +33,6 @@ class BrowserToolbarActivity : ToolbarCommonActivity() {
         }
     }
 
-    private lateinit var binding: ActivityBrowserBinding
     private val websiteTitle: String by lazy {
         intent.getStringExtra(EXTRA_BROWSER_TITLE) ?: ""
     }
@@ -43,42 +40,41 @@ class BrowserToolbarActivity : ToolbarCommonActivity() {
         intent.getStringExtra(EXTRA_BROWSER_URL) ?: ""
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityBrowserBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
+    override fun init() {
+        initBindingWithAppBar()
+        setAppBarTitle(websiteTitle)
         initView()
         loadUrl()
     }
 
-    private fun initView() {
-        title = websiteTitle
+    override fun getLayoutId(): Int = R.layout.activity_browser
 
-        binding.webView.apply {
+    private fun initView() {
+        mBinding.webView.apply {
             scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
             isVerticalScrollBarEnabled = true
             isHorizontalScrollBarEnabled = false
         }
-        WebViewInitHelper.init(binding.webView, null, WebChromeClientImpl())
+        WebViewInitHelper.init(mBinding.webView, null, WebChromeClientImpl())
     }
 
     private fun loadUrl() {
         if (TextUtils.isEmpty(websiteUrl)) {
             return
         }
-        binding.webView.loadUrl(websiteUrl)
+        mBinding.webView.loadUrl(websiteUrl)
     }
 
     inner class WebChromeClientImpl : WebChromeClient() {
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
             if (newProgress == 100) {
-                binding.progressBar.visibility = View.GONE
+                mBinding.progressBar.visibility = View.GONE
                 return
             }
 
-            binding.progressBar.progress = newProgress
+            mBinding.progressBar.progress = newProgress
         }
     }
 }

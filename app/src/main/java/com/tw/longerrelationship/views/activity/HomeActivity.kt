@@ -282,9 +282,9 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
      */
     private fun changeDairyShowTypeIcon() {
         if (viewModel.isFold.value!!) {
-            mBinding.includeMain.includeBar.ivDisplay.setDrawable(R.drawable.pic_unfold)
+            mBinding.includeMain.includeBar.ivDisplay.setDrawable(R.drawable.ic_unfold)
         } else {
-            mBinding.includeMain.includeBar.ivDisplay.setDrawable(R.drawable.pic_fold)
+            mBinding.includeMain.includeBar.ivDisplay.setDrawable(R.drawable.ic_fold)
         }
     }
 

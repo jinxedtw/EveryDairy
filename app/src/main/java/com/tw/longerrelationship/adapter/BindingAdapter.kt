@@ -15,7 +15,7 @@ fun bindIsChanged(view: View, isChanged: Boolean) {
 
 @BindingAdapter("isFold")
 fun bindIsFold(view: ImageView, isFold: Boolean) {
-    view.setDrawable(if (isFold) R.drawable.pic_unfold else R.drawable.pic_fold)
+    view.setDrawable(if (isFold) R.drawable.ic_unfold else R.drawable.ic_fold)
 }
 
 /**

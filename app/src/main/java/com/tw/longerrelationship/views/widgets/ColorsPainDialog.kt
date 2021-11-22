@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
  * [DairyEditActivity]修改背景弹框
  */
 class ColorsPainDialog(val activity: DairyEditActivity, val colorSelectCallBack: (Int) -> Unit) : DialogFragment() {
-    var mView: View? = null
+    private var mView: View? = null
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var colorSelectAdapter: ColorItemSelectAdapter
 
@@ -76,19 +76,6 @@ class ColorsPainDialog(val activity: DairyEditActivity, val colorSelectCallBack:
 
     companion object {
         const val DEFAULT_COLOR_INDEX = "colorIndex"
-
-        val colorList = arrayListOf(
-            R.color.backGroundColor1,
-            R.color.backGroundColor2,
-            R.color.backGroundColor3,
-            R.color.backGroundColor4,
-            R.color.backGroundColor5,
-            R.color.backGroundColor6,
-            R.color.backGroundColor7,
-            R.color.backGroundColor8,
-            R.color.backGroundColor9,
-            R.color.backGroundColor10,
-        )
 
         var currentColorIndex: Int
             get() = DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0)?:0

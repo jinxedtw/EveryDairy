@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +19,7 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.PictureShowAdapter
 import com.tw.longerrelationship.databinding.ActivityDairyInfoBinding
 import com.tw.longerrelationship.help.SpacesItemDecoration
+import com.tw.longerrelationship.help.UrlMatchHelper
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
 import com.tw.longerrelationship.util.Constants.INTENT_DAIRY_ID
@@ -102,6 +104,13 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                 mBinding.tvLocation.text = it.location
                 mBinding.tvTextLength.text =
                     String.format(getString(R.string.text_content_num), it.content?.length ?: 0)
+
+                mBinding.tvContent.apply {
+                    movementMethod = LinkMovementMethod.getInstance()
+                    text = UrlMatchHelper.setMatchURL(it.content ?: "") { url ->
+                        BrowserActivity.openBrowserActivity(this@DairyInfoActivity, "啦啦啦", url)
+                    }
+                }
             }
         }
     }
@@ -169,7 +178,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                         (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).apply {
                             setPrimaryClip(ClipData.newPlainText("日记文本", mBinding.tvContent.text))
                         }
-                        ToastWithImage.showToast( "复制文本成功",true)
+                        ToastWithImage.showToast("复制文本成功", true)
                     }, true)
                     .withClick(R.id.tv_stickers, {
                         stickerId++
@@ -183,7 +192,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                     .withClick(R.id.tv_delete, {
                         viewModel.deleteDairy()
                         finish()
-                        ToastWithImage.showToast( "删除成功",true)
+                        ToastWithImage.showToast("删除成功", true)
                     }, true)
             )
             .show(

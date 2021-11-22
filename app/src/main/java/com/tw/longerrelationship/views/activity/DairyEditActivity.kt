@@ -6,20 +6,17 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,8 +24,6 @@ import androidx.annotation.ColorRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.graphics.ColorUtils
-import androidx.core.view.GravityCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -39,6 +34,7 @@ import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.PictureSelectAdapter
 import com.tw.longerrelationship.databinding.ActivityDairyEditBinding
+import com.tw.longerrelationship.help.DairyColorHelper
 import com.tw.longerrelationship.help.LocationService
 import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.util.*
@@ -49,8 +45,6 @@ import com.tw.longerrelationship.util.Constants.KEY_RECOVER_CONTENT
 import com.tw.longerrelationship.util.Constants.KEY_RECOVER_TITLE
 import com.tw.longerrelationship.viewmodel.DairyEditViewModel
 import com.tw.longerrelationship.views.widgets.ColorsPainDialog
-import com.tw.longerrelationship.views.widgets.ColorsPainDialog.Companion.DEFAULT_COLOR_INDEX
-import com.tw.longerrelationship.views.widgets.ColorsPainDialog.Companion.colorList
 import com.tw.longerrelationship.views.widgets.IconSelectDialog
 import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +60,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     private var recoveredTitle: String? = null      // 恢复日记标题
     private var recoveredContent: String? = null    // 恢复日记内容
 
-    private lateinit var ripperDrawable: RippleDrawable
+    private lateinit var imgRipperDrawable: RippleDrawable
     private lateinit var locationService: LocationService
     private lateinit var locationListener: BDAbstractLocationListener
     private lateinit var pictureSelectAdapter: PictureSelectAdapter
@@ -87,15 +81,15 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             viewModel.weatherIcon = iconId
         }
     }
+    private var iconColor: Int = 0
+    private var isBoldMode: Boolean = false
+    private var isCompleteMode: Boolean = false
+    private var isListMode: Boolean = false
 
-    /**
-     * 记录相机保存图片的Uri
-     */
+    /** 记录相机保存图片的Uri */
     private lateinit var currentUri: Uri
 
-    /**
-     * 记录相机保存的图片
-     */
+    /** 记录相机保存的图片 */
     private lateinit var pictureFile: File
 
     private val viewModel by lazy {
@@ -176,15 +170,11 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         mBinding.viewModel = this.viewModel
         showKeyboard(mBinding.etContent)
         observe()
-        initTheme()
+        setMainColor(DairyColorHelper.getDairyMainColor())
         initView()
         addOnSoftKeyBoardVisibleListener()
         initEditText()
         initLocation()
-    }
-
-    private fun initTheme() {
-        setThemeBackGround(colorList[DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0) ?: 0])
     }
 
     private fun observe() {
@@ -234,7 +224,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
      */
     @SuppressLint("SetTextI18n")
     private fun initView() {
-        pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this, ripperDrawable)
+        pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this, imgRipperDrawable)
 
         tryToRecoverDairy()
 
@@ -252,7 +242,10 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             mBinding.ivWeather,
             mBinding.ivPainting,
             mBinding.ivMood,
-            mBinding.clRecover
+            mBinding.clRecover,
+            mBinding.ivBold,
+            mBinding.ivCompleteList,
+            mBinding.ivListMode
         ) {
             when (this) {
                 mBinding.ivRecording -> {
@@ -305,6 +298,34 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                         .setNeutralButton("取消", null)
                         .show()
                 }
+                mBinding.ivBold -> {
+//                    if (isBoldMode){
+//                        mBinding.etContent.setMiddleWeight()
+//                        mBinding.ivBold.setColorFilter(ContextCompat.getColor(this@DairyEditActivity,R.color.DairyEditIcon))
+//                    }else{
+//                        mBinding.etContent.setTextWeight(1f)
+//                        mBinding.ivBold.setColorFilter(iconColor)
+//                    }
+//                    isBoldMode= !isBoldMode
+                }
+                mBinding.ivCompleteList -> {
+//                    if (isCompleteMode){
+//                        mBinding.ivCompleteList.setColorFilter(ContextCompat.getColor(this@DairyEditActivity,R.color.DairyEditIcon))
+//                    }else{
+//                        mBinding.ivCompleteList.setColorFilter(iconColor)
+//                    }
+//                    isCompleteMode= !isCompleteMode
+//                    mBinding.ivCompleteList.setColorFilter(iconColor)
+                }
+                mBinding.ivListMode -> {
+//                    if (isListMode){
+//                        mBinding.ivListMode.setColorFilter(ContextCompat.getColor(this@DairyEditActivity,R.color.DairyEditIcon))
+//                    }else{
+//                        mBinding.ivListMode.setColorFilter(iconColor)
+//                    }
+//                    isListMode= !isListMode
+//                    mBinding.ivListMode.setColorFilter(iconColor)
+                }
             }
         }
     }
@@ -316,7 +337,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         locationListener = object : BDAbstractLocationListener() {
             override fun onReceiveLocation(location: BDLocation?) {
                 if (location?.locType ?: 0 == 62) {
-                    mBinding.tvLocationInfo.text = "定位失败,请检查定位系统是否已经开启"
+                    mBinding.tvLocationInfo.text = "无定位信息"
                 } else {
                     mBinding.tvLocationInfo.text = location?.addrStr
                 }
@@ -401,8 +422,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
     private fun showColorsDialog() {
         ColorsPainDialog(this) { colorRes ->
-            setThemeBackGround(colorRes)
-            pictureSelectAdapter.rippleDrawable = this.ripperDrawable
+            setMainColor(colorRes)
+            pictureSelectAdapter.rippleDrawable = this.imgRipperDrawable
             pictureSelectAdapter.notifyItemChanged(pictureSelectAdapter.itemCount - 1)
         }.show(supportFragmentManager, "dialog")
     }
@@ -532,12 +553,18 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
      *
      * todo 自定义背景功能
      */
-    private fun setThemeBackGround(@ColorRes colorRes: Int) {
-        val color: Int = ContextCompat.getColor(this, colorRes)
-        mBinding.clEditDairy.setBackgroundResource(colorRes)
-        setStatusBarColor(color)
+    private fun setMainColor(@ColorRes colorRes: Int) {
+        val mainColor: Int = ContextCompat.getColor(this, colorRes)
+        val recoverAndImageColor = ColorStateList.valueOf(DairyColorHelper.getImageSelectorAndRecoverColor(mainColor))
+        val textColor = DairyColorHelper.getTextColor(mainColor)
+        val editContentColor = DairyColorHelper.getEditContentColor(mainColor)
+        iconColor = DairyColorHelper.getIconColor(mainColor)
 
-        if (ColorUtils.calculateLuminance(color) > 0.6) {
+        // 整体背景颜色
+        mBinding.clEditDairy.setBackgroundResource(colorRes)
+        // 状态栏颜色
+        setStatusBarColor(mainColor)
+        if (DairyColorHelper.isDarkTheme(mainColor)) {
             // 亮色
             setAndroidNativeLightStatusBar(this, true)
         } else {
@@ -545,26 +572,28 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             setAndroidNativeLightStatusBar(this, false)
         }
 
-        val shape = GradientDrawable()
-        shape.color = ColorStateList.valueOf(addColorDepth(color))
-        shape.cornerRadius = dp2px(5f)
+        // 设置选择图片背景
+        val imgShape = GradientDrawable()
+        imgShape.color = recoverAndImageColor
+        imgShape.cornerRadius = dp2px(5f)
+        imgRipperDrawable = RippleDrawable(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.DairyEditHintText)), imgShape, null)
 
-        ripperDrawable =
-            RippleDrawable(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.DairyEditHintText)), shape, null)
-    }
+        // 设置日记恢复背景
+        val recoverShape = GradientDrawable()
+        recoverShape.color = recoverAndImageColor
+        mBinding.clRecover.background = RippleDrawable(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.DairyEditHintText)), recoverShape, null)
 
-    /**
-     * 将原有颜色的R,G,B值依次减去20得到一个更深的颜色
-     */
-    private fun addColorDepth(color: Int): Int {
-        var red = color and 0xff0000 shr 16
-        var green = color and 0x00ff00 shr 8
-        var blue = color and 0x0000ff
-
-        red = if (red - 25 > 0) red - 25 else 0
-        green = if (green - 25 > 0) green - 25 else 0
-        blue = if (blue - 25 > 0) blue - 25 else 0
-        return Color.rgb(red, green, blue)
+        // 设置字体颜色
+        textColor.apply {
+            mBinding.tvLocationInfo.setTextColor(this)
+            mBinding.tvTextLength.setTextColor(this)
+            mBinding.tvTimeInfo.setTextColor(this)
+            mBinding.ivTextIcon.setColorFilter(this)
+            mBinding.ivLocationSmall.setColorFilter(this)
+            mBinding.appBar.mTitle.setTextColor(this)
+        }
+        mBinding.etContent.setTextColor(editContentColor)
+        mBinding.etContent.setHintTextColor(editContentColor)
     }
 
     /** 把照片添加到图库*/

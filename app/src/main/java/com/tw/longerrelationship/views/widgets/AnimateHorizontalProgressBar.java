@@ -1,4 +1,4 @@
-package com.yl.qrscanner.ui;
+package com.tw.longerrelationship.views.widgets;
 
 import android.animation.Animator;
 import android.animation.TimeInterpolator;
@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 
-import com.yl.qrscanner.R;
+import com.tw.longerrelationship.R;
 
 
 public class AnimateHorizontalProgressBar extends ProgressBar {

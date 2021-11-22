@@ -219,7 +219,7 @@ fun TextView.setColorForText(@ColorRes res: Int) {
  * @param weight 字重  单位 px
  */
 fun TextView.setTextWeight(weight: Float) {
-    this.paint.style = Paint.Style.FILL_AND_STROKE;
+    this.paint.style = Paint.Style.FILL_AND_STROKE
     this.paint.strokeWidth = weight
 }
 

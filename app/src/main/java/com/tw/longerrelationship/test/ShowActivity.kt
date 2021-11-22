@@ -1,11 +1,12 @@
-package com.tw.longerrelationship.views.activity
+package com.tw.longerrelationship.test
 
 import android.content.Intent
-import android.graphics.Paint
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.logic.LiveDataBus
+import com.tw.longerrelationship.util.showToast
 
 class ShowActivity : AppCompatActivity() {
     //    private lateinit var tv0: TextView
@@ -45,7 +46,8 @@ class ShowActivity : AppCompatActivity() {
 //        tv10 = findViewById(R.id.tv_10)
         text1 = findViewById(R.id.text_1)
 
-        
+        LiveDataBus.with("啦啦啦",String::class.java).value="哇哇哇哇哇"
+
         text1.setOnClickListener {
             startActivity(Intent(this, TestActivity::class.java))
         }

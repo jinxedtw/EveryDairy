@@ -16,11 +16,11 @@
 
         <ImageView
             android:id="@+id/iv_mine"
-            android:layout_width="62dp"
+            android:layout_width="52dp"
             android:layout_height="match_parent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:src="@drawable/ic_mine" />
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:src="@drawable/ic_drawer" />
 
         <LinearLayout
             android:id="@+id/ll_search"
@@ -55,8 +55,8 @@
             android:id="@+id/iv_display"
             android:layout_width="52dp"
             android:layout_height="match_parent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp" />
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp" />
 
         <TextView
             android:id="@+id/tv_filter"

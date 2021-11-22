@@ -231,7 +231,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         Handler(this.mainLooper).postDelayed({
             view.requestFocus()
             (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(view, 0)
-        }, 400)
+        }, 200)
     }
 
     /**

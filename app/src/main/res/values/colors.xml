@@ -79,4 +79,13 @@
     <!--    TodoAdapter-->
     <color name="topDivider">#eef1f6</color>
     <color name="completeText">#c2c2c2</color>
+
+
+    <color name="dairy_edit_dark">#DCDCDC</color>
+    <color name="dairy_edit_day">#323232</color>
+    <color name="dairy_edit_content_dark">#F0F0F0</color>
+    <color name="dairy_edit_content_day">#585d73</color>
+    <color name="dairy_icon_select_day">#BC9C9C</color>
+    <color name="dairy_icon_select_dark">#C7D1D1</color>
+    <color name="dairy_url">#2F77C5</color>
 </resources>

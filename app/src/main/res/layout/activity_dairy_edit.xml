@@ -30,10 +30,10 @@
             android:id="@+id/cl_recover"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rip_recover_dairy"
             android:orientation="vertical"
-            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
             android:paddingTop="10dp"
+            android:paddingEnd="0dp"
             android:paddingBottom="10dp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/app_bar">
@@ -83,24 +83,24 @@
             android:id="@+id/sv_edit_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:overScrollMode="never"
             android:paddingStart="20dp"
             android:paddingTop="10dp"
             android:paddingEnd="20dp"
-            android:clickable="true"
-            android:overScrollMode="never"
-            android:scrollbarSize="2dp"
+            android:scrollbars="none"
             app:layout_constraintBottom_toTopOf="@id/ll_bottom"
-            app:layout_constraintTop_toBottomOf="@id/cl_recover"
-            android:focusable="true">
+            app:layout_constraintTop_toBottomOf="@id/cl_recover">
 
             <EditText
                 android:id="@+id/et_content"
-                android:minHeight="250dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="top"
                 android:hint="@string/recording_today"
+                android:minHeight="220dp"
                 android:text="@={viewModel.dairyContent}"
                 android:textColor="@color/EditText"
                 android:textCursorDrawable="@drawable/shape_edit_cursor"
@@ -142,7 +142,6 @@
                     android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:layout_marginLeft="6dp"
                     android:singleLine="true"
                     android:text="@={viewModel.location}"
                     android:textColor="@color/DairyEditHintText"
@@ -165,7 +164,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:layout_marginLeft="6dp"
                     android:text="@string/text_num_count"
                     android:textColor="@color/DairyEditHintText"
                     app:layout_constraintBottom_toBottomOf="@id/iv_text_icon"
@@ -173,6 +171,7 @@
                     app:layout_constraintTop_toTopOf="@id/iv_text_icon" />
 
                 <TextView
+                    android:id="@+id/tv_time_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.getNowTimeMonthAndHour()}"
@@ -195,8 +194,10 @@
 
                 <ImageView
                     android:id="@+id/iv_painting"
-                    android:layout_width="wrap_content"
+                    android:layout_width="28dp"
                     android:layout_height="wrap_content"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/edit_icon_margin"
                     android:src="@drawable/ic_colors" />
 
                 <View
@@ -205,27 +206,61 @@
                     android:layout_weight="1" />
 
                 <ImageView
-                    android:id="@+id/iv_location"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/iv_list_mode"
+                    android:layout_width="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/edit_icon_margin"
-                    android:layout_marginEnd="@dimen/edit_icon_margin"
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin"
+                    android:src="@drawable/ic_list_mode"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_complete_list"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin"
+                    android:src="@drawable/ic_complete_list"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_bold"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin"
+                    android:src="@drawable/ic_bold"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="1.5dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:background="@color/DairyEditHintText" />
+
+                <ImageView
+                    android:id="@+id/iv_location"
+                    android:layout_width="34dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin"
                     android:src="@drawable/ic_location" />
 
                 <ImageView
                     android:id="@+id/iv_clock"
-                    android:layout_width="wrap_content"
+                    android:layout_width="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/edit_icon_margin"
-                    android:layout_marginEnd="@dimen/edit_icon_margin"
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin"
                     android:src="@drawable/ic_clock" />
 
                 <ImageView
                     android:id="@+id/iv_recording"
-                    android:layout_width="wrap_content"
+                    android:layout_width="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/edit_icon_margin"
-                    android:layout_marginEnd="@dimen/edit_icon_margin"
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin"
                     android:src="@drawable/ic_recording" />
 
                 <View
@@ -237,26 +272,26 @@
                 <ImageView
                     android:id="@+id/iv_weather"
                     setDrawable="@{viewModel.weatherIcon}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/edit_icon_margin"
-                    android:layout_marginEnd="@dimen/edit_icon_margin" />
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin" />
 
                 <ImageView
                     android:id="@+id/iv_mood"
                     setDrawable="@{viewModel.moodIcon}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/edit_icon_margin"
-                    android:layout_marginEnd="@dimen/edit_icon_margin" />
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin" />
 
                 <ImageView
                     android:id="@+id/iv_calendar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="34dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/edit_icon_margin"
-                    android:layout_marginEnd="@dimen/edit_icon_margin"
                     android:contentDescription="@string/calendar_icon"
+                    android:paddingStart="@dimen/edit_icon_margin"
+                    android:paddingEnd="@dimen/edit_icon_margin"
                     android:src="@drawable/ic_calendar" />
 
             </LinearLayout>

@@ -8,10 +8,10 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.help.DairyColorHelper.colorList
 import com.tw.longerrelationship.util.gone
 import com.tw.longerrelationship.util.visible
 import com.tw.longerrelationship.views.widgets.ColorsPainDialog
-import com.tw.longerrelationship.views.widgets.ColorsPainDialog.Companion.colorList
 
 class ColorItemSelectAdapter(
     private val colorsPainDialog: ColorsPainDialog,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="130dp"
-    android:layout_height="210dp"
+    android:layout_height="170dp"
     android:background="@drawable/bg_shadow"
     android:gravity="center"
     android:orientation="vertical">
@@ -43,9 +43,11 @@
         android:background="@drawable/bg_normal_btn_press"
         android:gravity="center"
         android:text="切换贴纸"
+        android:visibility="gone"
         android:textColor="@color/EditText"
         android:textSize="15sp" />
     <View
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/Divider" />
