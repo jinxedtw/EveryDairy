@@ -1,5 +1,6 @@
 package com.tw.longerrelationship.views.activity
 
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.widget.TextView
@@ -7,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.tw.longerrelationship.R
 
 class ShowActivity : AppCompatActivity() {
-//    private lateinit var tv0: TextView
+    //    private lateinit var tv0: TextView
 //    private lateinit var tv1: TextView
 //    private lateinit var tv2: TextView
 //    private lateinit var tv3: TextView
@@ -43,10 +44,11 @@ class ShowActivity : AppCompatActivity() {
 //        tv9 = findViewById(R.id.tv_9)
 //        tv10 = findViewById(R.id.tv_10)
         text1 = findViewById(R.id.text_1)
-        text2 = findViewById(R.id.text_2)
-        text3 = findViewById(R.id.text_3)
-        textAdapter = findViewById(R.id.text_adaptation)
 
+        
+        text1.setOnClickListener {
+            startActivity(Intent(this, TestActivity::class.java))
+        }
 //        tv1.paint.style = Paint.Style.FILL_AND_STROKE
 //        tv1.paint.strokeWidth = 0f
 //

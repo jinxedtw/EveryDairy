@@ -1,6 +1,7 @@
 package com.tw.longerrelationship
 
 import android.annotation.SuppressLint
+import com.tw.longerrelationship.help.UrlMatchHelper
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -83,8 +84,15 @@ class ListNode(var `val`: Int) {
 }
 
 fun main() {
-    val test = 0
-    println("Kotlin type: ${test.kClass}")
+//    val test = 0
+//    println("Kotlin type: ${test.kClass}")
+
+//    UrlMatchHelper.getMatchURL("www.baidu.com\n" +
+//            "\n" +
+//            "https://c.runoob.com/front-end/854/\n" +
+//            "\n" +
+//            "https://blog.csdn.net/cyan20115/article/details/106552487?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1.no_search_link&spm=1001.2101.3001.4242.2")
+
 }
 
 
