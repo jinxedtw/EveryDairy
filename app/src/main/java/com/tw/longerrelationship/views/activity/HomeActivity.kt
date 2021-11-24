@@ -24,6 +24,7 @@ import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SECR
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SETTING
 import com.tw.longerrelationship.adapter.FragmentAdapter
 import com.tw.longerrelationship.databinding.ActivityMainBinding
+import com.tw.longerrelationship.kClass
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.KEY_ACCOUNT_SEX
 import com.tw.longerrelationship.util.Constants.KEY_DAIRY_SHOW_FOLD
@@ -34,6 +35,7 @@ import com.tw.longerrelationship.views.fragment.ToDoFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -183,15 +185,11 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         // 获取天气
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.requestWeather()?.apply {
-                if (this.results.isNullOrEmpty()) return@apply
-                runOnUiThread {
-                    mBinding.includeDrawer.tvCity.text = results.first().location?.name?:"--"
-                    mBinding.includeDrawer.tvTemperature.text ="${results.first().now?.temperature?:"--"}°"
-                    mBinding.includeDrawer.tvWeather.text=results.first().now?.text?:"--"
-                }
-            }
+        lifecycleScope.launch(Dispatchers.Main) {
+            val data = viewModel.requestWeather() ?: return@launch
+            mBinding.includeDrawer.tvCity.text = data.results.first().location?.name ?: "--"
+            mBinding.includeDrawer.tvTemperature.text = "${data.results.first().now?.temperature ?: "--"}°"
+            mBinding.includeDrawer.tvWeather.text = data.results.first().now?.text ?: "--"
         }
     }
 
@@ -213,7 +211,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         mDrawerAdapter.setClickListener(object : DrawerItemAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 when (list[position].type) {
-                    DRAWER_PICTURE -> showToast( "我点了图库")
+                    DRAWER_PICTURE -> showToast("我点了图库")
                     DRAWER_ABOUT -> showToast("我点了关于")
                     3 -> {
                     }
@@ -317,7 +315,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
 
     companion object {
         var accountSex: Int
-            get() = DataStoreUtil.getSyncData(KEY_ACCOUNT_SEX,0)?:0
+            get() = DataStoreUtil[KEY_ACCOUNT_SEX] ?:0
             set(value) {
                 CoroutineScope(Dispatchers.Main).launch {
                     DataStoreUtil.putData(KEY_ACCOUNT_SEX, value)
@@ -325,10 +323,10 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
             }
 
         var dairyShowFold: Boolean
-            get() = DataStoreUtil.readBooleanData(KEY_DAIRY_SHOW_FOLD, true)
+            get() = DataStoreUtil[KEY_DAIRY_SHOW_FOLD] ?: true
             set(value) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    DataStoreUtil.saveBooleanData(KEY_ACCOUNT_SEX, value)
+                    DataStoreUtil.putData(KEY_DAIRY_SHOW_FOLD, value)
                 }
             }
     }

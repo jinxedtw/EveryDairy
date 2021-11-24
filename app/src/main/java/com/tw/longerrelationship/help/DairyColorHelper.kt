@@ -29,7 +29,7 @@ object DairyColorHelper {
     private const val ICON_COLOR_DEPTH_EXTENT: Int = 80
 
     /** 主体颜色 **/
-    fun getDairyMainColor(): Int = colorList[DataStoreUtil.getSyncData(ColorsPainDialog.DEFAULT_COLOR_INDEX, 0) ?: 0]
+    fun getDairyMainColor(): Int = colorList[DataStoreUtil[ColorsPainDialog.DEFAULT_COLOR_INDEX] ?: 0]
 
     /** 图片选择器和日记恢复的颜色 */
     fun getImageSelectorAndRecoverColor(@ColorInt color: Int): Int {
@@ -44,7 +44,7 @@ object DairyColorHelper {
         }
     }
 
-    fun getEditContentColor(@ColorInt color: Int): Int{
+    fun getEditContentColor(@ColorInt color: Int): Int {
         return if (isDarkTheme(color)) {
             ContextCompat.getColor(appContext, R.color.dairy_edit_content_day)
         } else {
@@ -52,10 +52,10 @@ object DairyColorHelper {
         }
     }
 
-    fun getIconColor(@ColorInt color: Int): Int{
-        return if (isDarkTheme(color)){
+    fun getIconColor(@ColorInt color: Int): Int {
+        return if (isDarkTheme(color)) {
             ContextCompat.getColor(appContext, R.color.dairy_icon_select_day)
-        }else{
+        } else {
             ContextCompat.getColor(appContext, R.color.dairy_icon_select_dark)
         }
     }

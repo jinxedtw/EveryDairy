@@ -24,7 +24,7 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
                     handlePassword()
                 }
                 mBinding.btLogin -> {
-                    val encodeStr = DataStoreUtil.getSyncData(KEY_DAIRY_PASSWORD, "")
+                    val encodeStr = DataStoreUtil[KEY_DAIRY_PASSWORD] ?: ""
 
                     val key = CipherUtil.getAESKey(mBinding.etLogin.text.toString())
                     if (CipherUtil.decryptAES(encodeStr, key).equals(SECRET_STRING)) {

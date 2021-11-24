@@ -257,8 +257,11 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
         const val POPUP_WINDOW_HEIGHT: Int = 200
         val timeConverterMap = hashMapOf(1 to "周日", 2 to "周一", 3 to "周二", 4 to "周三", 5 to "周四", 6 to "周五", 7 to "周六")
 
-        var stickerId: Int
-            get() = DataStoreUtil.readIntData(KEY_STICKER_ID)
-            set(value) = DataStoreUtil.saveSyncIntData(KEY_STICKER_ID, value)
+        var stickerId: Int = 0
+            get() = DataStoreUtil[KEY_STICKER_ID] ?: 0
+            set(value) {
+                DataStoreUtil[KEY_STICKER_ID] = value
+                field = value
+            }
     }
 }

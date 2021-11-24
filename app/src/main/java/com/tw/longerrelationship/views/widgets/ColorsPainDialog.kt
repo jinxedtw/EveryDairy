@@ -78,7 +78,7 @@ class ColorsPainDialog(val activity: DairyEditActivity, val colorSelectCallBack:
         const val DEFAULT_COLOR_INDEX = "colorIndex"
 
         var currentColorIndex: Int
-            get() = DataStoreUtil.getSyncData(DEFAULT_COLOR_INDEX, 0)?:0
+            get() = DataStoreUtil[DEFAULT_COLOR_INDEX] ?: 0
             set(value) {
                 CoroutineScope(Dispatchers.IO).launch {
                     DataStoreUtil.putData(DEFAULT_COLOR_INDEX, value)

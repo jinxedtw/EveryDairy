@@ -7,76 +7,8 @@ import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
 object DataStoreUtil {
-
-    @Suppress("UNCHECKED_CAST")
-    fun <U> getSyncData(key: String, default: U): U? {
-        return try {
-            val res = when (default) {
-                is Long -> readLongData(key, default)
-                is String -> readStringData(key, default)
-                is Int -> readIntData(key, default)
-                is Boolean -> readBooleanData(key, default)
-                is Float -> readFloatData(key, default)
-                else -> throw IllegalArgumentException("This type can be saved into DataStore")
-            }
-            res as U
-        }catch (e:Exception){
-            e.printStackTrace()
-            showToast("dataStore  getData error",debugMode = true)
-            default
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun <U> getData(key: String, default: U): Flow<U> {
-        return try {
-            val data = when (default) {
-                is Long -> readLongFlow(key, default)
-                is String -> readStringFlow(key, default)
-                is Int -> readIntFlow(key, default)
-                is Boolean -> readBooleanFlow(key, default)
-                is Float -> readFloatFlow(key, default)
-                else -> throw IllegalArgumentException("This type can be saved into DataStore")
-            }
-            data as Flow<U>
-        }catch (e:Exception){
-            e.printStackTrace()
-            showToast("dataStore  getData error",debugMode = true)
-            flow { emit(default) }
-        }
-    }
-
-    suspend fun <U> putData(key: String, value: U) {
-        try {
-            when (value) {
-                is Long -> saveLongData(key, value)
-                is String -> saveStringData(key, value)
-                is Int -> saveIntData(key, value)
-                is Boolean -> saveBooleanData(key, value)
-                is Float -> saveFloatData(key, value)
-                else -> throw IllegalArgumentException("This type can be saved into DataStore")
-            }
-        }catch (e:Exception){
-            e.printStackTrace()
-            showToast("dataStore error",debugMode = true)
-        }
-    }
-
-    fun <U> putSyncData(key: String, value: U) {
-        when (value) {
-            is Long -> saveSyncLongData(key, value)
-            is String -> saveSyncStringData(key, value)
-            is Int -> saveSyncIntData(key, value)
-            is Boolean -> saveSyncBooleanData(key, value)
-            is Float -> saveSyncFloatData(key, value)
-            else -> throw IllegalArgumentException("This type can be saved into DataStore")
-        }
-    }
-
-    fun readBooleanFlow(key: String, default: Boolean = false): Flow<Boolean> =
+    private fun readBooleanFlow(key: String, default: Boolean = false): Flow<Boolean> =
         dataStore.data.catch {
-            //当读取数据遇到错误时，如果是 `IOException` 异常，发送一个 emptyPreferences 来重新使用
-            //但是如果是其他的异常，最好将它抛出去，不要隐藏问题
             if (it is IOException) {
                 it.printStackTrace()
                 emit(emptyPreferences())
@@ -87,18 +19,18 @@ object DataStoreUtil {
             it[booleanPreferencesKey(key)] ?: default
         }
 
-    fun readBooleanData(key: String, default: Boolean = false): Boolean {
-        var value = false
+    fun readBooleanData(key: String): Boolean? {
+        var value: Boolean? = false
         runBlocking {
             dataStore.data.first {
-                value = it[booleanPreferencesKey(key)] ?: default
+                value = it[booleanPreferencesKey(key)]
                 true
             }
         }
         return value
     }
 
-    fun readIntFlow(key: String, default: Int = 0): Flow<Int> =
+    private fun readIntFlow(key: String, default: Int = 0): Flow<Int> =
         dataStore.data.catch {
             if (it is IOException) {
                 it.printStackTrace()
@@ -110,11 +42,12 @@ object DataStoreUtil {
             it[intPreferencesKey(key)] ?: default
         }
 
-    fun readIntData(key: String, default: Int = 0): Int {
-        var value = 0
+    /** 同步获取Int值 */
+    fun readIntData(key: String): Int? {
+        var value: Int? = 0
         runBlocking {
             dataStore.data.first {
-                value = it[intPreferencesKey(key)] ?: default
+                value = it[intPreferencesKey(key)]
                 true
             }
         }
@@ -144,7 +77,7 @@ object DataStoreUtil {
         return value
     }
 
-    fun readFloatFlow(key: String, default: Float = 0f): Flow<Float> =
+    private fun readFloatFlow(key: String, default: Float = 0f): Flow<Float?> =
         dataStore.data.catch {
             if (it is IOException) {
                 it.printStackTrace()
@@ -153,14 +86,14 @@ object DataStoreUtil {
                 throw it
             }
         }.map {
-            it[floatPreferencesKey(key)] ?: default
+            it[floatPreferencesKey(key)]
         }
 
-    fun readFloatData(key: String, default: Float = 0f): Float {
-        var value = 0f
+    fun readFloatData(key: String): Float? {
+        var value: Float? = 0f
         runBlocking {
             dataStore.data.first {
-                value = it[floatPreferencesKey(key)] ?: default
+                value = it[floatPreferencesKey(key)]
                 true
             }
         }
@@ -179,11 +112,11 @@ object DataStoreUtil {
             it[longPreferencesKey(key)] ?: default
         }
 
-    fun readLongData(key: String, default: Long = 0L): Long {
-        var value = 0L
+    fun readLongData(key: String): Long? {
+        var value: Long? = 0L
         runBlocking {
             dataStore.data.first {
-                value = it[longPreferencesKey(key)] ?: default
+                value = it[longPreferencesKey(key)]
                 true
             }
         }
@@ -198,7 +131,7 @@ object DataStoreUtil {
 
     fun saveSyncBooleanData(key: String, value: Boolean) = runBlocking { saveBooleanData(key, value) }
 
-    suspend fun saveIntData(key: String, value: Int) {
+    private suspend fun saveIntData(key: String, value: Int) {
         dataStore.edit { mutablePreferences ->
             mutablePreferences[intPreferencesKey(key)] = value
         }
@@ -206,7 +139,7 @@ object DataStoreUtil {
 
     fun saveSyncIntData(key: String, value: Int) = runBlocking { saveIntData(key, value) }
 
-    suspend fun saveStringData(key: String, value: String) {
+    private suspend fun saveStringData(key: String, value: String) {
         dataStore.edit { mutablePreferences ->
             mutablePreferences[stringPreferencesKey(key)] = value
         }
@@ -214,7 +147,7 @@ object DataStoreUtil {
 
     fun saveSyncStringData(key: String, value: String) = runBlocking { saveStringData(key, value) }
 
-    suspend fun saveFloatData(key: String, value: Float) {
+    private suspend fun saveFloatData(key: String, value: Float) {
         dataStore.edit { mutablePreferences ->
             mutablePreferences[floatPreferencesKey(key)] = value
         }
@@ -222,7 +155,7 @@ object DataStoreUtil {
 
     fun saveSyncFloatData(key: String, value: Float) = runBlocking { saveFloatData(key, value) }
 
-    suspend fun saveLongData(key: String, value: Long) {
+    private suspend fun saveLongData(key: String, value: Long) {
         dataStore.edit { mutablePreferences ->
             mutablePreferences[longPreferencesKey(key)] = value
         }
@@ -272,4 +205,76 @@ object DataStoreUtil {
         }
     }
 
+    /** 异步的读取数据 */
+    @Suppress("UNCHECKED_CAST")
+    fun <U> getData(key: String, default: U): Flow<U> {
+        return try {
+            val data = when (default) {
+                is Long -> readLongFlow(key, default)
+                is String -> readStringFlow(key, default)
+                is Int -> readIntFlow(key, default)
+                is Boolean -> readBooleanFlow(key, default)
+                is Float -> readFloatFlow(key, default)
+                else -> throw IllegalArgumentException("This type can be saved into DataStore")
+            }
+            data as Flow<U>
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showToast("dataStore  getData error", debugMode = true)
+            flow { emit(default) }
+        }
+    }
+
+    /** 异步的存放数据 */
+    suspend fun <U> putData(key: String, value: U) {
+        try {
+            when (value) {
+                is Long -> saveLongData(key, value)
+                is String -> saveStringData(key, value)
+                is Int -> saveIntData(key, value)
+                is Boolean -> saveBooleanData(key, value)
+                is Float -> saveFloatData(key, value)
+                else -> throw IllegalArgumentException("This type can be saved into DataStore")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showToast("dataStore error", debugMode = true)
+        }
+    }
+
+    /** 同步读取数据 */
+    inline operator fun <reified U> get(key: String): U? {
+        return try {
+            val data = when (U::class) {
+                Int::class -> readIntData(key)
+                Long::class -> readLongData(key)
+                String::class -> readStringData(key)
+                Boolean::class -> readBooleanData(key)
+                Float::class -> readFloatData(key)
+                else -> throw IllegalArgumentException("This type can be saved into DataStore")
+            }
+            data as U
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showToast("dataStore  getData error", debugMode = true)
+            null
+        }
+    }
+
+    /** 同步的存放数据 */
+    inline operator fun <reified T> set(key: String, value: T) {
+        return try {
+            when (T::class) {
+                Int::class -> saveSyncIntData(key, value as Int)
+                Long::class -> saveSyncLongData(key, value as Long)
+                String::class -> saveSyncStringData(key, value as String)
+                Boolean::class -> saveSyncBooleanData(key, value as Boolean)
+                Float::class -> saveSyncFloatData(key, value as Float)
+                else -> throw IllegalArgumentException("This type can be saved into DataStore")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showToast("dataStore error", debugMode = true)
+        }
+    }
 }

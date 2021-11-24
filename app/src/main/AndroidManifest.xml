@@ -21,7 +21,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.LongerRelationShip">
-        <activity android:name=".test.TestActivity"/>
+        <activity android:name=".test.TestActivity" />
         <activity android:name=".test.ShowActivity">
 
             <!-- <intent-filter> -->
@@ -31,16 +31,33 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".views.activity.ToDoEditActivity" />
-        <activity android:name=".views.activity.FavoritesActivity" />
-        <activity android:name=".views.activity.GuideActivity" />
-        <activity android:name=".views.activity.PictureInfoActivity" />
-        <activity android:name=".views.activity.SearchActivity" />
-        <activity android:name=".views.activity.DairyInfoActivity" />
-        <activity android:name=".views.activity.BrowserActivity" />
-        <activity android:name=".views.activity.SecretActivity" />
+        <activity
+            android:name=".views.activity.ToDoEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.activity.FavoritesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.activity.GuideActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.activity.PictureInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.activity.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.activity.DairyInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.activity.BrowserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.activity.SecretActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.activity.DairyEditActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".views.activity.SplashActivity"

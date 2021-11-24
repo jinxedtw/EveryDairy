@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity<ViewDataBinding>() {
         private const val FIRST_OPEN_APP = "isFirstOpenApp"
 
         var isFirstOpenApp: Boolean
-            get() = DataStoreUtil.readBooleanData(FIRST_OPEN_APP, true)
+            get() = DataStoreUtil[FIRST_OPEN_APP] ?: true
             set(value) {
                 CoroutineScope(Dispatchers.IO).launch {
                     DataStoreUtil.saveBooleanData(FIRST_OPEN_APP, value)

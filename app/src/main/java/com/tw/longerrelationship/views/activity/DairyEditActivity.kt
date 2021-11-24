@@ -430,13 +430,13 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
     private fun tryToRecoverDairy() {
         lifecycleScope.launch(Dispatchers.Main) {
-            DataStoreUtil.readStringFlow(KEY_RECOVER_CONTENT).first {
+            DataStoreUtil.getData(KEY_RECOVER_CONTENT,"").first {
                 if (it.isNotEmpty()) {
                     recoveredContent = it
                 }
                 true
             }
-            DataStoreUtil.readStringFlow(KEY_RECOVER_TITLE).first {
+            DataStoreUtil.getData(KEY_RECOVER_TITLE,"").first {
                 if (it.isNotEmpty()) {
                     recoveredTitle = it
                 }
@@ -473,8 +473,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     override fun onPause() {
         super.onPause()
         if (!TextUtils.isEmpty(viewModel.dairyContent.value) && isNeedToSaved) {
-            DataStoreUtil.saveSyncStringData(KEY_RECOVER_CONTENT, viewModel.dairyContent.value!!)
-            DataStoreUtil.saveSyncStringData(KEY_RECOVER_TITLE, mBinding.appBar.getTitle())
+            DataStoreUtil[KEY_RECOVER_CONTENT] = viewModel.dairyContent.value!!
+            DataStoreUtil[KEY_RECOVER_TITLE] = mBinding.appBar.getTitle()
         }
     }
 
