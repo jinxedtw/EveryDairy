@@ -3,9 +3,9 @@ package com.tw.longerrelationship.views.activity
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Intent
-import android.view.Gravity
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -24,7 +24,6 @@ import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SECR
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SETTING
 import com.tw.longerrelationship.adapter.FragmentAdapter
 import com.tw.longerrelationship.databinding.ActivityMainBinding
-import com.tw.longerrelationship.kClass
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.KEY_ACCOUNT_SEX
 import com.tw.longerrelationship.util.Constants.KEY_DAIRY_SHOW_FOLD
@@ -35,7 +34,6 @@ import com.tw.longerrelationship.views.fragment.ToDoFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -144,8 +142,15 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                     dairyShowFold = viewModel.isFold.value!!
                 }
                 mBinding.includeMain.includeBar.llSearch -> {
-                    startActivity(Intent(this.context, SearchActivity::class.java))
-                    overridePendingTransition(R.anim.animation_left_in, R.anim.animation_right_out)
+                    startActivity(
+                        Intent(this@HomeActivity, SearchActivity::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(
+                            this@HomeActivity,
+                            mBinding.includeMain.includeBar.llSearch,
+                            getString(R.string.home_activity_share_bar)
+                        ).toBundle()
+                    )
+//                    overridePendingTransition(R.anim.animation_left_in, R.anim.animation_right_out)
                 }
                 // 点击navigation头部
                 mBinding.includeDrawer.ivHead -> {
@@ -315,7 +320,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
 
     companion object {
         var accountSex: Int
-            get() = DataStoreUtil[KEY_ACCOUNT_SEX] ?:0
+            get() = DataStoreUtil[KEY_ACCOUNT_SEX] ?: 0
             set(value) {
                 CoroutineScope(Dispatchers.Main).launch {
                     DataStoreUtil.putData(KEY_ACCOUNT_SEX, value)

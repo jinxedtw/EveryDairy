@@ -89,7 +89,7 @@ class BrowserActivity : BaseActivity<ActivityBrowserBinding>() {
                 return
             }
 
-            mBinding.progressBar.progress = newProgress
+            mBinding.progressBar.setProgressWithAnim(newProgress)
         }
     }
 }

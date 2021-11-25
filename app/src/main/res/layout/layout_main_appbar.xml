@@ -32,7 +32,8 @@
             android:background="@drawable/shape_main_search"
             android:gravity="center"
             android:paddingStart="15dp"
-            android:paddingEnd="15dp">
+            android:paddingEnd="15dp"
+            android:transitionName="@string/home_activity_share_bar">
 
             <ImageView
                 android:layout_width="20dp"
@@ -60,17 +61,17 @@
 
         <TextView
             android:id="@+id/tv_filter"
-            android:visibility="gone"
             android:layout_width="52dp"
             android:layout_height="match_parent"
+            android:background="@drawable/rip_common"
             android:gravity="center"
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/filter"
-            android:background="@drawable/rip_common"
             android:textColor="@color/black_weak"
-            android:textSize="@dimen/app_bar_text_size" />
+            android:textSize="@dimen/app_bar_text_size"
+            android:visibility="gone" />
     </LinearLayout>
 </layout>
 

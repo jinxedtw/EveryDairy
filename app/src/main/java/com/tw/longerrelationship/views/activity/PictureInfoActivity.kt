@@ -2,6 +2,7 @@ package com.tw.longerrelationship.views.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.transition.TransitionInflater
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -36,6 +37,8 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
         observe()
         initParams()
         initView()
+
+        window.sharedElementEnterTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
     }
 
     private fun observe() {
@@ -81,10 +84,10 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
                         putExtra("result", viewModel.currentPicture.value)
                     }
                     setResult(Activity.RESULT_OK, intent)
-                    finish()
+                    finishAfterTransition()
                 }
                 mBinding.ivGoBack -> {
-                    finish()
+                    finishAfterTransition()
                 }
             }
         }
@@ -92,11 +95,8 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
 
     override fun getLayoutId(): Int = R.layout.activity_picture_info
 
-    /**
-     * 设置左右滑动切换图片
-     */
+    /** 设置左右滑动切换图片 */
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
         return super.onTouchEvent(event)
     }
 }

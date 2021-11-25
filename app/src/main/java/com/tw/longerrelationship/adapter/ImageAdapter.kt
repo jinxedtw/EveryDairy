@@ -24,6 +24,7 @@ class ImageAdapter(private val uriList: List<Uri>, private val context: Context)
         )
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+        holder.imageView.transitionName = "img_${position}"
         Glide.with(context).load(uriList[position])
             .into(holder.imageView)
     }
@@ -32,11 +33,11 @@ class ImageAdapter(private val uriList: List<Uri>, private val context: Context)
 
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.iv_show_picture)
+        val imageView: ImageView = itemView.findViewById(R.id.iv_picture)
 
         init {
             imageView.setOnClickListener {
-                (context as Activity).finish()
+                (context as Activity).finishAfterTransition()
             }
         }
     }

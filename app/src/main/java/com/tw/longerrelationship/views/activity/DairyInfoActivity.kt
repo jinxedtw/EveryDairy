@@ -1,6 +1,7 @@
 package com.tw.longerrelationship.views.activity
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -10,7 +11,9 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult.EXTRA_ACTIVITY_OPTIONS_BUNDLE
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,6 +36,7 @@ import kotlinx.coroutines.launch
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.util.*
+
 
 /**
  * 日记详情界面
@@ -88,7 +92,11 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                 dairyId = it.id ?: -1
                 val calendar: Calendar = Calendar.getInstance().apply { time = it.createTime }
                 mBinding.rvPhotoList.adapter =
-                    PictureShowAdapter(it.uriList, this@DairyInfoActivity)
+                    PictureShowAdapter(it.uriList, this@DairyInfoActivity).apply {
+                        onItemClick = { view ->
+                            pictureInfoActivityJump(view, view.tag as Int, view.transitionName)
+                        }
+                    }
                 mBinding.tvDay.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
                 mBinding.tvYearAndMonth.text =
                     "${calendar.get(Calendar.YEAR)}年${calendar.get(Calendar.MONTH) + 1}月/${
@@ -217,11 +225,15 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
         return str.toString()
     }
 
-    fun pictureInfoActivityJump(index: Int) {
+    private fun pictureInfoActivityJump(view: View, index: Int, transitionId: String) {
+        val options: ActivityOptions = ActivityOptions.makeSceneTransitionAnimation(this@DairyInfoActivity, view, transitionId)
+
         val bundle = Bundle().apply {
             putParcelableArrayList(INTENT_PICTURE_LIST, viewModel.pictureList)
             putInt(INTENT_CURRENT_PICTURE, index)
             putBoolean(INTENT_IF_CAN_DELETE, false)
+            // 配置过渡元素
+            putBundle(EXTRA_ACTIVITY_OPTIONS_BUNDLE, options.toBundle())
         }
         toPictureInfoLauncher.launch(bundle)
     }

@@ -136,6 +136,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
                     handler.postDelayed({
                         finish()
                     }, 50)
+                    finishAfterTransition()
                 }
                 mBinding.includeSearchBar.ivCancer -> {
                     mBinding.includeSearchBar.etSearch.text = null
@@ -258,7 +259,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        overridePendingTransition(R.anim.animation_right_in, R.anim.animation_left_out)
+//        overridePendingTransition(R.anim.animation_right_in, R.anim.animation_left_out)
     }
 
     companion object {

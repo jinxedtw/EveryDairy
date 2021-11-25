@@ -2,6 +2,7 @@ package com.tw.longerrelationship.views.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -59,6 +60,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     private var isNeedToSaved: Boolean = true        // 日记是否需要保存
     private var recoveredTitle: String? = null      // 恢复日记标题
     private var recoveredContent: String? = null    // 恢复日记内容
+    private var isFirstOpen: Boolean = true
 
     private lateinit var imgRipperDrawable: RippleDrawable
     private lateinit var locationService: LocationService
@@ -224,7 +226,11 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
      */
     @SuppressLint("SetTextI18n")
     private fun initView() {
-        pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this, imgRipperDrawable)
+        pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this, imgRipperDrawable).apply {
+            onImageClick = {
+                pictureInfoActivityJump(it, it.tag as Int, it.transitionName)
+            }
+        }
 
         tryToRecoverDairy()
 
@@ -378,7 +384,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             // 如果decorView的高度小于原来的80%就说明弹出了软键盘
             if ((rect.bottom - rect.top).toDouble() / decorView.height < 0.8) {
                 mBinding.rvPhotoList.visibility = View.GONE
-                mBinding.etContent.requestFocus()
                 decorView.handler.postDelayed({
                     mBinding.llTextAndCount.visibility = View.VISIBLE
                 }, 50)
@@ -430,13 +435,13 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
     private fun tryToRecoverDairy() {
         lifecycleScope.launch(Dispatchers.Main) {
-            DataStoreUtil.getData(KEY_RECOVER_CONTENT,"").first {
+            DataStoreUtil.getData(KEY_RECOVER_CONTENT, "").first {
                 if (it.isNotEmpty()) {
                     recoveredContent = it
                 }
                 true
             }
-            DataStoreUtil.getData(KEY_RECOVER_TITLE,"").first {
+            DataStoreUtil.getData(KEY_RECOVER_TITLE, "").first {
                 if (it.isNotEmpty()) {
                     recoveredTitle = it
                 }
@@ -467,6 +472,15 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
         if (recoveredTitle != null) {
             mBinding.appBar.setTitle(recoveredTitle!!)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isFirstOpen){
+            isFirstOpen=false
+        }else{
+            mBinding.root.requestFocus()
         }
     }
 
@@ -519,10 +533,16 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         ActivityCompat.startActivityForResult(this, intent, 3, null)
     }
 
-    fun pictureInfoActivityJump(index: Int) {
+    private fun pictureInfoActivityJump(view: View, index: Int, transitionId: String) {
+        val options: ActivityOptions = ActivityOptions.makeSceneTransitionAnimation(
+            this,
+            android.util.Pair.create(view, transitionId),
+        )
         val bundle = Bundle().apply {
             putParcelableArrayList(INTENT_PICTURE_LIST, viewModel.pictureList)
             putInt(INTENT_CURRENT_PICTURE, index)
+            // 配置过渡元素
+            putBundle(ActivityResultContracts.StartActivityForResult.EXTRA_ACTIVITY_OPTIONS_BUNDLE, options.toBundle())
         }
         toPictureInfoLauncher.launch(bundle)
     }

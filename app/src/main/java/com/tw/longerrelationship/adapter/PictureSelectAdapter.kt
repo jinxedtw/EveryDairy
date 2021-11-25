@@ -26,6 +26,7 @@ class PictureSelectAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var parent: ViewGroup? = null
+    var onImageClick: (View) -> Unit = {}
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -56,6 +57,7 @@ class PictureSelectAdapter(
                     .into(holder.picture)
 
                 holder.picture.tag = position
+                holder.picture.transitionName="img_${position}"
             }
             is TailViewHolder -> {
                 holder.itemView.background = rippleDrawable
@@ -99,7 +101,7 @@ class PictureSelectAdapter(
 
         init {
             picture.setOnClickListener {
-                activity.pictureInfoActivityJump(it.tag as Int)
+                onImageClick.invoke(it)
             }
         }
     }

@@ -28,4 +28,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <!--    允许过渡动画-->
+    <style name="TransitionTheme" parent="Theme.LongerRelationShip">
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 </resources>

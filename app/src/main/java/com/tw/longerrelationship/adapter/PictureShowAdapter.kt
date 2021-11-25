@@ -1,5 +1,6 @@
 package com.tw.longerrelationship.adapter
 
+import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +22,9 @@ import com.tw.longerrelationship.views.activity.DairyInfoActivity
  */
 class PictureShowAdapter(
     private val pictureList: List<Uri>,
-    private val activity: DairyInfoActivity
+    private val context: Context
 ) : RecyclerView.Adapter<PictureShowAdapter.ViewHolder>() {
+    var onItemClick: (View) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -32,7 +34,8 @@ class PictureShowAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Glide.with(activity)
+        holder.picture.transitionName = "img_${position}"
+        Glide.with(context)
             .load(pictureList[position])
             .apply(RequestOptions.bitmapTransform(RoundedCorners(15)))
             .into(holder.picture)
@@ -47,8 +50,7 @@ class PictureShowAdapter(
 
         init {
             picture.setOnClickListener {
-
-                activity.pictureInfoActivityJump(it.tag as Int)
+                onItemClick.invoke(it)
             }
         }
     }

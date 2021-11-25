@@ -41,4 +41,7 @@
     <string name="delete_all">全部删除</string>
     <string name="complete">完成</string>
     <string name="customize_background">自定义背景</string>
+
+    <!--    共享元素name-->
+    <string name="home_activity_share_bar">share_bar</string>
 </resources>

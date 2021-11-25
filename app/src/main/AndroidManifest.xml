@@ -42,13 +42,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.activity.PictureInfoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransitionTheme" />
         <activity
             android:name=".views.activity.SearchActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransitionTheme" />
         <activity
             android:name=".views.activity.DairyInfoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransitionTheme" />
         <activity
             android:name=".views.activity.BrowserActivity"
             android:screenOrientation="portrait" />
@@ -70,7 +73,8 @@
         </activity>
         <activity
             android:name=".views.activity.HomeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TransitionTheme" />
 
         <service
             android:name="com.baidu.location.f"
