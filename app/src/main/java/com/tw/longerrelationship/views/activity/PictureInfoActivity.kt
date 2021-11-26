@@ -6,7 +6,10 @@ import android.transition.TransitionInflater
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.ImageAdapter
 import com.tw.longerrelationship.databinding.ActivityPictureInfoBinding
@@ -15,10 +18,9 @@ import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
 import com.tw.longerrelationship.util.Constants.INTENT_IF_CAN_DELETE
 import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_LIST
 import com.tw.longerrelationship.viewmodel.PictureInfoViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-/**
- * TODO 多指操作,放大缩小图片
- */
 class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
     private var ifCanDelete: Boolean = true
     private var current: Int = -1
@@ -37,8 +39,6 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
         observe()
         initParams()
         initView()
-
-        window.sharedElementEnterTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
     }
 
     private fun observe() {

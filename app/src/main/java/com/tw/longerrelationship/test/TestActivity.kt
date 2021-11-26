@@ -17,14 +17,14 @@ class TestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
 
-
-        LiveDataBus.with("啦啦啦",String::class.java,isStick = true).observe(this){
-            showToast(it)
-        }
-
-        findViewById<View>(R.id.bt).setOnClickListener {
-            LiveDataBus.with("啦啦啦",String::class.java).postValue("发送了数据")
-        }
+//
+//        LiveDataBus.with("啦啦啦",String::class.java,isStick = true).observe(this){
+//            showToast(it)
+//        }
+//
+//        findViewById<View>(R.id.bt).setOnClickListener {
+//            LiveDataBus.with("啦啦啦",String::class.java).postValue("发送了数据")
+//        }
     }
 
 //    private fun hook(observer: Observer<*>) {

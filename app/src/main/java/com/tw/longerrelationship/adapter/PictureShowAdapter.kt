@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -41,17 +39,14 @@ class PictureShowAdapter(
             .into(holder.picture)
 
         holder.picture.tag = position
+        holder.picture.setOnClickListener {
+            onItemClick.invoke(it)
+        }
     }
 
     override fun getItemCount(): Int = pictureList.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val picture: ImageView = itemView.findViewById(R.id.iv_picture)
-
-        init {
-            picture.setOnClickListener {
-                onItemClick.invoke(it)
-            }
-        }
     }
 }
