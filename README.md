@@ -18,7 +18,7 @@
 
 
 
-### 使用的相关技术**
+### 使用的相关技术
 
 * DataBinding :省去了繁琐的findViewById工作，而且通过和ViewMode配合,可以直接把ViewModel的数据渲染到界面上
 * Paging：分页加载库
