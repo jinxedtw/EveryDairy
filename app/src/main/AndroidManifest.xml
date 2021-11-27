@@ -45,7 +45,7 @@
         <activity
             android:name=".views.activity.PictureInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TransitionTheme" />
+            android:theme="@style/pictureInfoActivityTheme" />
         <activity
             android:name=".views.activity.SearchActivity"
             android:screenOrientation="portrait"

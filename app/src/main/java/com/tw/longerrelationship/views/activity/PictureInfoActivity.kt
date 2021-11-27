@@ -2,14 +2,10 @@ package com.tw.longerrelationship.views.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.transition.TransitionInflater
-import android.view.MotionEvent
+import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.ImageAdapter
 import com.tw.longerrelationship.databinding.ActivityPictureInfoBinding
@@ -18,11 +14,10 @@ import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
 import com.tw.longerrelationship.util.Constants.INTENT_IF_CAN_DELETE
 import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_LIST
 import com.tw.longerrelationship.viewmodel.PictureInfoViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
-    private var ifCanDelete: Boolean = true
+    private var canDelete: Boolean = true
     private var current: Int = -1
 
     private val viewModel by lazy {
@@ -31,11 +26,12 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
             InjectorUtils.getPictureInfoViewModelFactory()
         ).get(PictureInfoViewModel::class.java)
     }
+    private var isHiddenMode: Boolean = false
 
     override fun init() {
         setAndroidNativeLightStatusBar(this, false)
         initBinding()
-        makeStatusBarTransparent(this)
+        setStatusBarColor(Color.TRANSPARENT)
         observe()
         initParams()
         initView()
@@ -59,14 +55,31 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
                 data.getParcelableArrayList(INTENT_PICTURE_LIST) ?: ArrayList()
             viewModel.currentPicture.postValue(data.getInt(INTENT_CURRENT_PICTURE))
             current = data.getInt(INTENT_CURRENT_PICTURE)
-            ifCanDelete = data.getBoolean(INTENT_IF_CAN_DELETE, true)
+            canDelete = data.getBoolean(INTENT_IF_CAN_DELETE, true)
         }
     }
 
     private fun initView() {
-        mBinding.vpShowPicture.adapter = ImageAdapter(viewModel.uriList, this)
+        mBinding.vpShowPicture.adapter = ImageAdapter(viewModel.uriList, this).apply {
+            onImageClick = {
+                isHiddenMode = !isHiddenMode
+                if (isHiddenMode) {
+                    setStatusBarHidden(window, true)
+                    mBinding.llBar.gone()
+                } else {
+                    setStatusBarHidden(window, false)
+                    mBinding.llBar.visible()
+                }
+            }
+            onImageExit = {
+                finishAfterTransition()
+            }
+            onAlphaChange = {
+                mBinding.flShowPicture.setBackgroundColor(getColorWithAlpha(it, Color.BLACK))
+            }
+        }
         mBinding.vpShowPicture.setCurrentItem(current, false)
-        mBinding.tvDelete.visibility = if (ifCanDelete) View.VISIBLE else View.GONE
+        mBinding.tvDelete.visibility = if (canDelete) View.VISIBLE else View.GONE
 
         mBinding.vpShowPicture.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
@@ -94,9 +107,4 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
     }
 
     override fun getLayoutId(): Int = R.layout.activity_picture_info
-
-    /** 设置左右滑动切换图片 */
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
-    }
 }

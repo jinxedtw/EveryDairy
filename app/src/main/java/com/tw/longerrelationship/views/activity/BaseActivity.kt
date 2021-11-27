@@ -1,5 +1,6 @@
 package com.tw.longerrelationship.views.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -132,19 +133,17 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setTouchListener(view: View?) {
         if (view == null) {
             return
         }
         if (view !is EditText) {
-            view.setOnTouchListener(OnTouchListener { v, event ->
+            view.setOnTouchListener(OnTouchListener { _, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         manager.hideSoftInputFromWindow(view.windowToken, 0)
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        v.performClick()
                     }
                 }
                 false

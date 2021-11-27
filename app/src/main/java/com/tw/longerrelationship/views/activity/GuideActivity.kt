@@ -11,9 +11,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.logic.AppDataBase
+import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.util.setAndroidNativeLightStatusBar
 import com.tw.longerrelationship.util.setStatusBarColor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * 向导页面
@@ -29,7 +36,7 @@ class GuideActivity : AppCompatActivity() {
 
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setAndroidNativeLightStatusBar(this, true)
-        setStatusBarColor(ContextCompat.getColor(this,R.color.blue_app_icon))
+        setStatusBarColor(ContextCompat.getColor(this, R.color.blue_app_icon))
 
         setContentView(R.layout.activity_guide)
 
@@ -52,11 +59,28 @@ class GuideActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+        saveFirstDairy()
     }
 
     private fun getAnim(): Animation {
         return AlphaAnimation(0f, 1.0f).apply {
             duration = 2000
+        }
+    }
+
+    private fun saveFirstDairy() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            AppDataBase.getInstance(MyApplication.appContext).dairyDao().insertDairy(
+                DairyItem(
+                    null,
+                    resources.getString(R.string.first_dairy_title),
+                    resources.getString(R.string.first_dairy_content),
+                    Date(),
+                    emptyList<Date>().plus(Date()),      // 每次操作都会往时间列表中加入当前操作时间
+                    isLove = true
+                )
+            )
         }
     }
 }

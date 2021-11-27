@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
 import android.view.animation.Animation
+import androidx.annotation.ColorInt
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.tw.longerrelationship.MyApplication.Companion.appContext
@@ -197,6 +198,17 @@ fun toHex(red: Int, green: Int, blue: Int) {
     val hg = Integer.toHexString(green)
     val hb = Integer.toHexString(blue)
     println("#$hr$hg$hb")
+}
+
+/**
+ * 给color添加透明度
+ * @param alpha 透明度 0f～1f
+ * @param baseColor 基本颜色
+ */
+fun getColorWithAlpha(alpha: Float,@ColorInt baseColor: Int): Int {
+    val a = 255.coerceAtMost(0.coerceAtLeast((alpha * 255).toInt())) shl 24
+    val rgb = 0x00ffffff and baseColor
+    return a + rgb
 }
 
 /** 打印代码块的执行时间 */

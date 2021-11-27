@@ -1,7 +1,6 @@
 package com.tw.longerrelationship.viewmodel
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.lifecycle.*
 import com.tw.longerrelationship.R
