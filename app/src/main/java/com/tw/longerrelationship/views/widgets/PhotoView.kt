@@ -14,6 +14,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.OverScroller
 import androidx.annotation.Keep
+import com.tw.longerrelationship.util.logD
 import kotlin.math.abs
 import kotlin.math.log
 import kotlin.math.max
@@ -155,6 +156,7 @@ class PhotoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         }
 
         if (event.action == MotionEvent.ACTION_UP) {
+            logD("平移距离",translationY.toString())
             if (translationY / height > SCROLL_INTERVAL) {
                 onImageExit.invoke()
             }
@@ -275,7 +277,7 @@ class PhotoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         private var initialScale: Float = 0f
 
         override fun onScale(detector: ScaleGestureDetector?): Boolean {
-            if (currentScale > smallScale && !isEnlarge || currentScale == smallScale && !isEnlarge) {
+            if (currentScale > smallScale && !isEnlarge || currentScale == smallScale && isEnlarge) {
                 isEnlarge = !isEnlarge
             }
             // 缩放因子

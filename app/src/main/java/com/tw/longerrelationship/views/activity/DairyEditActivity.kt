@@ -268,10 +268,18 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                 }
                 // 获得位置
                 mBinding.ivLocation -> {
-                    requestPositioningPermission(context as Activity)
-                    if (locationService.isStart)
-                        locationService.reStart()
-                    locationService.start()
+                    if (mBinding.ivLocationSmall.visibility == View.VISIBLE) {
+                        mBinding.ivLocationSmall.gone()
+                        mBinding.tvLocationInfo.gone()
+                    } else {
+                        mBinding.ivLocationSmall.visible()
+                        mBinding.tvLocationInfo.visible()
+                        requestPositioningPermission(context as Activity)
+                        if (locationService.isStart)
+                            locationService.reStart()
+                        locationService.start()
+                    }
+
                 }
                 // 设置心情
                 mBinding.ivMood -> {
@@ -477,9 +485,9 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if (isFirstOpen){
-            isFirstOpen=false
-        }else{
+        if (isFirstOpen) {
+            isFirstOpen = false
+        } else {
             mBinding.root.requestFocus()
         }
     }

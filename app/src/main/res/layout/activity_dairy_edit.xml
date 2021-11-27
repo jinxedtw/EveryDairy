@@ -14,9 +14,9 @@
         android:id="@+id/cl_edit_dairy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:fitsSystemWindows="true"
         tools:context=".views.activity.DairyEditActivity">
 
         <com.tw.longerrelationship.views.widgets.DairyEditBar
@@ -124,7 +124,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_text_and_count"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:visibility="gone">
 
@@ -133,6 +133,7 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_location_small"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/tv_location_info"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/tv_location_info"
@@ -146,6 +147,7 @@
                     android:singleLine="true"
                     android:text="@={viewModel.location}"
                     android:textColor="@color/DairyEditHintText"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/iv_text_icon"
                     app:layout_constraintLeft_toRightOf="@id/iv_location_small"
                     app:layout_constraintTop_toTopOf="parent" />
