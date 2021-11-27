@@ -4,17 +4,17 @@
 
 ### **效果图**
 
-<img src="E:\FileRecv\MobileFile\Screenshot_2021-09-11-21-20-30-07_f91078b412684ef.jpg" alt="开始页面" style="zoom:25%;" />
+<img src="https://i.loli.net/2021/11/27/irwX5YE86Q4PFG9.jpg" alt="开始页面" style="zoom:25%;" />
 
-<img src="E:\FileRecv\MobileFile\Screenshot_2021-09-11-21-21-14-47_f91078b412684ef.jpg" alt="Screenshot_2021-09-11-21-21-14-47_f91078b412684ef" style="zoom:25%;" />
+<img src="https://i.loli.net/2021/11/27/wXQrSajMN6qyIg8.jpg" alt="Screenshot_2021-09-11-21-21-14-47_f91078b412684ef" style="zoom:25%;" />
 
-<img src="E:\FileRecv\MobileFile\Screenshot_2021-09-11-22-12-23-24_f91078b412684ef.jpg" alt="Screenshot_2021-09-11-22-12-23-24_f91078b412684ef" style="zoom:25%;" />
+<img src="https://i.loli.net/2021/11/27/YsODjAv57fuwTpr.jpg" alt="Screenshot_2021-09-11-22-12-23-24_f91078b412684ef" style="zoom:25%;" />
 
-<img src="E:\FileRecv\MobileFile\Screenshot_2021-09-11-21-24-17-98_f91078b412684ef.jpg" alt="Screenshot_2021-09-11-21-24-17-98_f91078b412684ef" style="zoom:25%;" />
+<img src="https://i.loli.net/2021/11/27/NrW5QCP7KcwtxGf.jpg" alt="Screenshot_2021-09-11-21-24-17-98_f91078b412684ef" style="zoom:25%;" />
 
-<img src="E:\FileRecv\MobileFile\Screenshot_2021-09-11-21-53-03-08.jpg" alt="Screenshot_2021-09-11-21-53-03-08" style="zoom:25%;" />
+<img src="https://i.loli.net/2021/11/27/RajkTQCPo1iNGKL.jpg" alt="Screenshot_2021-09-11-21-53-03-08" style="zoom:25%;" />
 
-<img src="E:\FileRecv\MobileFile\Screenshot_2021-09-11-21-29-45-34_f91078b412684ef.jpg" alt="Screenshot_2021-09-11-21-29-45-34_f91078b412684ef" style="zoom:25%;" />
+<img src="https://i.loli.net/2021/11/27/ADRuNdZM8UyEkwl.jpg" alt="Screenshot_2021-09-11-21-29-45-34_f91078b412684ef" style="zoom:25%;" />
 
 
 
@@ -25,7 +25,7 @@
   [郭神的博客](https://guolin.blog.csdn.net/article/details/114707250)
 * Room:封装了sqlite，将表映射成Java或Kotlin对象，我觉得相比于之前使用的greendao，room最大的优势是支持了kotlin的flow，通过和paging配合，实现自动的刷新数据[链接](https://www.jianshu.com/p/3e358eb9ac43)
 * dataStore：用来代替SP的数据持久化方案，最大的优势是支持异步获取保存数据，通过一个PreferencesKey保存对应类型泛型的方法保证了类型安全
-* ViewModel：用于保存actvity的数据中转
+* ViewModel：用于保存Actvity的数据中转
 * Glide：图片加载，这个太牛皮了就不介绍了
 * liveData：代替EventBus用于进行事件分发
 
