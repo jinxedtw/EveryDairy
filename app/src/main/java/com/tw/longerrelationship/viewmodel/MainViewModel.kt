@@ -3,10 +3,9 @@ package com.tw.longerrelationship.viewmodel
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.tw.longerrelationship.views.fragment.NoteFragment
+import com.tw.longerrelationship.views.fragment.DairyFragment
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.logic.model.ToDoItem
-import com.tw.longerrelationship.logic.network.TotalNetwork
 import com.tw.longerrelationship.logic.repository.MainRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +14,7 @@ import kotlinx.coroutines.launch
 /**
  * 数据来源由repository负责
  * ViewModel只负责数据的中转,显示到View上面去
- * [NoteFragment]共用同一个viewModel
+ * [DairyFragment]共用同一个viewModel
  */
 class MainViewModel(
     private val repository: MainRepository

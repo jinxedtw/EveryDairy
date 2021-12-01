@@ -29,7 +29,7 @@ import com.tw.longerrelationship.util.Constants.KEY_ACCOUNT_SEX
 import com.tw.longerrelationship.util.Constants.KEY_DAIRY_SHOW_FOLD
 import com.tw.longerrelationship.viewmodel.MainViewModel
 import com.tw.longerrelationship.views.fragment.BaseFragment
-import com.tw.longerrelationship.views.fragment.NoteFragment
+import com.tw.longerrelationship.views.fragment.DairyFragment
 import com.tw.longerrelationship.views.fragment.ToDoFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +41,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var tapTitle: List<String>
     private lateinit var fragments: List<BaseFragment>
     private lateinit var toDoFragment: ToDoFragment
-    private lateinit var noteFragment: NoteFragment
+    private lateinit var dairyFragment: DairyFragment
     private lateinit var mDrawerAdapter: DrawerItemAdapter
 
     private val viewModel by lazy {
@@ -76,10 +76,10 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initTab() {
         // TODO: 2021/7/25 切换tab卡顿
-        noteFragment = NoteFragment()
+        dairyFragment = DairyFragment()
         toDoFragment = ToDoFragment()
         tapTitle = arrayListOf("笔记", "待办")
-        fragments = arrayListOf(noteFragment, toDoFragment)
+        fragments = arrayListOf(dairyFragment, toDoFragment)
 
         mBinding.includeMain.vpMain.apply {
             adapter = FragmentAdapter(fragments, this@HomeActivity)
@@ -169,12 +169,12 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                 mBinding.includeMain.includeCheckBar.tvDelete -> {
                     AlertDialog.Builder(this@HomeActivity).setMessage("确定删除所选笔记吗")
                         .setNegativeButton("取消", null).setPositiveButton("确认") { _, _ ->
-                            noteFragment.deleteDairy()
+                            dairyFragment.deleteDairy()
                             entryCheckType(false)
                         }.show()
                 }
                 mBinding.includeMain.includeCheckBar.tvSelectAll -> {
-                    noteFragment.selectAll()
+                    dairyFragment.selectAll()
                 }
                 mBinding.includeMain.fbEdit -> {
                     // 新建笔记或新建待办的入口

@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 /**
  * 笔记
  */
-class NoteFragment : BaseFragment() {
+class DairyFragment : BaseFragment() {
     private lateinit var mBinding: FragmentNoteBinding
     private lateinit var dairyAdapter: DairyAdapter
     private lateinit var mActivity: HomeActivity
@@ -124,6 +124,7 @@ class NoteFragment : BaseFragment() {
         val layoutAnimationController: LayoutAnimationController
         val animation: Animation
 
+        // 为两种模式分别指定不同的入场动画
         if (viewModel.isFold.value!!) {
             mBinding.rvDairy.apply {
                 layoutManager = linearLayoutManager

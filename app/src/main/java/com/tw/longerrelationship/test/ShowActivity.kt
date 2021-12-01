@@ -29,7 +29,11 @@ class ShowActivity : AppCompatActivity() {
         LiveDataBus.with("啦啦啦",String::class.java).value="哇哇哇哇哇"
 
         text1.setOnClickListener {
-            startActivity(Intent(this, TestActivity::class.java))
+            val intent=Intent(this, TestActivity::class.java).apply {
+                val data2 = ByteArray(1024 * 512)
+                putExtra("111",data2)
+            }
+            startActivity(intent)
         }
 
     }

@@ -38,28 +38,20 @@ class FlowLayout(context: Context, attrs: AttributeSet?) : ViewGroup(context, at
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         clearMeasureParams() //内存 抖动
         //先度量孩子
-        val selfWidth = MeasureSpec.getSize(widthMeasureSpec) //ViewGroup解析的父亲给我的宽度  参考值
-        val selfHeight = MeasureSpec.getSize(heightMeasureSpec) // ViewGroup解析的父亲给我的高度
+        val selfWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val selfHeight = MeasureSpec.getSize(heightMeasureSpec)
         var lineViews: MutableList<View> = ArrayList() //保存一行中的所有的view
         var lineWidthUsed = 0 //记录这行已经使用了多宽的size
         var lineHeight = 0 // 一行的行高
         var parentNeededWidth = 0 // measure过程中，子View要求的父ViewGroup的宽
         var parentNeededHeight = 0 // measure过程中，子View要求的父ViewGroup的高
 
+        measureChildren(widthMeasureSpec,heightMeasureSpec)
+
         for (i in 0 until childCount) {
             val childView = getChildAt(i)
 
-            // 子View的布局参数
-            val childLP = childView.layoutParams
             if (childView.visibility != GONE) {
-                //将layoutParams转变成为 measureSpec
-                val childWidthMeasureSpec =
-                    getChildMeasureSpec(widthMeasureSpec, paddingLeft + paddingRight, childLP.width)
-                val childHeightMeasureSpec =
-                    getChildMeasureSpec(heightMeasureSpec, paddingTop + paddingBottom, childLP.height)
-
-                //  测量
-                childView.measure(childWidthMeasureSpec, childHeightMeasureSpec)
 
                 //  获取子view的度量宽高
                 val childMeasuredWidth = childView.measuredWidth
@@ -95,7 +87,6 @@ class FlowLayout(context: Context, attrs: AttributeSet?) : ViewGroup(context, at
 
         //再度量自己,保存
         //根据子View的度量结果，来重新度量自己ViewGroup
-        // 作为一个ViewGroup，它自己也是一个View,它的大小也需要根据它的父亲给它提供的宽高来度量
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         val realWidth = if (widthMode == MeasureSpec.EXACTLY) selfWidth else parentNeededWidth
