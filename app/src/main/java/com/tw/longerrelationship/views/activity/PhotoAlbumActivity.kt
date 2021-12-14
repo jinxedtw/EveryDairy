@@ -21,8 +21,8 @@ import com.tw.longerrelationship.databinding.ActivityPhotoAlbumBinding
 import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.logic.model.ImageFolder
 import com.tw.longerrelationship.util.*
-import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_CHECKBOX_STATE
 import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_IMAGES
+import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_NUM
 import com.tw.longerrelationship.util.Constants.INTENT_IMAGE_URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,12 +42,10 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
     private lateinit var lastSelectCheckBox: CheckBox                  // 上一个选中的checkBox
     private lateinit var lastSelectImageUrl: String                     // 上一个选中的图片地址
     private val mSelectedImage = arrayListOf<String>()              // 已经选中的图片
+    private val mSelectedNum by lazy { intent.getIntExtra(INTENT_ALBUM_SELECT_NUM, 0) }
 
     /** 跳转图片详情页面 [AlbumImageInfoActivity] */
-    private val toAlbumImageInfoLauncher = registerForActivityResult(ToAlbumImageInfoResultContract()) {
-        onCheckNumChanged(it, lastSelectImageUrl)
-        lastSelectCheckBox.isChecked = it
-    }
+    private val toAlbumImageInfoLauncher = registerForActivityResult(ToAlbumImageInfoResultContract()) {}
 
     override fun init() {
         initBinding()
@@ -55,6 +53,7 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
     }
 
     private fun initView() {
+        mBinding.btComplete.text = String.format(getString(R.string.album_select_complete), mSelectedNum)
         initRecyclerView()
         getImages()
         setEvent()
@@ -128,7 +127,6 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
         albumAdapter.onItemClick = { url, checkBox ->
             val bundle: Bundle = Bundle().apply {
                 putString(INTENT_IMAGE_URL, url)
-                putBoolean(INTENT_ALBUM_CHECKBOX_STATE, checkBox.isChecked)
             }
             toAlbumImageInfoLauncher.launch(bundle)
             lastSelectCheckBox = checkBox
@@ -234,27 +232,31 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
      * @param url 操作的图片地址
      */
     private fun onCheckNumChanged(isChecked: Boolean, url: String) {
+        if (isChecked && mSelectedImage.size + mSelectedNum >= 9) {
+            showToast("最多选中9张图片")
+            return
+        }
+
         if (isChecked) {
-            if (!mSelectedImage.contains(url)){
+            if (!mSelectedImage.contains(url)) {
                 mSelectedImage.add(url)
             }
         } else {
             mSelectedImage.remove(url)
         }
-        mBinding.btComplete.text = String.format(getString(R.string.album_select_complete), mSelectedImage.size)
+        mBinding.btComplete.text = String.format(getString(R.string.album_select_complete), mSelectedImage.size + mSelectedNum)
     }
 
     override fun getLayoutId(): Int = R.layout.activity_photo_album
 
-    inner class ToAlbumImageInfoResultContract : ActivityResultContract<Bundle, Boolean>() {
+    inner class ToAlbumImageInfoResultContract : ActivityResultContract<Bundle, Unit>() {
         override fun createIntent(context: Context, input: Bundle): Intent {
             return Intent(context, AlbumImageInfoActivity::class.java).apply {
                 putExtras(input)
             }
         }
 
-        override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
-            return intent?.getBooleanExtra(INTENT_ALBUM_CHECKBOX_STATE, false) ?: false
+        override fun parseResult(resultCode: Int, intent: Intent?) {
         }
     }
 
