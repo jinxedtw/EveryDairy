@@ -55,13 +55,13 @@ class DrawerItemAdapter(var list: List<DrawerLayoutBean>) : RecyclerView.Adapter
         var type: Int,
     )
 
-    companion object{
-        const val DRAWER_PICTURE=1
-        const val DRAWER_DAILY=2
-        const val DRAWER_FAVORITES=3
-        const val DRAWER_SECRET=4
-        const val DRAWER_HELP=5
-        const val DRAWER_ABOUT=6
-        const val DRAWER_SETTING=7
+    companion object {
+        const val DRAWER_PICTURE = 1
+        const val DRAWER_DAILY = 2
+        const val DRAWER_FAVORITES = 3
+        const val DRAWER_SECRET = 4
+        const val DRAWER_HELP = 5
+        const val DRAWER_ABOUT = 6
+        const val DRAWER_SETTING = 7
     }
 }

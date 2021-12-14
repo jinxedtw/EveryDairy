@@ -18,7 +18,7 @@ import com.tw.longerrelationship.views.widgets.PhotoView
 /**
  * [PictureInfoActivity]的viewpager的图片展示适配器
  */
-class ImageAdapter(private val uriList: List<Uri>, private val context: Context) :
+class ImageAdapter(private val uriList: List<String>, private val context: Context) :
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     var loadImage: (PhotoView, Uri) -> Unit = { _, _ -> }

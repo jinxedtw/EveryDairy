@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -25,6 +26,7 @@ import androidx.annotation.ColorRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -38,7 +40,10 @@ import com.tw.longerrelationship.databinding.ActivityDairyEditBinding
 import com.tw.longerrelationship.help.DairyColorHelper
 import com.tw.longerrelationship.help.LocationService
 import com.tw.longerrelationship.help.SpacesItemDecoration
+import com.tw.longerrelationship.log
 import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_IMAGES
+import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_NUM
 import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
 import com.tw.longerrelationship.util.Constants.INTENT_DAIRY_ID
 import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_LIST
@@ -53,6 +58,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
@@ -101,47 +107,43 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         ).get(DairyEditViewModel::class.java)
     }
 
-    /**
-     * 初始化相册启动器
-     */
-    private val toAlbumLauncher =
-        registerForActivityResult(ToSystemAlbumResultContract()) {
+//    /** 初始化相册启动器 */
+//    private val toAlbumLauncher =
+//        registerForActivityResult(ToSystemAlbumResultContract()) {
+//            if (it != null) {
+//                viewModel.pictureList.add(it)
+//                viewModel.isChanged.value = true
+//                // 只需要刷新新增的一个和尾部,也是就itemCount为2
+//                pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
+//            }
+//        }
+
+    private val toPhotoAlbumActivityLauncher =
+        registerForActivityResult(ToPhotoAlbumResultContract()) {
             if (it != null) {
-                viewModel.pictureList.add(it)
+                logD("选中的图片", it.toString())
+                viewModel.pictureList.addAll(it)
+                logD("总共图片",viewModel.pictureList.toString())
                 viewModel.isChanged.value = true
                 // 只需要刷新新增的一个和尾部,也是就itemCount为2
-                pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
+                pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, it.size + 1)
             }
         }
 
-    /**
-     * 初始化相机启动器
-     */
+    /** 初始化相机启动器 */
     private val toCameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) {
             if (it) {
-                viewModel.pictureList.add(currentUri)
+                viewModel.pictureList.add(currentUri.toString())
                 viewModel.isChanged.value = true
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, 2)
                 galleryAddPic()
             }
         }
 
-    /**
-     * 跳转Activity启动器
-     */
+    /** 跳转Activity启动器 */
     private val toPictureInfoLauncher = registerForActivityResult(ToPictureInfoResultContract()) {
-        if (it != -1) {
-            viewModel.pictureList.removeAt(it)
-            if (viewModel.pictureList.size == 0) viewModel.isChanged.value = false
-            // 刷新部分item
-            pictureSelectAdapter.notifyItemRemoved(it)
-
-            for (i in it until layoutManager.childCount - 2) {
-                val imageView = layoutManager.getChildAt(i + 1) as ImageView
-                imageView.tag = i
-            }
-        }
+        onImageDelete(it)
     }
 
     /**
@@ -209,7 +211,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             }
             viewModel.apply {
                 location = it.location
-                pictureList = it.uriList as ArrayList<Uri>
+                pictureList = it.uriList as ArrayList<String>
                 createTime = it.createTime
                 editInfoList = it.editInfoList
                 weatherIcon = it.weather
@@ -230,7 +232,11 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             onImageClick = {
                 pictureInfoActivityJump(it, it.tag as Int, it.transitionName)
             }
+            onDeleteClick ={
+                onImageDelete(it)
+            }
         }
+        pictureSelectAdapter.showDeleteImage()
 
         tryToRecoverDairy()
 
@@ -340,6 +346,25 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 //                    isListMode= !isListMode
 //                    mBinding.ivListMode.setColorFilter(iconColor)
                 }
+            }
+        }
+    }
+
+    /** 删除了选中的图片 */
+    private fun onImageDelete(index: Int){
+
+        if (index != -1) {
+            viewModel.pictureList.removeAt(index)
+            logD("修改tag","删除第${index}个")
+            logD("修改tag","此时列表${viewModel.pictureList}")
+            if (viewModel.pictureList.size == 0) viewModel.isChanged.value = false
+            // 刷新部分item
+            pictureSelectAdapter.notifyItemRemoved(index)
+
+            for (i in index until layoutManager.childCount - 2) {
+                val imageView = layoutManager.getChildAt(i + 1) as View
+                imageView.tag = i
+                logD("修改tag","第${i+1}个View修改至tag:$i")
             }
         }
     }
@@ -526,7 +551,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     }
 
     fun openAlbum() {
-        toAlbumLauncher.launch(null)
+        toPhotoAlbumActivityLauncher.launch(viewModel.pictureList.size)
+//        toAlbumLauncher.launch(null)
     }
 
     fun closeKeyboard() {
@@ -547,7 +573,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             android.util.Pair.create(view, transitionId),
         )
         val bundle = Bundle().apply {
-            putParcelableArrayList(INTENT_PICTURE_LIST, viewModel.pictureList)
+            putStringArrayList(INTENT_PICTURE_LIST, viewModel.pictureList)
             putInt(INTENT_CURRENT_PICTURE, index)
             // 配置过渡元素
             putBundle(ActivityResultContracts.StartActivityForResult.EXTRA_ACTIVITY_OPTIONS_BUNDLE, options.toBundle())
@@ -674,6 +700,16 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
 
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
             return intent?.data
+        }
+    }
+
+    inner class ToPhotoAlbumResultContract : ActivityResultContract<Int, List<String>?>() {
+        override fun createIntent(context: Context, input: Int?): Intent {
+            return Intent(context, PhotoAlbumActivity::class.java).apply { putExtra(INTENT_ALBUM_SELECT_NUM, input) }
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): List<String>? {
+            return intent?.getStringArrayListExtra(INTENT_ALBUM_SELECT_IMAGES)
         }
     }
 }

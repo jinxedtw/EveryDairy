@@ -67,20 +67,20 @@ class Converters {
      * Uri对象的转换方式
      */
     @TypeConverter
-    fun stringToUriList(data: String?): List<Uri> {
-        val list = ArrayList<Uri>()
+    fun stringToUriList(data: String?): List<String> {
+        val list = ArrayList<String>()
 
         if (data == null) return list
         data.split("$$").forEach {
             if (it != "") {
-                list.add(it.toUri())
+                list.add(it)
             }
         }
         return list
     }
 
     @TypeConverter
-    fun uriListToString(objectList: List<Uri>): String {
+    fun uriListToString(objectList: List<String>): String {
         val str: StringBuilder = StringBuilder()
         objectList.forEach {
             str.append("$it$$")

@@ -11,7 +11,7 @@ import com.tw.longerrelationship.views.activity.PictureInfoActivity
  */
 class PictureInfoViewModel : ViewModel() {
 
-    lateinit var uriList: ArrayList<Uri>
+    lateinit var uriList: ArrayList<String>
 
     /**
      * 当前显示的图片

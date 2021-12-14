@@ -70,7 +70,11 @@ class PhotoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         // 缩放系数
-        val scaleFaction: Float = (currentScale - smallScale) / (bigScale - smallScale)
+        val scaleFaction: Float = if (bigScale != smallScale) {
+            (currentScale - smallScale) / (bigScale - smallScale)
+        } else {
+            1f
+        }
         // 平移
         canvas.translate(offsetX * scaleFaction, offsetY * scaleFaction)
         // 缩放
@@ -156,7 +160,7 @@ class PhotoView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         }
 
         if (event.action == MotionEvent.ACTION_UP) {
-            logD("平移距离",translationY.toString())
+            logD("平移距离", translationY.toString())
             if (translationY / height > SCROLL_INTERVAL) {
                 onImageExit.invoke()
             }

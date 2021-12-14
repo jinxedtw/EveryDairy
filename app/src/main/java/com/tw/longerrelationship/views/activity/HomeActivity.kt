@@ -202,7 +202,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         //传入侧拉栏数据
         val list = listOf(
             DrawerItemAdapter.DrawerLayoutBean(R.string.pictures, R.drawable.ic_photo_album, DRAWER_PICTURE),
-            DrawerItemAdapter.DrawerLayoutBean(R.string.daily_plan, R.drawable.ic_survey, DRAWER_DAILY),
             DrawerItemAdapter.DrawerLayoutBean(R.string.love, R.drawable.ic_favorites, DRAWER_FAVORITES),
             DrawerItemAdapter.DrawerLayoutBean(R.string.secret, R.drawable.ic_secret, DRAWER_SECRET),
             DrawerItemAdapter.DrawerLayoutBean(R.string.help, R.drawable.ic_help, DRAWER_HELP),
@@ -216,10 +215,8 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         mDrawerAdapter.setClickListener(object : DrawerItemAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 when (list[position].type) {
-                    DRAWER_PICTURE -> showToast("我点了图库")
+                    DRAWER_PICTURE -> startActivity(Intent(this@HomeActivity,PhotoAlbumActivity::class.java))
                     DRAWER_ABOUT -> showToast("我点了关于")
-                    3 -> {
-                    }
                     DRAWER_SECRET -> startActivity(Intent(this@HomeActivity, SecretActivity::class.java))
                     5 -> {
                     }

@@ -10,6 +10,9 @@ object Constants {
     const val INTENT_DAIRY_ID = "dairyId"
     const val INTENT_TODO_ID = "todoId"
     const val INTENT_IF_CAN_DELETE = "ifCanDelete"         // 是否可以删除图片
+    const val INTENT_IMAGE_URL = "album_image_url"
+    const val INTENT_ALBUM_SELECT_IMAGES = "album_select_images"
+    const val INTENT_ALBUM_SELECT_NUM = "album_select_num"
 
     /**  dataStore的存储键 */
     const val KEY_DAIRY_SHOW_FOLD = "dairyShowFold"     // 展示方式

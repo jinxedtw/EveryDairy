@@ -20,7 +20,7 @@ class DairyEditViewModel(private val repository: MainRepository, val dairyId: In
 
     val isChanged: MutableLiveData<Boolean> = MutableLiveData(false)
     val dairyContent: MutableLiveData<String> = MutableLiveData()
-    var pictureList = ArrayList<Uri>()
+    var pictureList = ArrayList<String>()
     var editInfoList = emptyList<Date>()
     var createTime = Date()
     var location: String = "位置信息"

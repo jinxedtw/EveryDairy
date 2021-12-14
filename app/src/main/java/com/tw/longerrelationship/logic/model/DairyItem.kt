@@ -17,7 +17,7 @@ data class DairyItem(
     val createTime: Date,                                    // 创建时间
     val editInfoList: List<Date>,                            // 记录修改时间信息
     val location: String = "无定位信息",                       // 位置信息
-    val uriList: List<Uri> = emptyList(),                    // 图片的Uri信息
+    val uriList: List<String> = emptyList(),                    // 图片的Uri信息
     val weather: Int = R.drawable.ic_weather,                // 天气
     val mood: Int = R.drawable.ic_mood,                      // 心情
     val isLove: Boolean = false                              // 是否收藏

@@ -52,7 +52,7 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
         val data = intent.extras
         if (data != null) {
             viewModel.uriList =
-                data.getParcelableArrayList(INTENT_PICTURE_LIST) ?: ArrayList()
+                data.getStringArrayList(INTENT_PICTURE_LIST) ?: ArrayList()
             viewModel.currentPicture.postValue(data.getInt(INTENT_CURRENT_PICTURE))
             current = data.getInt(INTENT_CURRENT_PICTURE)
             canDelete = data.getBoolean(INTENT_IF_CAN_DELETE, true)

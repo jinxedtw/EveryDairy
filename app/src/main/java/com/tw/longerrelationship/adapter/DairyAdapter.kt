@@ -19,6 +19,9 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.help.TextFormatHelper
@@ -59,15 +62,15 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
                 holder.checkBox.setOnClickListener {
                     setSelectItem(position)
                 }
-                for (i in dairyItem.uriList.indices){
+                for (i in dairyItem.uriList.indices) {
                     content.append("[图片]")
                 }
                 if (dairyItem.content != null) {
                     content.append(dairyItem.content)
                 }
-                if (dairyKey!=null){
+                if (dairyKey != null) {
                     holder.content.text = Html.fromHtml(TextFormatHelper.formatKeyWordColor(dairyKey!!, content.toString()))
-                }else{
+                } else {
                     holder.content.text = content
                 }
 
@@ -102,6 +105,7 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
                 holder.time.text = getComparedTime(dairyItem.createTime)
                 if (dairyItem.uriList.isNotEmpty()) {
                     Glide.with(this.context).load(dairyItem.uriList[0])
+                        .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(5)))
                         .into(holder.picture)
                 } else {
                     holder.picture.visibility = View.GONE
@@ -166,7 +170,7 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
 
     /** 设置关键字 */
     fun setDairyKey(key: String) {
-        if (dairyKey!=key){
+        if (dairyKey != key) {
             dairyKey = key
             notifyDataSetChanged()
         }

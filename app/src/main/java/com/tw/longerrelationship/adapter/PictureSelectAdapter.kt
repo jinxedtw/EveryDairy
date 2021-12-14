@@ -1,7 +1,6 @@
 package com.tw.longerrelationship.adapter
 
 import android.graphics.drawable.RippleDrawable
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.tw.longerrelationship.R
@@ -20,13 +20,15 @@ import com.tw.longerrelationship.views.widgets.PictureTypeSelectDialog
  * 日记编辑界面[DairyEditActivity]的选择图片适配器
  */
 class PictureSelectAdapter(
-    var pictureList: List<Uri>,
+    var pictureList: List<String>,
     private val activity: DairyEditActivity,
     var rippleDrawable: RippleDrawable
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var parent: ViewGroup? = null
+    private var isShowDelete: Boolean = false
     var onImageClick: (View) -> Unit = {}
+    var onDeleteClick: (Int) -> Unit = {}
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -53,11 +55,22 @@ class PictureSelectAdapter(
             is CustomViewHolder -> {
                 Glide.with(activity)
                     .load(pictureList[position])
-                    .apply(RequestOptions.bitmapTransform(RoundedCorners(15)))
+                    .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(dp2px(5))))
                     .into(holder.picture)
 
-                holder.picture.tag = position
-                holder.picture.transitionName="img_${position}"
+                holder.itemView.tag = position
+                holder.itemView.transitionName = "img_${position}"
+
+                if (isShowDelete) {
+                    holder.deleteImage.visible()
+                }
+                holder.deleteImage.setOnClickListener {
+                    if (holder.itemView.tag!=null && holder.itemView.tag is Int){
+                        onDeleteClick(holder.itemView.tag as Int)
+                    }else{
+                        onDeleteClick(position)
+                    }
+                }
             }
             is TailViewHolder -> {
                 holder.itemView.background = rippleDrawable
@@ -79,6 +92,10 @@ class PictureSelectAdapter(
 
     }
 
+    fun showDeleteImage() {
+        isShowDelete = true
+    }
+
     /**
      * 尾部的ViewHolder
      */
@@ -98,9 +115,10 @@ class PictureSelectAdapter(
 
     inner class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val picture: ImageView = itemView.findViewById(R.id.iv_picture)
+        val deleteImage: ImageView = itemView.findViewById(R.id.iv_delete_image)
 
         init {
-            picture.setOnClickListener {
+            itemView.setOnClickListener {
                 onImageClick.invoke(it)
             }
         }

@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.util.getScreenWidth
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
 
 
@@ -19,7 +21,7 @@ import com.tw.longerrelationship.views.activity.DairyInfoActivity
  *  @see[DairyInfoActivity]
  */
 class PictureShowAdapter(
-    private val pictureList: List<Uri>,
+    private val pictureList: List<String>,
     private val context: Context
 ) : RecyclerView.Adapter<PictureShowAdapter.ViewHolder>() {
     var onItemClick: (View) -> Unit = {}
@@ -33,15 +35,23 @@ class PictureShowAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.picture.transitionName = "img_${position}"
-        Glide.with(context)
-            .load(pictureList[position])
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(15)))
-            .into(holder.picture)
-
         holder.picture.tag = position
         holder.picture.setOnClickListener {
             onItemClick.invoke(it)
         }
+
+        if (pictureList.size == 1) {
+            // 当只有一张图片时大图显示
+            val param = holder.picture.layoutParams
+            param.width = getScreenWidth() / 3 * 2
+            param.height = param.width
+            holder.picture.layoutParams = param
+        }
+        Glide.with(context)
+            .load(pictureList[position])
+            .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(5)))
+            .into(holder.picture)
+
     }
 
     override fun getItemCount(): Int = pictureList.size

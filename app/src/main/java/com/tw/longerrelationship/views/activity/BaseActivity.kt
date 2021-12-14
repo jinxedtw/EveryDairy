@@ -59,6 +59,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
      */
     fun initBinding() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+        findViewById<ImageView>(R.id.iv_leave)?.setOnClickListener { finishAndTryCloseSoftKeyboard() }
         root = mBinding.root
     }
 

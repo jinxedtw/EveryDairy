@@ -178,6 +178,14 @@ fun dp2px(dp: Int): Int {
     return (dp * (appContext.resources.displayMetrics.densityDpi) / 160)
 }
 
+fun getScreenWidth(): Int {
+    return appContext.resources.displayMetrics.widthPixels
+}
+
+fun getScreenHeight(): Int {
+    return appContext.resources.displayMetrics.heightPixels
+}
+
 /**
  * 16进制转GRB颜色值方法
  * @param hex eg: #fe92ec
@@ -205,22 +213,22 @@ fun toHex(red: Int, green: Int, blue: Int) {
  * @param alpha 透明度 0f～1f
  * @param baseColor 基本颜色
  */
-fun getColorWithAlpha(alpha: Float,@ColorInt baseColor: Int): Int {
+fun getColorWithAlpha(alpha: Float, @ColorInt baseColor: Int): Int {
     val a = 255.coerceAtMost(0.coerceAtLeast((alpha * 255).toInt())) shl 24
     val rgb = 0x00ffffff and baseColor
     return a + rgb
 }
 
 /** 打印代码块的执行时间 */
-inline fun <T> T.runtimeLog(block: T.() -> Unit) {
+inline fun <T> T.runTimeLog(message: String? = null, block: T.() -> Unit) {
     val startTime = System.currentTimeMillis()
     block()
-    logD("执行时间", "${System.currentTimeMillis() - startTime}ms")
+    logD("$message@runTimeLog", "${System.currentTimeMillis() - startTime}ms")
 }
 
-inline fun runtimeLog(block: () -> Unit){
+inline fun runTimeLog(message: String? = null, block: () -> Unit) {
     val startTime = System.currentTimeMillis()
     block()
-    logD("执行时间", "${System.currentTimeMillis() - startTime}ms")
+    logD("$message@runTimeLog", "${System.currentTimeMillis() - startTime}ms")
 }
 
