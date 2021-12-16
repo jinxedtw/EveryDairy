@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.util.dp2px
 import com.tw.longerrelationship.util.getScreenWidth
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
 
@@ -42,14 +43,14 @@ class PictureShowAdapter(
 
         if (pictureList.size == 1) {
             // 当只有一张图片时大图显示
-            val param = holder.picture.layoutParams
+            val param = holder.itemView.layoutParams
             param.width = getScreenWidth() / 3 * 2
             param.height = param.width
-            holder.picture.layoutParams = param
+            holder.itemView.layoutParams = param
         }
         Glide.with(context)
             .load(pictureList[position])
-            .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(5)))
+            .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(dp2px(5))))
             .into(holder.picture)
 
     }

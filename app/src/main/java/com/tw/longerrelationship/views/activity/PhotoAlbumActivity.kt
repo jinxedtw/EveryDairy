@@ -27,13 +27,11 @@ import com.tw.longerrelationship.util.Constants.INTENT_IMAGE_URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.io.FilenameFilter
 
 
 class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
-    private val mDirPaths = mutableListOf<String>()                   // 所有图片父路径
-    private val mImageFolders = mutableListOf<ImageFolder>()          // 相册集
+    private val mImageFolderMap = hashMapOf<String, ImageFolder>()    // 相册集
     private var mImgs = mutableListOf<String>()                       // 所有图片地址信息
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var thumbnailAdapter: ThumbnailAdapter
@@ -90,18 +88,17 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
 
     /** 设置适配器数据 **/
     private fun setAdapterData() {
-        if (mImageFolders.isEmpty()) {
+        if (mImageFolderMap.isEmpty()) {
             showToast("没有查询到图片")
             return
         }
 
-        // 手机的所有图片
-        mImageFolders.forEach {
-            mImgs.addAll(it.imageUrl)
+        val mImageFolders = mutableListOf<ImageFolder>()
+        mImageFolderMap.forEach {
+            mImgs.addAll(it.value.mAlbumFiles)
+            mImageFolders.add(it.value)
         }
-
-        // 增加全部图片项
-        mImageFolders.add(0, ImageFolder(mImgs.size, mImageFolders[0].firstImagePath, mImageFolders[0].dir, "全部图片", mImgs))
+        mImageFolders.add(0, ImageFolder("全部图片", mImgs[0],mImgs))
 
         albumAdapter = AlbumAdapter(this, mImgs)
         mBinding.rvPhotos.adapter = albumAdapter
@@ -113,11 +110,11 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
                 hideAlbumsSelector()
             } else {
                 currentAlbum = i
-                setAppBarTitle(imageFolder.name)
+                setAppBarTitle(imageFolder.folderName)
                 if (i == 0) {
                     albumAdapter.data = mImgs
                 } else {
-                    albumAdapter.data = imageFolder.imageUrl
+                    albumAdapter.data = imageFolder.mAlbumFiles
                 }
                 albumAdapter.notifyDataSetChanged()
                 hideAlbumsSelector()
@@ -146,49 +143,38 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
         lifecycleScope.launch {
             runTimeLog(message = "搜索数据库") {
                 withContext(Dispatchers.IO) {
-                    val mCursor = contentResolver.query(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null,
-                        MediaStore.Images.Media.MIME_TYPE + "=? or " +
-                                MediaStore.Images.Media.MIME_TYPE + "=? or " +
-                                MediaStore.Images.Media.MIME_TYPE + "=?", arrayOf("image/jpeg", "image/png", "image/jpg"),
+                    val cursor = contentResolver.query(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        arrayOf(
+                            MediaStore.Images.Media.DATA,
+                            MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                        ),
+                        null,
+                        null,
                         MediaStore.Images.Media.DATE_TAKEN + " DESC"
-                    ) //获取图片的cursor
-                    while (mCursor!!.moveToNext()) {
-                        val path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA)) // 获取第一张图片的路径
-                        val parentFile = File(path).parentFile ?: continue
-                        val parentPath = parentFile.absolutePath                                           // 获取图片的文件夹信息
-                        var imageFolder: ImageFolder
+                    )
 
-                        // 缓存一份,提高查询速度
-                        if (mDirPaths.contains(parentPath)) {
-                            continue
-                        } else {
-                            mDirPaths.add(parentPath)                            //将父路径添加到集合中
-                            imageFolder = ImageFolder(firstImagePath = path, dir = parentPath, name = parentFile.name)
+                    if (cursor != null) {
+                        while (cursor.moveToNext()) {
+                            val path = cursor.getString(0)                      // 图片路径
+                            val bucketName = cursor.getString(1)                // 文件夹名称
+
+                            var imageFolder = mImageFolderMap[bucketName]
+                            if (imageFolder != null) {
+                                mImageFolderMap[bucketName]!!.mAlbumFiles.add(path)
+                            } else {
+                                imageFolder = ImageFolder(folderName = bucketName)
+                                imageFolder.mAlbumFiles.add(path)
+                                imageFolder.thumbnailImage = path
+                                mImageFolderMap[bucketName] = imageFolder
+                            }
                         }
-                        // TODO: 2021/12/13 这个方法耗时大概2s,需要进行优化
-                        imageFolder.imageUrl = parentFile.listFiles(getFileFilterImage())!!.map {
-                            it.absolutePath
-                        }.reversed()
-                        imageFolder.count = imageFolder.imageUrl.size           //传入每个相册的图片个数
-                        mImageFolders.add(imageFolder)                          //添加每一个相册
                     }
-                    mCursor.close()
+                    cursor?.close()
                 }
+                // 更新操作
+                setAdapterData()
             }
-            mBinding.progressBar.gone()
-            // 更新操作
-            setAdapterData()
-        }
-    }
-
-    /** 图片筛选器，过滤无效图片 */
-    private fun getFileFilterImage(): FilenameFilter {
-        return FilenameFilter { _, filename ->
-            (filename.endsWith(".jpg")
-                    || filename.endsWith(".png")
-                    || filename.endsWith(".jpeg")
-                    || filename.endsWith(".gif"))
         }
     }
 

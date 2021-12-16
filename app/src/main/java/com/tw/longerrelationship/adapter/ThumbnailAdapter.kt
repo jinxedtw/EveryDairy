@@ -17,9 +17,9 @@ class ThumbnailAdapter(val context: Context, layoutId: Int, data: List<ImageFold
         val thumbnailName = holder.itemView.findViewById<TextView>(R.id.tv_thumbnail_name)
         val thumbnailCount = holder.itemView.findViewById<TextView>(R.id.tv_thumbnail_count)
 
-        thumbnailName.text = item.name
-        thumbnailCount.text = String.format("${item.count}张")
-        Glide.with(context).load(item.firstImagePath).centerCrop().into(thumbnailImage)
+        thumbnailName.text = item.folderName
+        thumbnailCount.text = String.format("${item.mAlbumFiles.size}张")
+        Glide.with(context).load(item.thumbnailImage).centerCrop().into(thumbnailImage)
 
         holder.itemView.setOnClickListener {
             onItemClick(item, position)

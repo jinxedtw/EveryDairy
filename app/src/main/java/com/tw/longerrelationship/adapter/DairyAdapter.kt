@@ -1,7 +1,6 @@
 package com.tw.longerrelationship.adapter
 
 import android.app.Activity
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -25,6 +24,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.help.TextFormatHelper
+import com.tw.longerrelationship.util.dp2px
 import com.tw.longerrelationship.util.getComparedTime
 import com.tw.longerrelationship.util.gone
 import com.tw.longerrelationship.util.visible
@@ -105,7 +105,7 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
                 holder.time.text = getComparedTime(dairyItem.createTime)
                 if (dairyItem.uriList.isNotEmpty()) {
                     Glide.with(this.context).load(dairyItem.uriList[0])
-                        .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(5)))
+                        .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(dp2px(5))))
                         .into(holder.picture)
                 } else {
                     holder.picture.visibility = View.GONE
