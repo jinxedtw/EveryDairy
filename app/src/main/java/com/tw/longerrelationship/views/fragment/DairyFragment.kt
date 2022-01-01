@@ -1,17 +1,18 @@
 package com.tw.longerrelationship.views.fragment
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.os.Looper
-import android.os.MessageQueue
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,10 +43,6 @@ class DairyFragment : BaseFragment() {
                 super.onLayoutChildren(recycler, state)
                 viewModel.dairyNum.value = dairyAdapter.itemCount
             }
-
-            override fun canScrollVertically(): Boolean {       // 解决scroll嵌套的滑动卡顿问题
-                return false
-            }
         }
     }
     private val gridLayoutManager by lazy {
@@ -56,10 +53,6 @@ class DairyFragment : BaseFragment() {
             ) {
                 super.onLayoutChildren(recycler, state)
                 viewModel.dairyNum.value = dairyAdapter.itemCount
-            }
-
-            override fun canScrollVertically(): Boolean {
-                return false
             }
         }
     }
@@ -109,6 +102,7 @@ class DairyFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initView() {
         // TODO 取消下拉刷新,后期可以在这里增加上传至服务器的操作
 //        mBinding.smartRefresh.apply {
@@ -157,14 +151,11 @@ class DairyFragment : BaseFragment() {
 
     private fun getDairyData() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            Looper.getMainLooper().queue.addIdleHandler {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    viewModel.getAllDairy().collect {
-                        dairyAdapter.submitData(it)
-                    }
+            lifecycleScope.launch(Dispatchers.Main) {
+                viewModel.getAllDairy().collect {
+                    dairyAdapter.submitData(it)
                 }
-//                true
-//            }
+            }
         }
     }
 

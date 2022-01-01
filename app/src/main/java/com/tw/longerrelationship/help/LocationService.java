@@ -1,3 +1,5 @@
+
+
 package com.tw.longerrelationship.help;
 
 import android.content.Context;
@@ -19,6 +21,7 @@ public class LocationService {
                 client.setLocOption(getDefaultLocationClientOption());
             }
         }
+        
     }
 
     // 注册
@@ -26,6 +29,7 @@ public class LocationService {
         boolean isSuccess = false;
         if (listener != null) {
             client.registerLocationListener(listener);
+
             isSuccess = true;
         }
         return isSuccess;

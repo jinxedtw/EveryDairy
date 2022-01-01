@@ -123,7 +123,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             if (it != null) {
                 logD("选中的图片", it.toString())
                 viewModel.pictureList.addAll(it)
-                logD("总共图片",viewModel.pictureList.toString())
+                logD("总共图片", viewModel.pictureList.toString())
                 viewModel.isChanged.value = true
                 // 只需要刷新新增的一个和尾部,也是就itemCount为2
                 pictureSelectAdapter.notifyItemRangeChanged(viewModel.pictureList.size, it.size + 1)
@@ -232,7 +232,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             onImageClick = {
                 pictureInfoActivityJump(it, it.tag as Int, it.transitionName)
             }
-            onDeleteClick ={
+            onDeleteClick = {
                 onImageDelete(it)
             }
         }
@@ -351,12 +351,12 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     }
 
     /** 删除了选中的图片 */
-    private fun onImageDelete(index: Int){
+    private fun onImageDelete(index: Int) {
 
         if (index != -1) {
             viewModel.pictureList.removeAt(index)
-            logD("修改tag","删除第${index}个")
-            logD("修改tag","此时列表${viewModel.pictureList}")
+            logD("修改tag", "删除第${index}个")
+            logD("修改tag", "此时列表${viewModel.pictureList}")
             if (viewModel.pictureList.size == 0) viewModel.isChanged.value = false
             // 刷新部分item
             pictureSelectAdapter.notifyItemRemoved(index)
@@ -364,7 +364,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             for (i in index until layoutManager.childCount - 2) {
                 val imageView = layoutManager.getChildAt(i + 1) as View
                 imageView.tag = i
-                logD("修改tag","第${i+1}个View修改至tag:$i")
+                logD("修改tag", "第${i + 1}个View修改至tag:$i")
             }
         }
     }
@@ -406,9 +406,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         return R.layout.activity_dairy_edit
     }
 
-    /**
-     * 监听软键盘状态
-     */
+    /** 监听软键盘状态 */
     private fun addOnSoftKeyBoardVisibleListener() {
         val decorView: View = this.window.decorView
         decorView.viewTreeObserver.addOnGlobalLayoutListener {
@@ -431,7 +429,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     /** 保存日记 */
     fun saveDairy() {
         lifecycleScope.launch(Dispatchers.IO) {
-//            for (i in 1..100){
             val result = viewModel.saveDairy(mBinding.appBar.getTitle())
             if (result.isSuccess) {
                 isNeedToSaved = false
@@ -442,7 +439,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             } else {
                 runOnUiThread { ToastWithImage.showToast("保存失败", false) }
             }
-//            }
         }
     }
 

@@ -1,12 +1,9 @@
 package com.tw.longerrelationship.logic.model
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.tw.longerrelationship.R
-import java.sql.Timestamp
 import java.util.*
-import kotlin.collections.HashMap
 
 @Entity(tableName = "DairyEntity")
 data class DairyItem(

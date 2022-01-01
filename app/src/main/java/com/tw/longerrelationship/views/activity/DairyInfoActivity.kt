@@ -81,7 +81,6 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
     private fun initView() {
         setStickerDrawable()
         mBinding.rvPhotoList.apply {
-            addItemDecoration(SpacesItemDecoration(35))
             layoutManager = this@DairyInfoActivity.layoutManager
         }
 

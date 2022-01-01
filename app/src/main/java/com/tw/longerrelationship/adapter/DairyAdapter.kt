@@ -24,10 +24,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.help.TextFormatHelper
-import com.tw.longerrelationship.util.dp2px
-import com.tw.longerrelationship.util.getComparedTime
-import com.tw.longerrelationship.util.gone
-import com.tw.longerrelationship.util.visible
+import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
 import com.tw.longerrelationship.views.activity.HomeActivity
 
@@ -50,7 +47,6 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
         )
     }
 
-    // TODO 切换RecyclerView的显示方式时，可能会导致图片不显示的问题，暂时没找到解决办法，推测和Recycler缓存有关
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val dairyItem = getItem(position) ?: return
 
