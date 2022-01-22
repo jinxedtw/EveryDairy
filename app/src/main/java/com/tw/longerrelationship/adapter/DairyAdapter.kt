@@ -37,14 +37,14 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
     var isShowBox = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == FOLD_LAYOUT) FoldViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_dairy_fold_content, parent, false)
-        )
-        else UnfoldViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_dairy_unfold_content, parent, false)
-        )
+        return when (viewType) {
+            FOLD_LAYOUT -> {
+                FoldViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_dairy_fold_content, parent, false))
+            }
+            else -> {
+                UnfoldViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_dairy_unfold_content, parent, false))
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

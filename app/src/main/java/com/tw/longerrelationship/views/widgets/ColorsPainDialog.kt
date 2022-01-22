@@ -1,5 +1,6 @@
 package com.tw.longerrelationship.views.widgets
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -13,19 +14,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.ColorItemSelectAdapter
-import com.tw.longerrelationship.util.DataStoreUtil
-import com.tw.longerrelationship.util.slideToUp
+import com.tw.longerrelationship.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 /**
  * [DairyEditActivity]修改背景弹框
  */
 class ColorsPainDialog(val activity: DairyEditActivity, val colorSelectCallBack: (Int) -> Unit) : DialogFragment() {
-    private var mView: View? = null
+    private lateinit var mView: View
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var colorSelectAdapter: ColorItemSelectAdapter
+    private var lastX = 0f
+    private var lastY = 0f
+    private val dialogInitHeight = dp2px(250)
+    private var dialogHeight = dialogInitHeight
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.layout_colors_select, container, false)
@@ -38,31 +43,62 @@ class ColorsPainDialog(val activity: DairyEditActivity, val colorSelectCallBack:
         dialog?.window?.also {
             val params = it.attributes
             params.gravity = Gravity.BOTTOM
-            params.height = WindowManager.LayoutParams.WRAP_CONTENT
+            params.height = dialogHeight
             params.width = WindowManager.LayoutParams.MATCH_PARENT
             it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             it.attributes = params
         }
         activity.closeKeyboard()
-        slideToUp(mView!!)
+        slideToUp(mView)
 
-        mView!!.findViewById<ImageView>(R.id.iv_arrow_down).apply {
+        mView.findViewById<ImageView>(R.id.iv_arrow_down).apply {
             setColorFilter(ContextCompat.getColor(requireContext(), R.color.DairyEditHintText))
             setOnClickListener { dismiss() }
         }
         initRecyclerView()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initRecyclerView() {
-        colorSelectAdapter = ColorItemSelectAdapter(
-            this,
-            requireContext(),
-            currentColorIndex
-        )
-        mRecyclerView = mView!!.findViewById(R.id.rv_background_select)
+        colorSelectAdapter = ColorItemSelectAdapter(this, requireContext(), currentColorIndex)
+        mRecyclerView = mView.findViewById(R.id.rv_background_select)
         mRecyclerView.apply {
             adapter = colorSelectAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+        mView.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = event.rawX - lastX
+                    val deltaY = event.rawY - lastY
+
+                    if (abs(deltaY) > abs(deltaX)) {
+                        logD("弹窗拖动", "deltaY:${deltaY},deltaX:${deltaX}")
+                        dragDialog(deltaY)
+                    }
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (dialogHeight / dialogInitHeight < 0.8) {
+                        dismiss()
+                    }
+                }
+            }
+            lastX = event.rawX
+            lastY = event.rawY
+            true
+        }
+    }
+
+    private fun dragDialog(dragHeight: Float) {
+        dialogHeight -= dragHeight.toInt()
+        dialogHeight = maxOf(0, dialogHeight)
+        dialogHeight = minOf(dialogHeight, dialogInitHeight)
+        dialog?.window?.also {
+            val params = it.attributes
+            params.height = dialogHeight
+            params.gravity = Gravity.BOTTOM
+            it.attributes = params
         }
     }
 

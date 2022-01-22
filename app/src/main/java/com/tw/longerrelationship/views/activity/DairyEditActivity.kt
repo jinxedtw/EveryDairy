@@ -241,7 +241,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         tryToRecoverDairy()
 
         mBinding.rvPhotoList.apply {
-            addItemDecoration(SpacesItemDecoration(60))
+            addItemDecoration(SpacesItemDecoration(30,0,30,0))
             adapter = pictureSelectAdapter
             layoutManager = this@DairyEditActivity.layoutManager
         }

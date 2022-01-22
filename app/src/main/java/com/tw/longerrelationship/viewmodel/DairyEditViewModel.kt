@@ -46,6 +46,7 @@ class DairyEditViewModel(private val repository: MainRepository, val dairyId: In
             )
             Result.success(true)
         } catch (e: Exception) {
+            e.printStackTrace()
             Result.failure(e)
         }
 

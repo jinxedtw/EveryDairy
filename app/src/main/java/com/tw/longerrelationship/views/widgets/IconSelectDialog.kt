@@ -80,7 +80,7 @@ class IconSelectDialog(
         findViewById<TextView>(R.id.tv_type).text = if (type == 1) "今日天气" else "当下心情"
 
         recyclerView = findViewById(R.id.rc_icon_list)
-        recyclerView.addItemDecoration(SpacesItemDecoration(50))
+        recyclerView.addItemDecoration(SpacesItemDecoration(25,0,25,25))
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         recyclerView.adapter = DialogIconsAdapter(iconsList) { drawable, iconId ->
             iconClick(drawable, iconId)

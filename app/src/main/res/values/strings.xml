@@ -50,4 +50,5 @@
     <!--    首次进入的日记-->
     <string name="first_dairy_title">时刻</string>
     <string name="first_dairy_content">欢迎使用时刻，您的专属私密日记本。\n\n在一本日记中，您可以方便的图文记录每日日常。日记只有您本人能够查看，安全的云同步保护您的数据不会丢失。\n\n时刻支持添加:\n1.纯文字日记;\n2.多张图片;\n3.手绘图画。\n丰富的日记形式丰富您的每一次记录。\n\n您还可以对日记进行详细的分类，添加标签，便于未来更好地回忆整理。\n丰富的背景图让您的日记更加多彩。\n更多贴心功能等待您的体验。\n\nhttps://www.pgyer.com/HkJI</string>
+    <string name="dairy_end">END</string>
 </resources>

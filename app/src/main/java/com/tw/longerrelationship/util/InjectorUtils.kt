@@ -4,7 +4,7 @@ import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.logic.AppDataBase
 import com.tw.longerrelationship.logic.network.TotalNetwork
 import com.tw.longerrelationship.logic.repository.MainRepository
-import com.tw.longerrelationship.logic.viewModelFactory.*
+import com.tw.longerrelationship.viewmodel.viewModelFactory.*
 
 /**
  * 用于注入各种活动和片段所需的类的静态方法
@@ -26,10 +26,11 @@ object InjectorUtils {
 
     fun getPictureInfoViewModelFactory() = PictureInfoViewModelFactory()
 
-    fun getDairyInfoViewModelFactory(dairyId: Int) =
-        DairyInfoViewModelFactory(getMainRepository(), dairyId)
+    fun getDairyInfoViewModelFactory(dairyId: Int) = DairyInfoViewModelFactory(getMainRepository(), dairyId)
 
     fun getSearchViewModelFactory() = SearchViewModelFactory(getMainRepository())
 
-    fun getToDoEditViewModelFactory(todoId: Int)= ToDoEditViewModelFactory(getMainRepository(),todoId)
+    fun getToDoEditViewModelFactory(todoId: Int) = ToDoEditViewModelFactory(getMainRepository(), todoId)
+
+    fun getAlbumViewModelFactory() = AlbumViewModelFactory(getMainRepository())
 }

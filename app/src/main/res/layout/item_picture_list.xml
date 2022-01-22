@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_day_of_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:textColor="#595e70"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="13" />
+
+    <TextView
+        android:id="@+id/tv_year_and_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/DairyEditHintText"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/tv_day_of_month"
+        app:layout_constraintTop_toTopOf="@id/tv_day_of_month"
+        tools:text="2022年1月" />
+
+    <TextView
+        android:id="@+id/tv_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/DairyEditHintText"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_day_of_month"
+        app:layout_constraintStart_toStartOf="@id/tv_year_and_month"
+        app:layout_constraintTop_toBottomOf="@id/tv_year_and_month"
+        tools:text="周四" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_pictures"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_day_of_month" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

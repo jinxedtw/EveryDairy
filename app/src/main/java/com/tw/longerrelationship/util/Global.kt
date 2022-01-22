@@ -128,9 +128,23 @@ fun getComparedTime(data: Date): String {
     return getHourMinuteTime(old)
 }
 
-/**
- * 获得右边格式的时间  eg: 18:00,07:08
- */
+fun isSameDay(date1: Date?, date2: Date?): Boolean {
+    require(!(date1 == null || date2 == null)) { "The date must not be null" }
+    val cal1 = Calendar.getInstance()
+    cal1.time = date1
+    val cal2 = Calendar.getInstance()
+    cal2.time = date2
+    return isSameDay(cal1, cal2)
+}
+
+
+fun isSameDay(cal1: Calendar?, cal2: Calendar?): Boolean {
+    require(!(cal1 == null || cal2 == null)) { "The date must not be null" }
+    return cal1[Calendar.ERA] == cal2[Calendar.ERA] && cal1[Calendar.YEAR] == cal2[Calendar.YEAR] && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR]
+}
+
+
+/** 获得右边格式的时间  eg: 18:00,07:08*/
 fun getHourMinuteTime(calendar: Calendar) =
     "${
         if (calendar.get(Calendar.HOUR_OF_DAY) < 10) "0${calendar.get(Calendar.HOUR_OF_DAY)}"

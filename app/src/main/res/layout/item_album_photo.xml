@@ -13,9 +13,9 @@
         android:id="@+id/album_checkbox"
         android:layout_width="26dp"
         android:layout_height="26dp"
+        android:background="@null"
         android:scaleX="0.9"
         android:scaleY="0.9"
-        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

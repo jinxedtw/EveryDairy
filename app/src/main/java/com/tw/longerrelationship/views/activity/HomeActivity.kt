@@ -215,7 +215,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         mDrawerAdapter.setClickListener(object : DrawerItemAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 when (list[position].type) {
-                    DRAWER_PICTURE -> startActivity(Intent(this@HomeActivity,PhotoAlbumActivity::class.java))
+                    DRAWER_PICTURE -> startActivity(Intent(this@HomeActivity,AlbumActivity::class.java))
                     DRAWER_ABOUT -> showToast("我点了关于")
                     DRAWER_SECRET -> startActivity(Intent(this@HomeActivity, SecretActivity::class.java))
                     5 -> {
@@ -256,12 +256,14 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
             mBinding.includeMain.vpMain.isUserInputEnabled = false              // 禁止左右滑动
             mBinding.includeMain.tabLayout.gone()
             mBinding.includeMain.includeBar.root.gone()
+            mBinding.includeMain.fbEdit.gone()
             mBinding.includeMain.includeCheckBar.root.visible()
         } else {
             mBinding.includeMain.vpMain.isUserInputEnabled = true
             mBinding.includeMain.includeBar.root.visible()
             mBinding.includeMain.tabLayout.visible()
             mBinding.includeMain.includeCheckBar.root.gone()
+            mBinding.includeMain.fbEdit.visible()
         }
     }
 

@@ -13,12 +13,14 @@ import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
 import com.tw.longerrelationship.util.Constants.INTENT_IF_CAN_DELETE
 import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_LIST
+import com.tw.longerrelationship.util.Constants.INTENT_PICTURE_TIME
 import com.tw.longerrelationship.viewmodel.PictureInfoViewModel
 
 
 class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
     private var canDelete: Boolean = true
     private var current: Int = -1
+    private var pictureTime = ""
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -56,6 +58,7 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
             viewModel.currentPicture.postValue(data.getInt(INTENT_CURRENT_PICTURE))
             current = data.getInt(INTENT_CURRENT_PICTURE)
             canDelete = data.getBoolean(INTENT_IF_CAN_DELETE, true)
+            pictureTime = data.getString(INTENT_PICTURE_TIME, "")
         }
     }
 
@@ -66,9 +69,11 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
                 if (isHiddenMode) {
                     setStatusBarHidden(window, true)
                     mBinding.llBar.gone()
+                    mBinding.clBottomTime.gone()
                 } else {
                     setStatusBarHidden(window, false)
                     mBinding.llBar.visible()
+                    mBinding.clBottomTime.visible()
                 }
             }
             onImageExit = {
@@ -80,6 +85,12 @@ class PictureInfoActivity : BaseActivity<ActivityPictureInfoBinding>() {
         }
         mBinding.vpShowPicture.setCurrentItem(current, false)
         mBinding.tvDelete.visibility = if (canDelete) View.VISIBLE else View.GONE
+        mBinding.clBottomTime.visibility = if (pictureTime.isEmpty()) {
+            View.GONE
+        } else {
+            mBinding.tvPictureTime.text = pictureTime
+            View.VISIBLE
+        }
 
         mBinding.vpShowPicture.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {

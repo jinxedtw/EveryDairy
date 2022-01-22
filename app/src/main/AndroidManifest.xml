@@ -22,11 +22,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.LongerRelationShip">
-        <activity android:name=".test.TestActivity" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+        <activity android:name=".test.TestActivity">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
         </activity>
         <activity android:name=".test.ShowActivity">
             <!-- <intent-filter> -->
@@ -71,6 +71,9 @@
             android:name=".views.activity.DairyEditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".views.activity.AlbumActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.activity.SplashActivity"
             android:theme="@style/launchTheme">

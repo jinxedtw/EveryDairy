@@ -1,17 +1,14 @@
 package com.tw.longerrelationship.views.fragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -150,11 +147,9 @@ class DairyFragment : BaseFragment() {
     }
 
     private fun getDairyData() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            lifecycleScope.launch(Dispatchers.Main) {
-                viewModel.getAllDairy().collect {
-                    dairyAdapter.submitData(it)
-                }
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.getAllDairy().collect {
+                dairyAdapter.submitData(it)
             }
         }
     }

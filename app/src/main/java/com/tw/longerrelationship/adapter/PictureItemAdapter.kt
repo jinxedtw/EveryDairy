@@ -1,0 +1,31 @@
+package com.tw.longerrelationship.adapter
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.tw.longerrelationship.R
+
+
+class PictureItemAdapter(val context: Context, layoutId: Int, data: List<String>, val pictureMap: MutableMap<String, List<String>>) :
+    BaseViewAdapter<String>(layoutId, data, tailLayout = R.layout.item_dairy_tail) {
+
+    @SuppressLint("SetTextI18n")
+    override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, item: String) {
+        val segment = item.split(".")           // eg: 2022.1.13.周四
+
+        val pictureDay = holder.itemView.findViewById<TextView>(R.id.tv_day_of_month)
+        val pictureYearAndMonth = holder.itemView.findViewById<TextView>(R.id.tv_year_and_month)
+        val pictureWeek = holder.itemView.findViewById<TextView>(R.id.tv_week)
+        val pictureInfoItem = holder.itemView.findViewById<RecyclerView>(R.id.rv_pictures)
+
+        pictureDay.text = segment[2]
+        pictureYearAndMonth.text = "${segment[0]}年${1}月"
+        pictureWeek.text = segment[3]
+        pictureInfoItem.layoutManager = GridLayoutManager(context, 3)
+        pictureInfoItem.adapter = PictureItemInfoAdapter(context, item, R.layout.item_picture_info, pictureMap[item]!!)
+    }
+}

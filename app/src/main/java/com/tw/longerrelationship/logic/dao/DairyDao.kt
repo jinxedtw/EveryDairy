@@ -3,6 +3,7 @@ package com.tw.longerrelationship.logic.dao
 import androidx.paging.DataSource
 import androidx.room.*
 import com.tw.longerrelationship.logic.model.DairyItem
+import com.tw.longerrelationship.logic.model.DairyPicture
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -39,4 +40,8 @@ interface DairyDao {
      */
     @Query("UPDATE DairyEntity SET isLove=:isLove Where id=:id")
     fun favoritesDairy(id: Int, isLove: Boolean)
+
+    /** 获取所有日记中的照片地址 */
+    @Query("SELECT uriList,createTime FROM DairyEntity where uriList is not null and uriList != '' order by createTime desc")
+    fun getALlPictures(): List<DairyPicture>
 }

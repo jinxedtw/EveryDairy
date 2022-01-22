@@ -210,9 +210,7 @@ fun calculateInSampleSize(
     return inSampleSize
 }
 
-/**
- * 弹出动画
- */
+/** 弹出动画 */
 fun slideToUp(view: View) {
     val slide: Animation = TranslateAnimation(
         Animation.RELATIVE_TO_SELF, 0.0f,

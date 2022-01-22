@@ -50,6 +50,9 @@ class MainRepository private constructor(
         ).flow
     }
 
+    /** 获取本地日记中所有的图片 */
+    fun getPictures() = dairyDao.getALlPictures()
+
     // ------------------------------待办相关接口
     fun getNotCompleteToDoData(): Flow<PagingData<ToDoItem>> {
         return Pager(

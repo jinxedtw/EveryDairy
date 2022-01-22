@@ -27,7 +27,6 @@ import com.tw.longerrelationship.util.Constants.INTENT_IMAGE_URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.FilenameFilter
 
 
 class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
@@ -59,7 +58,7 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
 
     private fun initRecyclerView() {
         mBinding.rvPhotos.layoutManager = GridLayoutManager(this, GLIDE_LAYOUT_COUNT)
-        mBinding.rvPhotos.addItemDecoration(SpacesItemDecoration(10))
+        mBinding.rvPhotos.addItemDecoration(SpacesItemDecoration(5, 0, 5, 10))
         mBinding.rvThumbnail.layoutManager = LinearLayoutManager(this)
     }
 
@@ -98,7 +97,7 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
             mImgs.addAll(it.value.mAlbumFiles)
             mImageFolders.add(it.value)
         }
-        mImageFolders.add(0, ImageFolder("全部图片", mImgs[0],mImgs))
+        mImageFolders.add(0, ImageFolder("全部图片", mImgs[0], mImgs))
 
         albumAdapter = AlbumAdapter(this, mImgs)
         mBinding.rvPhotos.adapter = albumAdapter

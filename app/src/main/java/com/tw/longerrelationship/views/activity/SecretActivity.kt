@@ -18,6 +18,7 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
         setOnClickListeners(
             mBinding.btSetComplete,
             mBinding.btLogin,
+            mBinding.btAudioRecord
         ) {
             when (this) {
                 mBinding.btSetComplete -> {
@@ -30,6 +31,9 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
                     if (CipherUtil.decryptAES(encodeStr, key).equals(SECRET_STRING)) {
                         showToast("登录成功")
                     }
+
+                }
+                mBinding.btAudioRecord->{
 
                 }
             }

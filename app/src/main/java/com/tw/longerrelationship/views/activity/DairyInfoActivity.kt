@@ -11,7 +11,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import android.util.Pair
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult.EXTRA_ACTIVITY_OPTIONS_BUNDLE
@@ -22,7 +21,6 @@ import com.tw.longerrelationship.BuildConfig
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.PictureShowAdapter
 import com.tw.longerrelationship.databinding.ActivityDairyInfoBinding
-import com.tw.longerrelationship.help.SpacesItemDecoration
 import com.tw.longerrelationship.help.UrlMatchHelper
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE

@@ -27,6 +27,7 @@
     <color name="topDividerText">#bfbfbf</color>
     <color name="topDividerLine">#eeeeee</color>
     <color name="toastText">#222425</color>
+    <color name="dairyEnd">#aebbc1</color>
 
     <!--    DairyEditActivity-->
     <color name="DairyEditIcon">#656565</color>

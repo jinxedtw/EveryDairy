@@ -1,4 +1,4 @@
-package com.tw.longerrelationship.logic.viewModelFactory;
+package com.tw.longerrelationship.viewmodel.viewModelFactory;
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
