@@ -208,7 +208,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         mBinding.includeSearchBar.etSearch.textChangeFlow()
             .debounce(300)
             .flatMapLatest {
-                Log.d("www", "防抖后的文本=$it")
                 dairyAdapter.refresh()
                 viewModel.getKeyDairy(it.toString())
             }
@@ -241,7 +240,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
 
             // 在文本变化后向流发射数据
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("www", "text=${s}")
                 s?.let {
                     if (it.isNotEmpty()){
                         trySend(it)
@@ -255,11 +253,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         }
         addTextChangedListener(watcher) // 设置输入框监听器
         awaitClose { removeTextChangedListener(watcher) } // 阻塞以保证流一直运行
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        overridePendingTransition(R.anim.animation_right_in, R.anim.animation_left_out)
     }
 
     companion object {

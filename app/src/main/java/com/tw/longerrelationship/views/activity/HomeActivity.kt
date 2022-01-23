@@ -5,7 +5,11 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +20,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.DrawerItemAdapter
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_ABOUT
-import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_DAILY
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_FAVORITES
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_HELP
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_PICTURE
@@ -24,6 +27,7 @@ import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SECR
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_SETTING
 import com.tw.longerrelationship.adapter.FragmentAdapter
 import com.tw.longerrelationship.databinding.ActivityMainBinding
+import com.tw.longerrelationship.help.UrlMatchHelper
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.KEY_ACCOUNT_SEX
 import com.tw.longerrelationship.util.Constants.KEY_DAIRY_SHOW_FOLD
@@ -31,9 +35,13 @@ import com.tw.longerrelationship.viewmodel.MainViewModel
 import com.tw.longerrelationship.views.fragment.BaseFragment
 import com.tw.longerrelationship.views.fragment.DairyFragment
 import com.tw.longerrelationship.views.fragment.ToDoFragment
+import com.tw.longerrelationship.views.widgets.ClipPopup
+import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 import java.util.*
 
 
@@ -43,6 +51,10 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var toDoFragment: ToDoFragment
     private lateinit var dairyFragment: DairyFragment
     private lateinit var mDrawerAdapter: DrawerItemAdapter
+    private var lastCopyLink = ""
+    private val clipPopup: ClipPopup by lazy {
+        ClipPopup(this)
+    }
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -54,6 +66,11 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     override fun onResume() {
         super.onResume()
         setFlBtAnim()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        getClipboardContent()
     }
 
     override fun init() {
@@ -215,7 +232,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         mDrawerAdapter.setClickListener(object : DrawerItemAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 when (list[position].type) {
-                    DRAWER_PICTURE -> startActivity(Intent(this@HomeActivity,AlbumActivity::class.java))
+                    DRAWER_PICTURE -> startActivity(Intent(this@HomeActivity, AlbumActivity::class.java))
                     DRAWER_ABOUT -> showToast("我点了关于")
                     DRAWER_SECRET -> startActivity(Intent(this@HomeActivity, SecretActivity::class.java))
                     5 -> {
@@ -315,6 +332,30 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     override fun onStop() {
         super.onStop()
         mBinding.drawerLayout.closeDrawer(GravityCompat.START)
+    }
+
+    /** 获取剪切板复制、剪切内容 */
+    private fun getClipboardContent() {
+        runCatching {
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            if (!clipboardManager.hasPrimaryClip()) {
+                return
+            }
+
+            val data = clipboardManager.primaryClip
+            val clipText = data!!.getItemAt(0).text.toString()
+
+            if (lastCopyLink == clipText) return
+
+
+            if (clipText.matches(UrlMatchHelper.URL_REGEX.toRegex())) {
+                clipPopup.showPopupWindow(mBinding.includeMain.viewPlaceholder, clipText)
+                lastCopyLink = clipText
+            }
+        }.onFailure {
+            it.printStackTrace()
+            showToast("剪切板出错", debugMode = true)
+        }
     }
 
     companion object {

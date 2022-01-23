@@ -65,7 +65,12 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
                     content.append(dairyItem.content)
                 }
                 if (dairyKey != null) {
-                    holder.content.text = Html.fromHtml(TextFormatHelper.formatKeyWordColor(dairyKey!!, content.toString()))
+                    val index = content.indexOf(dairyKey!!)
+                    if (index != -1 && index > 100) {
+                        holder.content.text = Html.fromHtml(TextFormatHelper.formatKeyWordColor(dairyKey!!, content.substring(index - 20, content.length)))
+                    } else {
+                        holder.content.text = Html.fromHtml(TextFormatHelper.formatKeyWordColor(dairyKey!!, content.toString()))
+                    }
                 } else {
                     holder.content.text = content
                 }
