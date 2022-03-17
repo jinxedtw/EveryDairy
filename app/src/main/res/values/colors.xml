@@ -11,6 +11,7 @@
     <color name="black_60">#99000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent_background">#00000000</color>
+    <color name="favorite_background">#f4f7f5</color>
 
     <!--    generalColor-->
     <color name="button_press">#cecece</color>

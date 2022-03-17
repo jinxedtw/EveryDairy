@@ -18,7 +18,7 @@ import com.tw.longerrelationship.adapter.AlbumAdapter
 import com.tw.longerrelationship.adapter.AlbumAdapter.Companion.GLIDE_LAYOUT_COUNT
 import com.tw.longerrelationship.adapter.ThumbnailAdapter
 import com.tw.longerrelationship.databinding.ActivityPhotoAlbumBinding
-import com.tw.longerrelationship.help.SpacesItemDecoration
+import com.tw.longerrelationship.help.GridItemDecoration
 import com.tw.longerrelationship.logic.model.ImageFolder
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_IMAGES
@@ -58,7 +58,7 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
 
     private fun initRecyclerView() {
         mBinding.rvPhotos.layoutManager = GridLayoutManager(this, GLIDE_LAYOUT_COUNT)
-        mBinding.rvPhotos.addItemDecoration(SpacesItemDecoration(5, 0, 5, 10))
+        mBinding.rvPhotos.addItemDecoration(GridItemDecoration(4, 5, 10))
         mBinding.rvThumbnail.layoutManager = LinearLayoutManager(this)
     }
 

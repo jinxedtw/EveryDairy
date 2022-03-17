@@ -5,11 +5,9 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.app.AlertDialog
-import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.DrawerItemAdapter
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_ABOUT
+import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_COUNTDOWN_DAY
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_FAVORITES
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_HELP
 import com.tw.longerrelationship.adapter.DrawerItemAdapter.Companion.DRAWER_PICTURE
@@ -36,12 +35,9 @@ import com.tw.longerrelationship.views.fragment.BaseFragment
 import com.tw.longerrelationship.views.fragment.DairyFragment
 import com.tw.longerrelationship.views.fragment.ToDoFragment
 import com.tw.longerrelationship.views.widgets.ClipPopup
-import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import razerdp.basepopup.QuickPopupBuilder
-import razerdp.basepopup.QuickPopupConfig
 import java.util.*
 
 
@@ -218,8 +214,9 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     private fun initDrawer() {
         //传入侧拉栏数据
         val list = listOf(
-            DrawerItemAdapter.DrawerLayoutBean(R.string.pictures, R.drawable.ic_photo_album, DRAWER_PICTURE),
             DrawerItemAdapter.DrawerLayoutBean(R.string.love, R.drawable.ic_favorites, DRAWER_FAVORITES),
+            DrawerItemAdapter.DrawerLayoutBean(R.string.countdown_day, R.drawable.ic_countdown_day, DRAWER_COUNTDOWN_DAY),
+            DrawerItemAdapter.DrawerLayoutBean(R.string.pictures, R.drawable.ic_photo_album, DRAWER_PICTURE),
             DrawerItemAdapter.DrawerLayoutBean(R.string.secret, R.drawable.ic_secret, DRAWER_SECRET),
             DrawerItemAdapter.DrawerLayoutBean(R.string.help, R.drawable.ic_help, DRAWER_HELP),
             DrawerItemAdapter.DrawerLayoutBean(R.string.about, R.drawable.ic_about, DRAWER_ABOUT),
@@ -233,10 +230,10 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
             override fun onClick(view: View, position: Int) {
                 when (list[position].type) {
                     DRAWER_PICTURE -> startActivity(Intent(this@HomeActivity, AlbumActivity::class.java))
+                    DRAWER_COUNTDOWN_DAY-> showToast("我点了倒数日")
                     DRAWER_ABOUT -> showToast("我点了关于")
                     DRAWER_SECRET -> startActivity(Intent(this@HomeActivity, SecretActivity::class.java))
-                    5 -> {
-                    }
+                    DRAWER_FAVORITES -> startActivity(Intent(this@HomeActivity, FavoritesActivity::class.java))
                     6 -> {
                     }
                     DRAWER_SETTING -> {

@@ -21,6 +21,7 @@ import com.tw.longerrelationship.BuildConfig
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.PictureShowAdapter
 import com.tw.longerrelationship.databinding.ActivityDairyInfoBinding
+import com.tw.longerrelationship.help.GridItemDecoration
 import com.tw.longerrelationship.help.UrlMatchHelper
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.INTENT_CURRENT_PICTURE
@@ -79,6 +80,7 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
     private fun initView() {
         setStickerDrawable()
         mBinding.rvPhotoList.apply {
+            addItemDecoration(GridItemDecoration(3, dp2px(10)))
             layoutManager = this@DairyInfoActivity.layoutManager
         }
 

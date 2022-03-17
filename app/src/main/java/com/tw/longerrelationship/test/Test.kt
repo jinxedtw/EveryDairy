@@ -1,11 +1,9 @@
-package com.tw.longerrelationship
+package com.tw.longerrelationship.test
 
 import android.annotation.SuppressLint
-import com.tw.longerrelationship.help.UrlMatchHelper
-import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import java.lang.StringBuilder
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.reflect.KClass
@@ -15,17 +13,16 @@ class Test {
         @SuppressLint("SimpleDateFormat")
         @JvmStatic
         fun main(args: Array<String>) {
-            GlobalScope.launch {
-                launch {
-                    for (k in 1..3) {
-                        println("I'm not blocked $k")
-                        delay(100)
-                    }
-                }
-                foo().collect { value -> println(value) }
-            }
-
-            print("123")
+//            GlobalScope.launch {
+//                launch {
+//                    for (k in 1..3) {
+//                        println("I'm not blocked $k")
+//                        delay(100)
+//                    }
+//                }
+//                foo().collect { value -> println(value) }
+//            }
+            print(intToString(123))
         }
     }
 }
@@ -34,6 +31,17 @@ fun log(msg: String) {
     println("[${Thread.currentThread().name}] $msg")
 }
 
+fun intToString(value: Int): String {
+    var data = value
+    val stringBuilder = StringBuilder()
+    while (data >= 10) {
+        stringBuilder.append(data % 10)
+        data /= 10
+    }
+    stringBuilder.append(data)
+    stringBuilder.reverse()
+    return stringBuilder.toString()
+}
 
 fun foo(): Flow<Int> = flow { // flow builder
     for (i in 1..3) {

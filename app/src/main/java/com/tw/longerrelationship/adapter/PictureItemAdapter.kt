@@ -2,12 +2,12 @@ package com.tw.longerrelationship.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.help.GridItemDecoration
+import com.tw.longerrelationship.util.dp2px
 
 
 class PictureItemAdapter(val context: Context, layoutId: Int, data: List<String>, val pictureMap: MutableMap<String, List<String>>) :
@@ -23,9 +23,10 @@ class PictureItemAdapter(val context: Context, layoutId: Int, data: List<String>
         val pictureInfoItem = holder.itemView.findViewById<RecyclerView>(R.id.rv_pictures)
 
         pictureDay.text = segment[2]
-        pictureYearAndMonth.text = "${segment[0]}年${1}月"
+        pictureYearAndMonth.text = "${segment[0]}年${segment[1]}月"
         pictureWeek.text = segment[3]
         pictureInfoItem.layoutManager = GridLayoutManager(context, 3)
+        pictureInfoItem.addItemDecoration(GridItemDecoration(3, dp2px(10)))
         pictureInfoItem.adapter = PictureItemInfoAdapter(context, item, R.layout.item_picture_info, pictureMap[item]!!)
     }
 }

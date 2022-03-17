@@ -20,7 +20,14 @@ data class DairyItem(
     val isLove: Boolean = false                              // 是否收藏
 )
 
+/** 图片实体类 */
 data class DairyPicture(
     val createTime: Date,                                    // 创建时间
     val uriList: List<String> = emptyList(),                 // 图片的Uri信息
+)
+
+/** 收藏实体类 */
+data class DairyFavorite(
+    val collectionName: String,                               // 收藏集名字
+    val collectionList: List<Int> = emptyList()               // 收藏的日记
 )

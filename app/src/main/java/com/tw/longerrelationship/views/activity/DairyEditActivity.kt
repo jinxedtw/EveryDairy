@@ -15,18 +15,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -38,9 +35,8 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.PictureSelectAdapter
 import com.tw.longerrelationship.databinding.ActivityDairyEditBinding
 import com.tw.longerrelationship.help.DairyColorHelper
+import com.tw.longerrelationship.help.GridItemDecoration
 import com.tw.longerrelationship.help.LocationService
-import com.tw.longerrelationship.help.SpacesItemDecoration
-import com.tw.longerrelationship.log
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_IMAGES
 import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_NUM
@@ -241,7 +237,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         tryToRecoverDairy()
 
         mBinding.rvPhotoList.apply {
-            addItemDecoration(SpacesItemDecoration(30,0,30,0))
+            addItemDecoration(GridItemDecoration(3,30))
             adapter = pictureSelectAdapter
             layoutManager = this@DairyEditActivity.layoutManager
         }

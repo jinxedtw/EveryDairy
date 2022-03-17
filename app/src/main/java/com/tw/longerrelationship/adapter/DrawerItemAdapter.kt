@@ -63,5 +63,6 @@ class DrawerItemAdapter(var list: List<DrawerLayoutBean>) : RecyclerView.Adapter
         const val DRAWER_HELP = 5
         const val DRAWER_ABOUT = 6
         const val DRAWER_SETTING = 7
+        const val DRAWER_COUNTDOWN_DAY=8
     }
 }

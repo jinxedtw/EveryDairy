@@ -41,6 +41,9 @@
             android:name=".views.activity.FavoritesActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".views.activity.FavoritesAddActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".views.activity.GuideActivity"
             android:screenOrientation="portrait" />
         <activity

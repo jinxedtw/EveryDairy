@@ -19,8 +19,6 @@ import java.util.ArrayList
 
 class PictureItemInfoAdapter(val context: Context, val pictureTime: String, layoutId: Int, data: List<String>) : BaseViewAdapter<String>(layoutId, data) {
 
-    private val mData = data
-
     override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, item: String) {
         val picture = holder.itemView.findViewById<ImageView>(R.id.iv_picture_info)
 
@@ -28,7 +26,7 @@ class PictureItemInfoAdapter(val context: Context, val pictureTime: String, layo
 
         picture.setOnClickListener {
             val bundle = Bundle().apply {
-                putParcelableArrayList(Constants.INTENT_PICTURE_LIST, mData.toMutableList() as ArrayList<out Parcelable>)
+                putParcelableArrayList(Constants.INTENT_PICTURE_LIST, data.toMutableList() as ArrayList<out Parcelable>)
                 putInt(Constants.INTENT_CURRENT_PICTURE, position)
                 putString(Constants.INTENT_PICTURE_TIME, pictureTime)
                 putBoolean(Constants.INTENT_IF_CAN_DELETE, false)

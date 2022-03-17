@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class BaseViewAdapter<T>(
     @LayoutRes val layoutId: Int,
-    val data: List<T>,
+    val data: List<T>  = emptyList(),
     private val headLayout: Int = EMPTY_LAYOUT,            // 头部布局ID
     private val tailLayout: Int = EMPTY_LAYOUT             // 尾部布局ID
 ) : RecyclerView.Adapter<BaseViewAdapter<T>.ViewHolder>() {
@@ -38,10 +38,10 @@ abstract class BaseViewAdapter<T>(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             HEAD_LAYOUT -> {
-                bindHeadViewHolder()
+                bindHeadViewHolder(holder, position)
             }
             TAIL_LAYOUT -> {
-                bindTailViewHolder()
+                bindTailViewHolder(holder, position)
             }
             BODY_LAYOUT -> {
                 bindViewHolder(holder, position, data[position])
@@ -53,9 +53,9 @@ abstract class BaseViewAdapter<T>(
     }
 
     /** 重写这两个方法实现定制化头部和尾部 */
-    open fun bindHeadViewHolder() {}
+    open fun bindHeadViewHolder(holder: RecyclerView.ViewHolder, position: Int) {}
 
-    open fun bindTailViewHolder() {}
+    open fun bindTailViewHolder(holder: RecyclerView.ViewHolder, position: Int) {}
 
     override fun getItemCount(): Int {
         var count = data.size

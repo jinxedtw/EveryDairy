@@ -33,4 +33,6 @@ object InjectorUtils {
     fun getToDoEditViewModelFactory(todoId: Int) = ToDoEditViewModelFactory(getMainRepository(), todoId)
 
     fun getAlbumViewModelFactory() = AlbumViewModelFactory(getMainRepository())
+
+    fun getFavoritesViewModelFactory() = FavoritesViewModelFactory(getMainRepository())
 }

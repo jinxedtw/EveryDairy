@@ -2,17 +2,14 @@ package com.tw.longerrelationship.views.widgets
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import com.tw.longerrelationship.R
-import com.tw.longerrelationship.util.logV
 import com.tw.longerrelationship.util.setDrawable
 import com.tw.longerrelationship.util.setOnClickListeners
-import com.tw.longerrelationship.util.showToast
 import com.tw.longerrelationship.views.activity.DairyEditActivity
 
 
