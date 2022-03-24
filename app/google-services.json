@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "694493237691",
+    "project_id": "diaryer-2aacf",
+    "storage_bucket": "diaryer-2aacf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694493237691:android:5bdb8a60ff404a8c45749e",
+        "android_client_info": {
+          "package_name": "com.tw.longerrelationship"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694493237691-0gnnelm6fk4mebmhf1q983c9d0m4si1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwrroxBVILi9MVW0t7N_mF2EiKxRin5a8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694493237691-0gnnelm6fk4mebmhf1q983c9d0m4si1o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

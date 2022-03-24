@@ -1,8 +1,14 @@
 package com.tw.longerrelationship.views.activity
 
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.remoteconfig.ktx.get
+import com.google.gson.Gson
+import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivitySecretBinding
+import com.tw.longerrelationship.logic.network.ServiceCreator.LoggingInterceptor.Companion.TAG
+import com.tw.longerrelationship.test.SpecialCountry
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.KEY_DAIRY_PASSWORD
 import kotlinx.coroutines.launch
@@ -18,7 +24,7 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
         setOnClickListeners(
             mBinding.btSetComplete,
             mBinding.btLogin,
-            mBinding.btAudioRecord
+            mBinding.btAudioRecord,
         ) {
             when (this) {
                 mBinding.btSetComplete -> {
@@ -38,6 +44,10 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
                 }
             }
         }
+        mBinding.tvRemoteConfig.text = MyApplication.mFirebaseRemoteConfig["welcome_message"].asString()
+       val str = MyApplication.mFirebaseRemoteConfig["country_config"].asString()
+
+        val specialCountry = Gson().fromJson(str,SpecialCountry::class.java)
     }
 
     private fun handlePassword() {

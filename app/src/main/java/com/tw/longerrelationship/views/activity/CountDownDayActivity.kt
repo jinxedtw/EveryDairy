@@ -1,4 +1,4 @@
-package com.tw.longerrelationship.views.activity
-
-class CountDownDayActivity :BaseActivity<>{
-}
+//package com.tw.longerrelationship.views.activity
+//
+//class CountDownDayActivity :BaseActivity<>{
+//}

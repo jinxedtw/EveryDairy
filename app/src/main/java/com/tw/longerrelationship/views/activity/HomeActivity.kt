@@ -204,23 +204,48 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
 
         // 获取天气
         lifecycleScope.launch(Dispatchers.Main) {
-            val data = viewModel.requestWeather() ?: return@launch
-            mBinding.includeDrawer.tvCity.text = data.results.first().location?.name ?: "--"
-            mBinding.includeDrawer.tvTemperature.text = "${data.results.first().now?.temperature ?: "--"}°"
-            mBinding.includeDrawer.tvWeather.text = data.results.first().now?.text ?: "--"
+            runCatching {
+                val data = viewModel.requestWeather() ?: return@launch
+                mBinding.includeDrawer.tvCity.text = data.results.first().location?.name ?: "--"
+                mBinding.includeDrawer.tvTemperature.text =
+                    "${data.results.first().now?.temperature ?: "--"}°"
+                mBinding.includeDrawer.tvWeather.text = data.results.first().now?.text ?: "--"
+            }.onFailure {
+                showToast("获取天气错误", debugMode = true)
+            }
         }
     }
 
     private fun initDrawer() {
         //传入侧拉栏数据
         val list = listOf(
-            DrawerItemAdapter.DrawerLayoutBean(R.string.love, R.drawable.ic_favorites, DRAWER_FAVORITES),
-            DrawerItemAdapter.DrawerLayoutBean(R.string.countdown_day, R.drawable.ic_countdown_day, DRAWER_COUNTDOWN_DAY),
-            DrawerItemAdapter.DrawerLayoutBean(R.string.pictures, R.drawable.ic_photo_album, DRAWER_PICTURE),
-            DrawerItemAdapter.DrawerLayoutBean(R.string.secret, R.drawable.ic_secret, DRAWER_SECRET),
+            DrawerItemAdapter.DrawerLayoutBean(
+                R.string.love,
+                R.drawable.ic_favorites,
+                DRAWER_FAVORITES
+            ),
+            DrawerItemAdapter.DrawerLayoutBean(
+                R.string.countdown_day,
+                R.drawable.ic_countdown_day,
+                DRAWER_COUNTDOWN_DAY
+            ),
+            DrawerItemAdapter.DrawerLayoutBean(
+                R.string.pictures,
+                R.drawable.ic_photo_album,
+                DRAWER_PICTURE
+            ),
+            DrawerItemAdapter.DrawerLayoutBean(
+                R.string.secret,
+                R.drawable.ic_secret,
+                DRAWER_SECRET
+            ),
             DrawerItemAdapter.DrawerLayoutBean(R.string.help, R.drawable.ic_help, DRAWER_HELP),
             DrawerItemAdapter.DrawerLayoutBean(R.string.about, R.drawable.ic_about, DRAWER_ABOUT),
-            DrawerItemAdapter.DrawerLayoutBean(R.string.setting, R.drawable.ic_settings, DRAWER_SETTING),
+            DrawerItemAdapter.DrawerLayoutBean(
+                R.string.setting,
+                R.drawable.ic_settings,
+                DRAWER_SETTING
+            ),
         )
         mDrawerAdapter = DrawerItemAdapter(list)
         mBinding.includeDrawer.rvDrawer.layoutManager = LinearLayoutManager(applicationContext)
@@ -229,11 +254,26 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         mDrawerAdapter.setClickListener(object : DrawerItemAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
                 when (list[position].type) {
-                    DRAWER_PICTURE -> startActivity(Intent(this@HomeActivity, AlbumActivity::class.java))
-                    DRAWER_COUNTDOWN_DAY-> showToast("我点了倒数日")
+                    DRAWER_PICTURE -> startActivity(
+                        Intent(
+                            this@HomeActivity,
+                            AlbumActivity::class.java
+                        )
+                    )
+                    DRAWER_COUNTDOWN_DAY -> showToast("我点了倒数日")
                     DRAWER_ABOUT -> showToast("我点了关于")
-                    DRAWER_SECRET -> startActivity(Intent(this@HomeActivity, SecretActivity::class.java))
-                    DRAWER_FAVORITES -> startActivity(Intent(this@HomeActivity, FavoritesActivity::class.java))
+                    DRAWER_SECRET -> startActivity(
+                        Intent(
+                            this@HomeActivity,
+                            SecretActivity::class.java
+                        )
+                    )
+                    DRAWER_FAVORITES -> startActivity(
+                        Intent(
+                            this@HomeActivity,
+                            FavoritesActivity::class.java
+                        )
+                    )
                     6 -> {
                     }
                     DRAWER_SETTING -> {
@@ -248,8 +288,10 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
      */
     private fun setFlBtAnim() {
         val animatorSet = AnimatorSet()
-        val rotationAnim1 = ObjectAnimator.ofFloat(mBinding.includeMain.fbEdit, "rotationY", 90f, -30f)
-        val rotationAnim2 = ObjectAnimator.ofFloat(mBinding.includeMain.fbEdit, "rotationY", -30f, 0f)
+        val rotationAnim1 =
+            ObjectAnimator.ofFloat(mBinding.includeMain.fbEdit, "rotationY", 90f, -30f)
+        val rotationAnim2 =
+            ObjectAnimator.ofFloat(mBinding.includeMain.fbEdit, "rotationY", -30f, 0f)
         animatorSet.play(rotationAnim1).before(rotationAnim2)
         animatorSet.duration = 500
         animatorSet.start()

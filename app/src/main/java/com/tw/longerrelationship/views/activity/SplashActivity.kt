@@ -1,9 +1,13 @@
 package com.tw.longerrelationship.views.activity
 
 import android.content.Intent
+import android.util.Log
 import androidx.databinding.ViewDataBinding
+import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.R
+import com.tw.longerrelationship.logic.network.ServiceCreator
 import com.tw.longerrelationship.util.DataStoreUtil
+import com.tw.longerrelationship.util.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,6 +18,16 @@ import kotlinx.coroutines.launch
 class SplashActivity : BaseActivity<ViewDataBinding>() {
     override fun init() {
         setContentView(getLayoutId())
+
+        MyApplication.mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(this) { task ->
+            if (task.isSuccessful) {
+                val updated = task.result
+                Log.d(tag, "Config params updated: $updated")
+                showToast("Fetch and activate succeeded")
+            } else {
+                showToast( "Fetch failed")
+            }
+        }
 
         startActivity(
             Intent(
