@@ -89,6 +89,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
+    // 登录界面
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
     //Android Jetpack 组件
     kapt "androidx.room:room-compiler:$roomVersion"
