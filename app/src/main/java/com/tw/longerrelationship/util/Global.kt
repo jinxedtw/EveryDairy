@@ -10,7 +10,9 @@ import android.view.animation.Animation
 import androidx.annotation.ColorInt
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.tw.longerrelationship.MyApplication.Companion.appContext
+import com.tw.longerrelationship.util.annotation.ViewState
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,6 +29,15 @@ fun setOnClickListeners(vararg v: View?, block: View.() -> Unit) {
     }
     v.forEach {
         it?.setOnClickListener(listener)
+    }
+}
+
+/**
+ * 批量处理view的状态
+ */
+fun setMultiViewState(@ViewState state: Int, vararg v: View?) {
+    v.forEach {
+        it?.visibility = state
     }
 }
 
@@ -244,5 +255,16 @@ inline fun runTimeLog(message: String? = null, block: () -> Unit) {
     val startTime = System.currentTimeMillis()
     block()
     logD("$message@runTimeLog", "${System.currentTimeMillis() - startTime}ms")
+}
+
+inline fun runTimePrint(block: () -> Unit) {
+    val startTime = System.currentTimeMillis()
+    block()
+    println("花费时间:${System.currentTimeMillis() - startTime}ms")
+}
+
+/** 上报try-catch错误 */
+fun reportException(th:Throwable){
+    FirebaseCrashlytics.getInstance().recordException(th)
 }
 

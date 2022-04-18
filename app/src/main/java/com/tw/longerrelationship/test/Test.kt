@@ -1,6 +1,9 @@
 package com.tw.longerrelationship.test
 
 import android.annotation.SuppressLint
+import com.tw.longerrelationship.util.runTimeLog
+import com.tw.longerrelationship.util.runTimePrint
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.lang.StringBuilder
@@ -9,10 +12,10 @@ import kotlin.math.min
 import kotlin.reflect.KClass
 
 class Test {
-    companion object {
-        @SuppressLint("SimpleDateFormat")
-        @JvmStatic
-        fun main(args: Array<String>) {
+//    companion object {
+//        @SuppressLint("SimpleDateFormat")
+//        @JvmStatic
+//        fun main(args: Array<String>) {
 //            GlobalScope.launch {
 //                launch {
 //                    for (k in 1..3) {
@@ -22,9 +25,9 @@ class Test {
 //                }
 //                foo().collect { value -> println(value) }
 //            }
-            print(intToString(123))
-        }
-    }
+//            print(intToString(123))
+//        }
+//    }
 }
 
 fun log(msg: String) {
@@ -62,23 +65,34 @@ fun foo(): Flow<Int> = flow { // flow builder
 //    foo().collect { value -> println(value) }
 //}
 
-//fun main() {
-//    GlobalScope.launch(Dispatchers.Default){
-//        val startTime  = System.currentTimeMillis()
-//        for (i in 0..3){
-//            async { requestNetwork(startTime) }
-//        }
-//        println("执行完请求")
-//    }
-//    runBlocking {
-//        delay(5000)
-//    }
-//}
-//
-//suspend fun requestNetwork(startTime:Long){
-//    delay(500)
-//    println(System.currentTimeMillis()-startTime)
-//}
+fun main() {
+    runTimePrint {
+        runBlocking(Dispatchers.Default) {
+            val result1 = async { requestNetwork1() }
+            val result2 = async { requestNetwork2() }
+            val result3 = async { requestNetwork3() }
+
+            val merge = result1.await() + result2.await() + result3.await()
+            println("执行完请求,result:${merge}")
+        }
+    }
+}
+
+suspend fun requestNetwork1(): Int {
+    delay(700)
+    return 1
+}
+
+suspend fun requestNetwork2(): Int {
+    delay(800)
+    return 2
+}
+
+suspend fun requestNetwork3(): Int {
+    delay(900)
+    return 3
+}
+
 
 val <T : Any> T.kClass: KClass<T>
     get() = javaClass.kotlin
@@ -91,7 +105,7 @@ class ListNode(var `val`: Int) {
     var next: ListNode? = null
 }
 
-fun main() {
+//fun main() {
 //    val test = 0
 //    println("Kotlin type: ${test.kClass}")
 
@@ -101,7 +115,7 @@ fun main() {
 //            "\n" +
 //            "https://blog.csdn.net/cyan20115/article/details/106552487?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1.no_search_link&spm=1001.2101.3001.4242.2")
 
-}
+//}
 
 
 /** 翻转链表 */

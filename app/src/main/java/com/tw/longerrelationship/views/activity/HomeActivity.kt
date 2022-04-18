@@ -8,6 +8,7 @@ import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -212,6 +213,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                 mBinding.includeDrawer.tvWeather.text = data.results.first().now?.text ?: "--"
             }.onFailure {
                 showToast("获取天气错误", debugMode = true)
+                reportException(it)
             }
         }
     }
@@ -384,8 +386,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
             val data = clipboardManager.primaryClip
             val clipText = data!!.getItemAt(0).text.toString()
 
-            if (lastCopyLink == clipText) return
-
+            if (lastCopyLink == clipText || TextUtils.isEmpty(clipText)) return
 
             if (clipText.matches(UrlMatchHelper.URL_REGEX.toRegex())) {
                 clipPopup.showPopupWindow(mBinding.includeMain.viewPlaceholder, clipText)
@@ -394,6 +395,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         }.onFailure {
             it.printStackTrace()
             showToast("剪切板出错", debugMode = true)
+            reportException(it)
         }
     }
 
