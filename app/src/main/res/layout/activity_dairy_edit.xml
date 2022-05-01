@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.tw.longerrelationship.viewmodel.DairyEditViewModel" />
@@ -259,12 +258,13 @@
                     android:src="@drawable/ic_clock" />
 
                 <ImageView
-                    android:id="@+id/iv_recording"
+                    android:id="@+id/iv_calendar"
                     android:layout_width="34dp"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/calendar_icon"
                     android:paddingStart="@dimen/edit_icon_margin"
                     android:paddingEnd="@dimen/edit_icon_margin"
-                    android:src="@drawable/ic_recording" />
+                    android:src="@drawable/ic_calendar" />
 
                 <View
                     android:layout_width="1.5dp"
@@ -289,14 +289,12 @@
                     android:paddingEnd="@dimen/edit_icon_margin" />
 
                 <ImageView
-                    android:id="@+id/iv_calendar"
+                    android:id="@+id/iv_recording"
                     android:layout_width="34dp"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/calendar_icon"
                     android:paddingStart="@dimen/edit_icon_margin"
                     android:paddingEnd="@dimen/edit_icon_margin"
-                    android:src="@drawable/ic_calendar" />
-
+                    android:src="@drawable/ic_recording" />
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

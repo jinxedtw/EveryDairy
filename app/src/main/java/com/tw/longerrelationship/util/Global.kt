@@ -107,16 +107,6 @@ fun requestRecordAudioPermission(context: Activity) {
     }
 }
 
-
-/**
- *  获得当前时间
- *  格式 20:39
- */
-@SuppressLint("SimpleDateFormat")
-fun getNowTimeHour(date: Date): String {
-    return SimpleDateFormat("HH:mm").format(date)
-}
-
 /**
  * 把两个时间作比较
  * 获得需要的时间字符串

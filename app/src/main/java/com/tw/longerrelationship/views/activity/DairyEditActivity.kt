@@ -30,6 +30,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
+import com.blankj.utilcode.util.TimeUtils
 import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.PictureSelectAdapter
@@ -54,7 +55,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
@@ -237,7 +237,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         tryToRecoverDairy()
 
         mBinding.rvPhotoList.apply {
-            addItemDecoration(GridItemDecoration(3,30))
+            addItemDecoration(GridItemDecoration(3, 30))
             adapter = pictureSelectAdapter
             layoutManager = this@DairyEditActivity.layoutManager
         }
@@ -260,12 +260,12 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                     openRecording()
                 }
                 mBinding.ivCalendar -> {
-
+                    mBinding.etContent.text = mBinding.etContent.text.append(TimeUtils.date2String(Date(), "[yyyy-MM-dd HH:mm]"))
+                    mBinding.etContent.setSelection(mBinding.etContent.text.length)
                 }
                 // 添加时间
                 mBinding.ivClock -> {
-                    mBinding.etContent.text =
-                        mBinding.etContent.text.append("[" + getNowTimeHour(Date()) + "]")
+                    mBinding.etContent.text = mBinding.etContent.text.append(TimeUtils.date2String(Date(), "[HH:mm]"))
                     mBinding.etContent.setSelection(mBinding.etContent.text.length)
                 }
                 // 获得位置
