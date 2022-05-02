@@ -19,15 +19,15 @@ class SplashActivity : BaseActivity<ViewDataBinding>() {
     override fun init() {
         setContentView(getLayoutId())
 
-        MyApplication.mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
-                val updated = task.result
-                Log.d(tag, "Config params updated: $updated")
-                showToast("Fetch and activate succeeded")
-            } else {
-                showToast( "Fetch failed")
-            }
-        }
+//        MyApplication.mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(this) { task ->
+//            if (task.isSuccessful) {
+//                val updated = task.result
+//                Log.d(tag, "Config params updated: $updated")
+//                showToast("Fetch and activate succeeded")
+//            } else {
+//                showToast( "Fetch failed")
+//            }
+//        }
 
         startActivity(
             Intent(

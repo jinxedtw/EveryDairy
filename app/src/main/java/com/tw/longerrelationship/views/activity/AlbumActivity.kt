@@ -21,8 +21,7 @@ class AlbumActivity : BaseActivity<ActivityAlbumBinding>() {
     }
 
     override fun init() {
-        initBindingWithAppBar()
-        setAppBarTitle("图库")
+        initBindingWithAppBar("图库")
         initView()
     }
 

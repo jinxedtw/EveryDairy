@@ -78,6 +78,9 @@
             android:name=".views.activity.AlbumActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".views.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".views.activity.SplashActivity"
             android:theme="@style/launchTheme">
             <intent-filter>
@@ -87,6 +90,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:launchMode="singleTask"
             android:name=".views.activity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TransitionTheme" />
@@ -112,6 +116,22 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-    </application>
 
+        <service
+            android:name=".views.service.QuickSettingManager"
+            android:exported="true"
+            android:icon="@drawable/ic_launch"
+            android:label="@string/diary_edit"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+
+        </service>
+    </application>
 </manifest>

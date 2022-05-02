@@ -27,7 +27,7 @@
     <string name="love">日记本</string>
     <string name="about">关于</string>
     <string name="secret">密码锁</string>
-    <string name="countdown_day">倒数日</string>
+    <string name="countdown_day">日历</string>
     <string name="loading">加载中…</string>
     <string name="all_select">全选</string>
     <string name="alreadySelect">已选%d个</string>
@@ -46,6 +46,7 @@
     <string name="album_select_complete">完成(%d/9)</string>
     <string name="add_note_book_num">%d/5</string>
     <string name="favorites_remind">点击可进行编辑,长按拖动排序删除</string>
+    <string name="diary_edit">记录</string>
 
     <!--    共享元素name-->
     <string name="home_activity_share_bar">share_bar</string>

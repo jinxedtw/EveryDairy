@@ -30,7 +30,7 @@ class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
     }
 
     override fun init() {
-        initBindingWithAppBar()
+        initBindingWithAppBar("待办事项")
         mBinding.viewModel = viewModel
         initAppBar()
         initView()
@@ -39,7 +39,6 @@ class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
     }
 
     private fun initAppBar() {
-        setAppBarTitle("待办事项")
         setAppBarRightText("保存") {
             if (viewModel.todoContent.value == null) {
                 showToast( "请输入事项内容")

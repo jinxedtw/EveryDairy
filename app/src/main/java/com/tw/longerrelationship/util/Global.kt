@@ -253,8 +253,13 @@ inline fun runTimePrint(block: () -> Unit) {
     println("花费时间:${System.currentTimeMillis() - startTime}ms")
 }
 
-/** 上报try-catch错误 */
-fun reportException(th:Throwable){
-    FirebaseCrashlytics.getInstance().recordException(th)
+inline fun <R> runReportCatching(block: () -> R): Result<R> {
+    return try {
+        Result.success(block())
+    } catch (e: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(e)
+        e.printStackTrace()
+        Result.failure(e)
+    }
 }
 

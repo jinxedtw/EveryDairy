@@ -29,8 +29,7 @@ class FavoritesAddActivity : BaseActivity<ActivityFavoritesAddBinding>() {
     }
 
     override fun init() {
-        initBindingWithAppBar()
-        setAppBarTitle("添加日记本")
+        initBindingWithAppBar("添加日记本")
         addOnSoftKeyBoardVisibleListener()
         initView()
     }

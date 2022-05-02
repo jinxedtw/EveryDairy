@@ -11,8 +11,7 @@ import kotlinx.coroutines.launch
 
 class SecretActivity : BaseActivity<ActivitySecretBinding>() {
     override fun init() {
-        initBindingWithAppBar()
-        setAppBarTitle("私密空间")
+        initBindingWithAppBar("私密空间")
         initView()
     }
 

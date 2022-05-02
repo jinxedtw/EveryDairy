@@ -39,7 +39,6 @@ import com.tw.longerrelationship.views.widgets.ClipPopup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 class HomeActivity : BaseActivity<ActivityMainBinding>() {
@@ -49,16 +48,9 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     private lateinit var dairyFragment: DairyFragment
     private lateinit var mDrawerAdapter: DrawerItemAdapter
     private var lastCopyLink = ""
-    private val clipPopup: ClipPopup by lazy {
-        ClipPopup(this)
-    }
+    private val clipPopup: ClipPopup by lazy { ClipPopup(this) }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            InjectorUtils.getMainViewModelFactory()
-        ).get(MainViewModel::class.java)
-    }
+    private val viewModel by lazy { ViewModelProvider(this, InjectorUtils.getMainViewModelFactory()).get(MainViewModel::class.java) }
 
     override fun onResume() {
         super.onResume()
@@ -89,7 +81,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun initTab() {
-        // TODO: 2021/7/25 切换tab卡顿
         dairyFragment = DairyFragment()
         toDoFragment = ToDoFragment()
         tapTitle = arrayListOf("笔记", "待办")
@@ -205,7 +196,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
 
         // 获取天气
         lifecycleScope.launch(Dispatchers.Main) {
-            runCatching {
+            runReportCatching {
                 val data = viewModel.requestWeather() ?: return@launch
                 mBinding.includeDrawer.tvCity.text = data.results.first().location?.name ?: "--"
                 mBinding.includeDrawer.tvTemperature.text =
@@ -213,7 +204,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                 mBinding.includeDrawer.tvWeather.text = data.results.first().now?.text ?: "--"
             }.onFailure {
                 showToast("获取天气错误", debugMode = true)
-                reportException(it)
             }
         }
     }
@@ -262,8 +252,18 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                             AlbumActivity::class.java
                         )
                     )
-                    DRAWER_COUNTDOWN_DAY -> showToast("我点了倒数日")
-                    DRAWER_ABOUT -> showToast("我点了关于")
+                    DRAWER_COUNTDOWN_DAY -> startActivity(
+                        Intent(
+                            this@HomeActivity,
+                            AboutActivity::class.java
+                        )
+                    )
+                    DRAWER_ABOUT -> startActivity(
+                        Intent(
+                            this@HomeActivity,
+                            AboutActivity::class.java
+                        )
+                    )
                     DRAWER_SECRET -> startActivity(
                         Intent(
                             this@HomeActivity,
@@ -377,7 +377,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
 
     /** 获取剪切板复制、剪切内容 */
     private fun getClipboardContent() {
-        runCatching {
+        runReportCatching {
             val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             if (!clipboardManager.hasPrimaryClip()) {
                 return
@@ -393,9 +393,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                 lastCopyLink = clipText
             }
         }.onFailure {
-            it.printStackTrace()
             showToast("剪切板出错", debugMode = true)
-            reportException(it)
         }
     }
 

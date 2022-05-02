@@ -66,13 +66,14 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     /**
      * 设置有统一appBar样式的布局
      */
-    fun initBindingWithAppBar() {
+    fun initBindingWithAppBar(title: String) {
         setContentView(R.layout.activity_base)
         mAppBar = findViewById(R.id.cl_app_bar)
         mLayoutContent = findViewById(R.id.fl_content)
         mBinding = DataBindingUtil.inflate(layoutInflater, getLayoutId(), mLayoutContent, true)
         findViewById<ImageView>(R.id.iv_leave)?.setOnClickListener { finishAndTryCloseSoftKeyboard() }
         root = mBinding.root
+        findViewById<TextView>(R.id.tv_appbar_title).text = title
     }
 
     fun setAppBarTitle(title: String) {

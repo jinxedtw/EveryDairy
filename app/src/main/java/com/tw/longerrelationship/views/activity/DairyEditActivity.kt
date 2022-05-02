@@ -443,9 +443,15 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             closeKeyboard(mBinding.root.windowToken)
             showRvPhotoList = false
             mBinding.root.handler.postDelayed({
+                if (isTaskRoot) {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                }
                 finish()
             }, 50)
         } else {
+            if (isTaskRoot) {
+                startActivity(Intent(this, HomeActivity::class.java))
+            }
             finish()
         }
     }

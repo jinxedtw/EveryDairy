@@ -27,9 +27,7 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>() {
     )
 
     override fun init() {
-        initBindingWithAppBar()
-
-        setAppBarTitle("日记本")
+        initBindingWithAppBar("日记本")
         initView()
     }
 
