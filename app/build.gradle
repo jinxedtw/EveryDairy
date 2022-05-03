@@ -81,7 +81,7 @@ dependencies {
     // 其他工程文件
     implementation files('libs/BaiduLBS_Android.jar')
     implementation project(':extra-sdk:calendarview')
-    implementation 'com.7heaven.widgets:gesturelock:1.3'
+    implementation project(':extra-sdk:gesturelock')
 
     //依赖协程核心库
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"

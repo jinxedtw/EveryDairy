@@ -1,3 +1,4 @@
 include ':app'
 rootProject.name = "LongerRelationShip"
 include ':extra-sdk:calendarview'
+include ':extra-sdk:gesturelock'

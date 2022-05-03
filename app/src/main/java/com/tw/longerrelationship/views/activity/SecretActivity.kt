@@ -1,7 +1,11 @@
 package com.tw.longerrelationship.views.activity
 
+import android.content.Context
 import androidx.lifecycle.lifecycleScope
-import com.tw.longerrelationship.MyApplication
+import com.sevenheaven.gesturelock.GestureLock.GestureLockAdapter
+import com.sevenheaven.gesturelock.GestureLockView
+import com.sevenheaven.gesturelock.NexusStyleLockView
+import com.sevenheaven.gesturelock.NormalStyleLockView
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivitySecretBinding
 import com.tw.longerrelationship.util.*
@@ -33,10 +37,38 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
                     }
 
                 }
-                mBinding.btAudioRecord->{
+                mBinding.btAudioRecord -> {
                 }
             }
         }
+
+        mBinding.gestureLock.setAdapter(object : GestureLockAdapter {
+            override fun getDepth(): Int {
+                return 3
+            }
+
+            override fun getCorrectGestures(): IntArray {
+                return intArrayOf(0, 1, 2)
+            }
+
+            // 最大可重试次数
+            override fun getUnmatchedBoundary(): Int {
+                return 5
+            }
+
+            // block之前的间隔大小
+            override fun getBlockGapSize(): Int {
+                return 5
+            }
+
+            override fun getGestureLockViewInstance(context: Context, position: Int): GestureLockView {
+                return if (position % 2 == 0) {
+                    NormalStyleLockView(context)
+                } else {
+                    NexusStyleLockView(context)
+                }
+            }
+        })
     }
 
     private fun handlePassword() {
