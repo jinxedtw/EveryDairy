@@ -35,4 +35,6 @@ object InjectorUtils {
     fun getAlbumViewModelFactory() = AlbumViewModelFactory(getMainRepository())
 
     fun getFavoritesViewModelFactory() = FavoritesViewModelFactory(getMainRepository())
+
+    fun getCalendarViewModelFactory() = CalendarViewModelFactory(getMainRepository())
 }

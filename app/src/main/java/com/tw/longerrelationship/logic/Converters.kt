@@ -16,8 +16,6 @@
 
 package com.tw.longerrelationship.logic
 
-import android.net.Uri
-import androidx.core.net.toUri
 import androidx.room.TypeConverter
 import com.tw.longerrelationship.logic.model.EmergencyLevel
 import java.util.*

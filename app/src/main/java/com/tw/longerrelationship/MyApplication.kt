@@ -8,8 +8,6 @@ import androidx.datastore.core.DataStore
 import com.tw.longerrelationship.util.dataStore
 import com.tw.longerrelationship.util.logV
 import androidx.datastore.preferences.core.Preferences
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 
 
 class MyApplication : Application() {
@@ -21,21 +19,11 @@ class MyApplication : Application() {
 
         // 初始化百度SDK
         SDKInitializer.initialize(applicationContext)
-
-
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600
-        }
-        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings)
-        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
     }
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var appContext: Context
-        val mFirebaseRemoteConfig by lazy {
-            FirebaseRemoteConfig.getInstance()
-        }
 
         /**
          * 获取DataStore实例。

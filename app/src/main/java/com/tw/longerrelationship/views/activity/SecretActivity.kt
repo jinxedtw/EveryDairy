@@ -1,7 +1,6 @@
 package com.tw.longerrelationship.views.activity
 
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.remoteconfig.ktx.get
 import com.tw.longerrelationship.MyApplication
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivitySecretBinding
@@ -38,9 +37,6 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>() {
                 }
             }
         }
-        mBinding.tvRemoteConfig.text = MyApplication.mFirebaseRemoteConfig["welcome_message"].asString()
-        val str = MyApplication.mFirebaseRemoteConfig["country_config"].asString()
-
     }
 
     private fun handlePassword() {

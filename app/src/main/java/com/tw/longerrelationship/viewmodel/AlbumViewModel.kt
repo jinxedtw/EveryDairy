@@ -9,7 +9,7 @@ class AlbumViewModel(val repository: MainRepository) : ViewModel() {
 
     val pictureMap: MutableMap<String, List<String>> = mutableMapOf()
 
-    fun getAllDairyPicture(){
+    suspend fun getAllDairyPicture(){
         val pictureList = repository.getPictures()
         for (i in pictureList.indices) {
             if (!pictureMap.containsKey(formatDate(pictureList[i].createTime))) {

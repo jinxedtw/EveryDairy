@@ -231,13 +231,13 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                 R.drawable.ic_secret,
                 DRAWER_SECRET
             ),
-            DrawerItemAdapter.DrawerLayoutBean(R.string.help, R.drawable.ic_help, DRAWER_HELP),
+//            DrawerItemAdapter.DrawerLayoutBean(R.string.help, R.drawable.ic_help, DRAWER_HELP),
             DrawerItemAdapter.DrawerLayoutBean(R.string.about, R.drawable.ic_about, DRAWER_ABOUT),
-            DrawerItemAdapter.DrawerLayoutBean(
-                R.string.setting,
-                R.drawable.ic_settings,
-                DRAWER_SETTING
-            ),
+//            DrawerItemAdapter.DrawerLayoutBean(
+//                R.string.setting,
+//                R.drawable.ic_settings,
+//                DRAWER_SETTING
+//            ),
         )
         mDrawerAdapter = DrawerItemAdapter(list)
         mBinding.includeDrawer.rvDrawer.layoutManager = LinearLayoutManager(applicationContext)
@@ -255,7 +255,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                     DRAWER_COUNTDOWN_DAY -> startActivity(
                         Intent(
                             this@HomeActivity,
-                            AboutActivity::class.java
+                            CalendarActivity::class.java
                         )
                     )
                     DRAWER_ABOUT -> startActivity(
@@ -276,8 +276,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                             FavoritesActivity::class.java
                         )
                     )
-                    6 -> {
-                    }
                     DRAWER_SETTING -> {
                     }
                 }

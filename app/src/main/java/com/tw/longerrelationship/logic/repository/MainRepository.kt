@@ -51,7 +51,18 @@ class MainRepository private constructor(
     }
 
     /** 获取本地日记中所有的图片 */
-    fun getPictures() = dairyDao.getALlPictures()
+    suspend fun getPictures() = dairyDao.getALlPictures()
+
+    /** 获取本地日记中所有的日记保存的时间 */
+    suspend fun getAllDate() = dairyDao.getALlDiaryTime()
+
+    /** 获取特点日期的日记 */
+    fun getDiaryByDate(day: Long): Flow<PagingData<DairyItem>> {
+        return Pager(
+            config = PagingConfig(PAGE_SIZE, maxSize = 150),
+            pagingSourceFactory = dairyDao.getDiaryByDate(day).asPagingSourceFactory()
+        ).flow
+    }
 
     // ------------------------------待办相关接口
     fun getNotCompleteToDoData(): Flow<PagingData<ToDoItem>> {

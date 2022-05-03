@@ -5,6 +5,7 @@ import androidx.room.*
 import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.logic.model.DairyPicture
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 interface DairyDao {
@@ -43,5 +44,13 @@ interface DairyDao {
 
     /** 获取所有日记中的照片地址 */
     @Query("SELECT uriList,createTime FROM DairyEntity where uriList is not null and uriList != '' order by createTime desc")
-    fun getALlPictures(): List<DairyPicture>
+    suspend fun getALlPictures(): List<DairyPicture>
+
+    /** 获取所有日记中的照片地址 */
+    @Query("SELECT createTime FROM DairyEntity order by createTime desc")
+    suspend fun getALlDiaryTime(): List<Date>
+
+    /** 获取特点日期的日记 */
+    @Query("SELECT * FROM DairyEntity WHERE  createTime / 86400000 = :dayCount order by createTime desc")
+    fun getDiaryByDate(dayCount: Long): DataSource.Factory<Int, DairyItem>
 }

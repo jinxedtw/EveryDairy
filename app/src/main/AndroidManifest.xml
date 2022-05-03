@@ -81,6 +81,9 @@
             android:name=".views.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".views.activity.CalendarActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".views.activity.SplashActivity"
             android:theme="@style/launchTheme">
             <intent-filter>
