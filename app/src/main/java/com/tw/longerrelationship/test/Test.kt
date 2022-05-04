@@ -7,6 +7,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.lang.StringBuilder
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.reflect.KClass
@@ -66,16 +68,10 @@ fun foo(): Flow<Int> = flow { // flow builder
 //}
 
 fun main() {
-    runTimePrint {
-        runBlocking(Dispatchers.Default) {
-            val result1 = async { requestNetwork1() }
-            val result2 = async { requestNetwork2() }
-            val result3 = async { requestNetwork3() }
-
-            val merge = result1.await() + result2.await() + result3.await()
-            println("执行完请求,result:${merge}")
-        }
-    }
+    val a1 = intArrayOf(1, 2, 3)
+    val a2 = intArrayOf(1, 2, 3)
+    println(a1.toString())
+    println(a2.toString())
 }
 
 suspend fun requestNetwork1(): Int {

@@ -60,8 +60,9 @@ public class GestureLock extends ViewGroup {
 
     public interface OnGestureEventListener{
         void onBlockSelected(int position);
-        void onGestureEvent(boolean matched);
+        void onGestureEvent(boolean matched,int[] gesturesContainer,int gestureCount);
         void onUnmatchedExceedBoundary();
+        void onGestureMove();               // 绘制手势
     }
 
     /**
@@ -144,6 +145,10 @@ public class GestureLock extends ViewGroup {
         if(defaultGestures.length > negativeGestures.length) throw new IllegalArgumentException("defaultGestures length must be less than or equal to " + negativeGestures.length);
 
         unmatchedBoundary = mAdapter.getUnmatchedBoundary();
+    }
+
+    public void setCorrectGestures(int[] gesturePath){
+        defaultGestures = gesturePath;
     }
 
     public void notifyDataChanged(){
@@ -328,7 +333,9 @@ public class GestureLock extends ViewGroup {
                         }
                     }
 
-                    if (child != null && child instanceof GestureLockView && checkChildInCoords(lastX, lastY, child)) {
+                    onGestureEventListener.onGestureMove();
+
+                    if (child instanceof GestureLockView && checkChildInCoords(lastX, lastY, child)) {
                         ((GestureLockView) child).setLockerState(GestureLockView.LockerState.LOCKER_STATE_SELECTED);
 
                         if (!checked) {
@@ -375,7 +382,7 @@ public class GestureLock extends ViewGroup {
                             paint.setColor(mCustomErrorColor);
                             for (int k = 0; k < gesturesContainer.length; k++) {
                                 View selectedChild = findViewById(gesturesContainer[k] + 1);
-                                if (selectedChild != null && selectedChild instanceof GestureLockView) {
+                                if (selectedChild instanceof GestureLockView) {
                                     ((GestureLockView) selectedChild).setLockerState(GestureLockView.LockerState.LOCKER_STATE_ERROR);
 
                                     if (k < gesturesContainer.length - 1 && gesturesContainer[k + 1] != -1) {
@@ -396,7 +403,7 @@ public class GestureLock extends ViewGroup {
 
 
                         if (onGestureEventListener != null) {
-                            onGestureEventListener.onGestureEvent(matched);
+                            onGestureEventListener.onGestureEvent(matched,gesturesContainer,gestureCursor);
                             if (unmatchedCount >= unmatchedBoundary) {
                                 onGestureEventListener.onUnmatchedExceedBoundary();
                                 unmatchedCount = 0;

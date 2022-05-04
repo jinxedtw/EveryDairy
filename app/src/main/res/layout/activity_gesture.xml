@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:GestureLock="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue_app_icon">
+
+        <TextView
+            android:id="@+id/tv_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="绘制解锁图案"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            GestureLock:layout_constraintBottom_toBottomOf="parent"
+            GestureLock:layout_constraintEnd_toEndOf="parent"
+            GestureLock:layout_constraintStart_toStartOf="parent"
+            GestureLock:layout_constraintTop_toTopOf="parent"
+            GestureLock:layout_constraintVertical_bias="0.25" />
+
+        <com.sevenheaven.gesturelock.GestureLock
+            android:id="@+id/gesture_lock"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="40dp"
+            GestureLock:layout_constraintBottom_toTopOf="@id/tv_cancer"
+            GestureLock:layout_constraintDimensionRatio="1:1"
+            GestureLock:layout_constraintEnd_toEndOf="parent"
+            GestureLock:layout_constraintStart_toStartOf="parent"
+            GestureLock:layout_constraintWidth_percent="0.8"
+            GestureLock:line_normal_color="@android:color/darker_gray"
+            GestureLock:line_width="2dp" />
+
+        <TextView
+            android:id="@+id/tv_cancer"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rip_common"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/white"
+            GestureLock:layout_constraintBottom_toBottomOf="parent"
+            GestureLock:layout_constraintStart_toStartOf="parent"
+            GestureLock:layout_constraintWidth_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tv_continue"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rip_common"
+            android:gravity="center"
+            android:text="确认"
+            android:textColor="@color/white"
+            GestureLock:layout_constraintBottom_toBottomOf="@id/tv_cancer"
+            GestureLock:layout_constraintEnd_toEndOf="parent"
+            GestureLock:layout_constraintWidth_percent="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

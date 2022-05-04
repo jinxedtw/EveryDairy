@@ -51,6 +51,6 @@ interface DairyDao {
     suspend fun getALlDiaryTime(): List<Date>
 
     /** 获取特点日期的日记 */
-    @Query("SELECT * FROM DairyEntity WHERE  createTime / 86400000 = :dayCount order by createTime desc")
+    @Query("SELECT * FROM DairyEntity WHERE  (createTime + 28800000) / 86400000  = :dayCount order by createTime desc")
     fun getDiaryByDate(dayCount: Long): DataSource.Factory<Int, DairyItem>
 }

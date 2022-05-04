@@ -35,6 +35,7 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding>(), OnCalendarSele
         initData()
     }
 
+
     @SuppressLint("SetTextI18n")
     private fun initView() {
         setOnClickListeners(mBinding.tvMonthDay, mBinding.flCurrent) {
@@ -71,7 +72,7 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding>(), OnCalendarSele
     }
 
     private fun initData() {
-        getSelectDayDiary(Date().time / 86400000)
+        getSelectDayDiary((Date().time+ 28800000) / 86_400_000)
 
         lifecycleScope.launch(Dispatchers.IO) {
             val dateList = viewModel.getAllDairyDate()
@@ -115,7 +116,7 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding>(), OnCalendarSele
         mBinding.tvYear.text = calendar.year.toString()
         mBinding.tvLunar.text = calendar.lunar
         mYear = calendar.year
-        getSelectDayDiary(calendar.timeInMillis / 86400000)
+        getSelectDayDiary((calendar.timeInMillis + 28800000) / 86400000)
     }
 
     override fun onYearChange(year: Int) {
