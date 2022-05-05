@@ -1,5 +1,6 @@
 package com.tw.longerrelationship.views.activity
 
+import android.annotation.SuppressLint
 import com.sevenheaven.gesturelock.GestureLock
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivitySecretBinding
@@ -18,7 +19,6 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>(){
 
     private fun initView() {
         mBinding.sbLock.isChecked = DataStoreUtil[KEY_GESTURE_LOCK] ?: false
-        mBinding.sbLock.isEnabled = false
 
         setOnClickListeners(mBinding.clLock) {
             when (this) {
@@ -34,13 +34,17 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>(){
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initEvent() {
         LiveDataBus.with(Constants.LIVE_SET_LOCK, Boolean::class.java).observe(this) {
             if (it){
-                mBinding.sbLock.isEnabled = true
                 mBinding.sbLock.isChecked = true
                 DataStoreUtil[KEY_GESTURE_LOCK] = true
             }
+        }
+
+        mBinding.sbLock.setOnTouchListener { _, _ ->
+            return@setOnTouchListener true
         }
     }
 

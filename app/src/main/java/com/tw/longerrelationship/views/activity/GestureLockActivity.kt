@@ -1,10 +1,15 @@
 package com.tw.longerrelationship.views.activity
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.view.View
 import com.blankj.utilcode.util.BarUtils
 import com.sevenheaven.gesturelock.GestureLock
 import com.sevenheaven.gesturelock.GestureLock.MODE_NORMAL
@@ -105,6 +110,7 @@ class GestureLockActivity : BaseActivity<ActivityGestureBinding>() {
                         finish()
                     } else {
                         mBinding.tvGuide.text = "图案错误,请重试"
+                        setAnimator(mBinding.tvGuide)
                     }
                 } else {
                     if (gestureCount < 4) {
@@ -145,6 +151,23 @@ class GestureLockActivity : BaseActivity<ActivityGestureBinding>() {
             sb.append("$")
         }
         DataStoreUtil[KEY_GESTURE_LOCK_PATH] = sb.toString()
+    }
+
+    /**
+     * 左右晃动动效
+     */
+    private fun setAnimator(vararg v: View?) {
+        val animators = mutableListOf<Animator>()
+        v.forEach {
+            animators.add(
+                ObjectAnimator.ofFloat(it, "translationX", 0f, -26f, 26f, -22f, 22f, -18f, 18f, -14f, 14f, -10f, 10f, -6f, 6f, -3f, 3f, -1f, 1f, 0f).apply {
+                    duration = 2000
+                })
+        }
+        AnimatorSet().apply {
+            playTogether(animators)
+            start()
+        }
     }
 
     companion object {
