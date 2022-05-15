@@ -270,6 +270,9 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
                     )
                     DRAWER_SETTING -> {
                     }
+                    DRAWER_HELP -> {
+
+                    }
                 }
             }
         })

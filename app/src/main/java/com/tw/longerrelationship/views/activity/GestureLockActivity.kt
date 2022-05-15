@@ -176,5 +176,11 @@ class GestureLockActivity : BaseActivity<ActivityGestureBinding>() {
                 putExtra(Constants.INTENT_GESTURE_LOCK_MODE, mode)
             })
         }
+
+        fun open(context: Context, mode: Int) {
+            context.startActivity(Intent(context, GestureLockActivity::class.java).apply {
+                putExtra(Constants.INTENT_GESTURE_LOCK_MODE, mode)
+            })
+        }
     }
 }

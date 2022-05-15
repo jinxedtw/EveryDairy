@@ -8,17 +8,34 @@ import androidx.datastore.core.DataStore
 import com.tw.longerrelationship.util.dataStore
 import com.tw.longerrelationship.util.logV
 import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
+import com.sevenheaven.gesturelock.GestureLock
+import com.tw.longerrelationship.views.activity.GestureLockActivity
 
 
-class MyApplication : Application() {
+class MyApplication : Application(), LifecycleObserver {
 
     override fun onCreate() {
         super.onCreate()
         logV("程序可用最大内存:", (Runtime.getRuntime().maxMemory() / 1024).toString() + "k")
-        appContext=this
+        appContext = this
 
         // 初始化百度SDK
         SDKInitializer.initialize(applicationContext)
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+    }
+
+
+    /**
+     * 应用进入前台
+     */
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    private fun onAppForeground() {
+        GestureLockActivity.open(appContext, GestureLock.MODE_NORMAL)
     }
 
     companion object {
