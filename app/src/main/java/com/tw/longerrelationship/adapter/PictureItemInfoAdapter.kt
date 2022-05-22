@@ -17,9 +17,9 @@ import com.tw.longerrelationship.views.activity.AlbumActivity
 import com.tw.longerrelationship.views.activity.PictureInfoActivity
 import java.util.ArrayList
 
-class PictureItemInfoAdapter(val context: Context, val pictureTime: String, layoutId: Int, data: List<String>) : BaseViewAdapter<String>(layoutId, data) {
+class PictureItemInfoAdapter(val context: Context, val pictureTime: String, layoutId: Int,val data: List<String>) : BaseViewAdapter<String>(layoutId, data) {
 
-    override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, item: String) {
+    override fun bindViewHolder(holder: ViewHolder, position: Int, item: String) {
         val picture = holder.itemView.findViewById<ImageView>(R.id.iv_picture_info)
 
         Glide.with(context).load(item).apply(RequestOptions().transform(CenterCrop(), RoundedCorners(dp2px(5)))).into(picture)

@@ -25,9 +25,7 @@ class AboutActivity : BaseActivity<ActivityAboutBinding>() {
         setOnClickListeners(mBinding.btSaveQrCode, mBinding.btShare) {
             when (this) {
                 mBinding.btSaveQrCode -> savePicToAlbum(mBinding.ivQrCode.drawable.toBitmap())
-                mBinding.btShare -> {
-                    shareImage(mBinding.ivQrCode.drawable.toBitmap())
-                }
+                mBinding.btShare -> shareImage(mBinding.ivQrCode.drawable.toBitmap())
             }
         }
     }

@@ -10,7 +10,7 @@ class FavoriteAddAdapter(val context: Context, layoutId: Int, data: List<Int>) :
     private var selectedImage = -1
     var notebookCoverOnSelect: (Int) -> Unit = { }
 
-    override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, item: Int) {
+    override fun bindViewHolder(holder: ViewHolder, position: Int, item: Int) {
         holder.itemView.findViewById<ImageView>(R.id.iv_notebook_icon).background = ContextCompat.getDrawable(context, item)
 
         if (item == selectedImage) {

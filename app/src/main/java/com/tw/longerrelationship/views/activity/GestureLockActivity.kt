@@ -3,7 +3,6 @@ package com.tw.longerrelationship.views.activity
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -18,8 +17,11 @@ import com.sevenheaven.gesturelock.NormalStyleLockView
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.databinding.ActivityGestureBinding
 import com.tw.longerrelationship.logic.LiveDataBus
-import com.tw.longerrelationship.util.*
+import com.tw.longerrelationship.util.Constants
 import com.tw.longerrelationship.util.Constants.KEY_GESTURE_LOCK_PATH
+import com.tw.longerrelationship.util.DataStoreUtil
+import com.tw.longerrelationship.util.gone
+import com.tw.longerrelationship.util.setOnClickListeners
 
 class GestureLockActivity : BaseActivity<ActivityGestureBinding>() {
     private var gesturePath: IntArray = intArrayOf()

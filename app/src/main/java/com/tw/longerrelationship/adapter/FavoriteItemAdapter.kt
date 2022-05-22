@@ -11,13 +11,13 @@ import com.tw.longerrelationship.logic.model.NotebookItem
 import com.tw.longerrelationship.viewmodel.FavoritesViewModel
 
 class FavoriteItemAdapter(val context: Context, layoutId: Int, data: List<NotebookItem>, tailLayout: Int) :
-    BaseViewAdapter<NotebookItem>(layoutId, data, tailLayout = tailLayout) {
+    BaseViewAdapter<NotebookItem>(layoutId, data, tailLayoutId = tailLayout) {
 
     var notebookOnClick: () -> Unit = { }
     var notebookOnAdd: () -> Unit = { }
     private var selectedPosition = 0
 
-    override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, item: NotebookItem) {
+    override fun bindViewHolder(holder: ViewHolder, position: Int, item: NotebookItem) {
         val notebookNameTv = holder.itemView.findViewById<TextView>(R.id.tv_notebook_name)
         val notebookIconIv = holder.itemView.findViewById<ImageView>(R.id.iv_notebook_icon)
         val notebookCountTv = holder.itemView.findViewById<TextView>(R.id.tv_notebook_count)
@@ -39,7 +39,7 @@ class FavoriteItemAdapter(val context: Context, layoutId: Int, data: List<Notebo
         }
     }
 
-    override fun bindTailViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun bindTailViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             notebookOnAdd()
         }

@@ -11,10 +11,10 @@ import com.tw.longerrelationship.util.dp2px
 
 
 class PictureItemAdapter(val context: Context, layoutId: Int, data: List<String>, val pictureMap: MutableMap<String, List<String>>) :
-    BaseViewAdapter<String>(layoutId, data, tailLayout = R.layout.item_dairy_tail) {
+    BaseViewAdapter<String>(layoutId, data, tailLayoutId = R.layout.item_dairy_tail) {
 
     @SuppressLint("SetTextI18n")
-    override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, item: String) {
+    override fun bindViewHolder(holder: ViewHolder, position: Int, item: String) {
         val segment = item.split(".")           // eg: 2022.1.13.周四
 
         val pictureDay = holder.itemView.findViewById<TextView>(R.id.tv_day_of_month)

@@ -12,7 +12,7 @@ class ThumbnailAdapter(val context: Context, layoutId: Int, data: List<ImageFold
 
     var onItemClick: (ImageFolder, Int) -> Unit = { _, _ -> }
 
-    override fun bindViewHolder(holder: RecyclerView.ViewHolder, position: Int, item: ImageFolder) {
+    override fun bindViewHolder(holder: ViewHolder, position: Int, item: ImageFolder) {
         val thumbnailImage = holder.itemView.findViewById<ImageView>(R.id.iv_thumbnail)
         val thumbnailName = holder.itemView.findViewById<TextView>(R.id.tv_thumbnail_name)
         val thumbnailCount = holder.itemView.findViewById<TextView>(R.id.tv_thumbnail_count)
