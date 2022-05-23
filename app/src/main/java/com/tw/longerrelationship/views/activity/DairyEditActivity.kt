@@ -49,6 +49,7 @@ import com.tw.longerrelationship.util.Constants.KEY_RECOVER_TITLE
 import com.tw.longerrelationship.viewmodel.DairyEditViewModel
 import com.tw.longerrelationship.views.widgets.ColorsPainDialog
 import com.tw.longerrelationship.views.widgets.IconSelectDialog
+import com.tw.longerrelationship.views.widgets.RecordAudioDialogFragment
 import com.tw.longerrelationship.views.widgets.ToastWithImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -166,6 +167,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     }
 
     override fun init() {
+        requestRecordAudioPermission(this@DairyEditActivity)
         initBinding()
         mBinding.viewModel = this.viewModel
         showKeyboard(mBinding.etContent)
@@ -257,7 +259,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         ) {
             when (this) {
                 mBinding.ivRecording -> {
-                    openRecording()
+//                    openRecording()
+                    RecordAudioDialogFragment().show(supportFragmentManager, "recordDialog")
                 }
                 mBinding.ivCalendar -> {
                     mBinding.etContent.text = mBinding.etContent.text.append(TimeUtils.date2String(Date(), "[yyyy-MM-dd HH:mm]"))

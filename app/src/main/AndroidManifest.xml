@@ -123,6 +123,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <service android:name=".views.service.RecordingService"/>
+
         <service
             android:name=".views.service.QuickSettingManager"
             android:exported="true"

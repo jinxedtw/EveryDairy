@@ -377,7 +377,7 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
             }
 
             val data = clipboardManager.primaryClip
-            val clipText = data!!.getItemAt(0).text.toString()
+            val clipText = data?.getItemAt(0)?.text.toString()
 
             if (lastCopyLink == clipText || TextUtils.isEmpty(clipText)) return
 
