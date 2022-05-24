@@ -45,15 +45,13 @@ class PictureTypeSelectDialog : Dialog {
                     openCamera()
                     dismiss()
                 }
-                // 后期可以换成自定义相册,实现一次性选取多张图片
                 llPicture -> {
                     requestSDCardWritePermission(activity)
                     openAlbum()
-
                     dismiss()
                 }
                 llPaint -> {
-                    showToast("点击画板")
+                    openDoodle()
                     dismiss()
                 }
             }
@@ -73,4 +71,12 @@ class PictureTypeSelectDialog : Dialog {
     private fun openCamera() {
         (activity as DairyEditActivity).openCamera()
     }
+
+    /**
+     * 打开画板
+     */
+    private fun openDoodle(){
+        (activity as DairyEditActivity).openDoodle()
+    }
+
 }

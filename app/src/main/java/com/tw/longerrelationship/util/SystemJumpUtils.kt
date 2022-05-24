@@ -46,7 +46,7 @@ fun Context.copyText(data: String?) {
 }
 
 /** 打电话 */
-fun Activity.callPhone(tel: String) {
+fun Context.callPhone(tel: String) {
     if (PhoneNumberUtils.isGlobalPhoneNumber(tel)) {
         val intent = Intent(Intent.ACTION_DIAL)
         val data = Uri.parse("tel:${tel}")
@@ -58,7 +58,7 @@ fun Activity.callPhone(tel: String) {
 }
 
 /** 发送邮件 */
-fun Activity.sendEmail(address: String) {
+fun Context.sendEmail(address: String) {
     val uri = Uri.parse("mailto:${address}")
     val email = arrayOf(address) // 需要注意，email必须以数组形式传入
     val intent = Intent(Intent.ACTION_SENDTO, uri)
@@ -68,7 +68,7 @@ fun Activity.sendEmail(address: String) {
 }
 
 /** 保存图片到相册 */
-fun Activity.savePicToAlbum(bitmap: Bitmap?){
+fun Context.savePicToAlbum(bitmap: Bitmap?){
     if (bitmap == null){
         ToastWithImage.showToast("保存失败",false)
     }
@@ -108,7 +108,7 @@ fun Activity.savePicToAlbum(bitmap: Bitmap?){
 }
 
 /** 发送短信 */
-fun Activity.sendSMS(phoneNumber: String, message: String?) {
+fun Context.sendSMS(phoneNumber: String, message: String?) {
     if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumber)) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:$phoneNumber"))
         intent.putExtra("sms_body", message)
@@ -119,12 +119,12 @@ fun Activity.sendSMS(phoneNumber: String, message: String?) {
 }
 
 /** 打开wifi界面 */
-fun Activity.openWifiSetting() {
+fun Context.openWifiSetting() {
     startActivity(Intent(ACTION_WIFI_SETTINGS))
 }
 
 /** 打开系统日历 */
-fun Activity.openCalendar(
+fun Context.openCalendar(
     title: String, description: String, location: String,
     startTime: Long, endTime: Long,
 ) {
@@ -139,7 +139,7 @@ fun Activity.openCalendar(
 }
 
 /** 打开联系人 */
-fun Activity.openContact(
+fun Context.openContact(
     name: String,
     title: String,
     company: String,

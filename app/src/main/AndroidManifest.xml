@@ -84,6 +84,9 @@
             android:name=".views.activity.CalendarActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".views.activity.DoodleViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".views.activity.GestureLockActivity"
             android:screenOrientation="portrait" />
         <activity

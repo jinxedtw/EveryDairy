@@ -239,7 +239,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         tryToRecoverDairy()
 
         mBinding.rvPhotoList.apply {
-            addItemDecoration(GridItemDecoration(3, 30))
             adapter = pictureSelectAdapter
             layoutManager = this@DairyEditActivity.layoutManager
         }
@@ -554,6 +553,10 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     fun openAlbum() {
         toPhotoAlbumActivityLauncher.launch(viewModel.pictureList.size)
 //        toAlbumLauncher.launch(null)
+    }
+
+    fun openDoodle() {
+        startActivity(Intent(this, DoodleViewActivity::class.java))
     }
 
     fun closeKeyboard() {
