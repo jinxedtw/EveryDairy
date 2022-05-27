@@ -14,9 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * 开屏页面，判断是否是第一次进入App
- */
 class SplashActivity : BaseActivity<ViewDataBinding>() {
     override fun init() {
         setContentView(getLayoutId())

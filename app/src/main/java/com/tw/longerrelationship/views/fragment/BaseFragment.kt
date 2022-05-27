@@ -21,9 +21,6 @@ abstract class BaseFragment : Fragment() {
         )
     }
 
-    /**
-     * 依附的Activity
-     */
     lateinit var activity: Activity
 
     override fun onAttach(context: Context) {
@@ -47,9 +44,6 @@ abstract class BaseFragment : Fragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    /**
-     *  Hook方法,将传入的View实例原封不动返回。
-     */
     fun onCreateView(view: View): View {
         logD(TAG, "onCreateView()")
         return view

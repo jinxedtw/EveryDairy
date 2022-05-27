@@ -26,9 +26,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
-/**
- * 封装Toast
- */
 fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT, debugMode:Boolean = false) {
     if (debugMode){
         if (BuildConfig.DEBUG){
@@ -39,9 +36,6 @@ fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT, debugMode:Boo
     }
 }
 
-// StatusBar -------------------------------------------------------------------------------
-
-/** 谷歌原生方式改变状态栏文字颜色 */
 fun setAndroidNativeLightStatusBar(activity: Activity, dark: Boolean) {
     val decor = activity.window.decorView
     if (dark) {
@@ -53,16 +47,12 @@ fun setAndroidNativeLightStatusBar(activity: Activity, dark: Boolean) {
     }
 }
 
-/** 设置状态栏颜色 */
 fun Activity.setStatusBarColor(@ColorInt statusColor: Int) {
     val window = this.window
-    //添加Flag把状态栏设为可绘制模式
     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-    //设置状态栏为透明
     window.statusBarColor = statusColor
 }
 
-/** 隐藏状态栏 */
 fun setStatusBarHidden(window: Window, hidden: Boolean) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
         if (hidden) {
@@ -97,7 +87,6 @@ fun setStatusBarHidden(window: Window, hidden: Boolean) {
     }
 }
 
-/** 获取状态栏高度 */
 fun getStatusBarHeight(context: Context): Int {
     //获取status_bar_height资源的ID
     val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -108,15 +97,6 @@ fun getStatusBarHeight(context: Context): Int {
     return -1
 }
 
-// Bitmap -------------------------------------------------------------------------------------------------
-
-/**
- * 把原位图转换成圆角的位图
- *
- * 我们先创建一个空的 bitmap，让画布与bitmap关联起来，
- * 然后把这个画布变成带有圆角的画布，再把我们的要的图片
- * 放到我们的画布上
- */
 fun bitmapRound(mBitmap: Bitmap, index: Float): Bitmap? {
     val bitmap = Bitmap.createBitmap(mBitmap.width, mBitmap.height, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bitmap)
@@ -139,11 +119,6 @@ fun bitmapRound(mBitmap: Bitmap, index: Float): Bitmap? {
     return bitmap
 }
 
-/**
- * 创建用来存储图片的文件，以时间来命名就不会产生命名冲突
- *
- * @return 创建的图片文件的Uri(APP的外部私有目录)
- */
 @SuppressLint("SimpleDateFormat")
 @Throws(IOException::class)
 fun Context.createImageFile(): File {
@@ -157,19 +132,12 @@ fun Context.createImageFile(): File {
 }
 
 
-/**
- * 高效加载图片方法
- *
- * 先获取到目标图片的宽高,根据所需宽高进行尺寸压缩
- * [calculateInSampleSize] 计算压缩比
- */
 fun decodeSampledBitmapFromUri(
     context: Context,
     uri: Uri,
     reqWidth: Int,
     reqHeight: Int
 ): Bitmap? {
-    // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
     val options = BitmapFactory.Options()
     options.inJustDecodeBounds = true
     BitmapFactory.decodeStream(
@@ -177,9 +145,7 @@ fun decodeSampledBitmapFromUri(
         null,
         options
     )
-    // 调用上面定义的方法计算inSampleSize值
     options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
-    // 使用获取到的inSampleSize值再次解析图片
     options.inJustDecodeBounds = false
     return BitmapFactory.decodeStream(
         context.contentResolver.openInputStream(uri),
@@ -192,22 +158,17 @@ fun calculateInSampleSize(
     options: BitmapFactory.Options,
     reqWidth: Int, reqHeight: Int
 ): Int {
-    // 源图片的高度和宽度
     val height = options.outHeight
     val width = options.outWidth
     var inSampleSize = 1
     if (height > reqHeight || width > reqWidth) {
-        // 计算出实际宽高和目标宽高的比率
         val heightRatio = (height.toFloat() / reqHeight.toFloat()).roundToInt()
         val widthRatio = (width.toFloat() / reqWidth.toFloat()).roundToInt()
-        // 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
-        // 一定都会大于等于目标的宽和高。
         inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
     }
     return inSampleSize
 }
 
-/** 弹出动画 */
 fun slideToUp(view: View) {
     val slide: Animation = TranslateAnimation(
         Animation.RELATIVE_TO_SELF, 0.0f,
@@ -223,9 +184,6 @@ fun slideToUp(view: View) {
     view.startAnimation(slide)
 }
 
-/**
- * 设置ImageView的图片资源,使用统一的主题
- */
 fun ImageView.setDrawable(@DrawableRes res: Int) {
     setImageDrawable(
         ContextCompat.getDrawable(context, res)
@@ -236,10 +194,6 @@ fun TextView.setColorForText(@ColorRes res: Int) {
     setTextColor(ContextCompat.getColor(context, res))
 }
 
-/**
- * 设置textView的字重
- * @param weight 字重  单位 px
- */
 fun TextView.setTextWeight(weight: Float) {
     this.paint.style = Paint.Style.FILL_AND_STROKE
     this.paint.strokeWidth = weight
@@ -255,30 +209,21 @@ fun TextView.setBoldWeight() {
     this.paint.strokeWidth = resources.displayMetrics.density * 0.8f
 }
 
-/**
- * 隐藏view
- */
 fun View?.gone() {
     this?.visibility = View.GONE
 }
 
-/**
- * 显示view
- */
 fun View?.visible() {
     this?.visibility = View.VISIBLE
 }
 
 
-/** 防抖 */
 const val FAST_CLICK_TRIGGER = 300
 
 inline fun View.onDebounceClickListener(crossinline block: () -> Unit) {
-    // 如果不是快速点击，则响应点击逻辑
     setOnClickListener { if (!it.isFastClick()) block() }
 }
 
-// 判断是否快速点击
 fun View.isFastClick(): Boolean {
     val currentTime = System.currentTimeMillis()
     return if (currentTime - triggerTime >= FAST_CLICK_TRIGGER) {
@@ -289,7 +234,6 @@ fun View.isFastClick(): Boolean {
     }
 }
 
-// 记录上次点击时间
 private var View.triggerTime: Long
     get() = tag as? Long ?: 0L
     set(value) {
@@ -297,11 +241,7 @@ private var View.triggerTime: Long
     }
 
 
-/**
- * 设置View圆角
- */
 class RoundedViewOutlineProvider(private val radius: Int = 0) : ViewOutlineProvider() {
-
     override fun getOutline(view: View?, outline: Outline?) {
         val width = view?.width ?: 0
         val height = view?.height ?: 0

@@ -15,9 +15,6 @@ import com.tw.longerrelationship.views.fragment.ToDoFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * [ToDoFragment]点击编辑跳转至该activity
- */
 class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
     private val todoId by lazy {
         intent.getIntExtra(INTENT_TODO_ID, -1)
@@ -102,9 +99,6 @@ class ToDoEditActivity : BaseActivity<ActivityToDoEditBinding>() {
         }
     }
 
-    /**
-     * 设置该待办事项的待办类型
-     */
     private fun setTodoType(type: Int): Boolean {
         when (type) {
             4 -> {

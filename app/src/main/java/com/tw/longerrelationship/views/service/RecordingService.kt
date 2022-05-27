@@ -8,9 +8,6 @@ import android.os.IBinder
 import com.tw.longerrelationship.util.runReportCatching
 import java.util.*
 
-/**
- * 录音的 Service
- */
 class RecordingService : Service() {
     private var mFilePath: String? = null
     private var mRecorder: MediaRecorder? = null

@@ -11,7 +11,6 @@ import com.tw.longerrelationship.views.widgets.ColorsPainDialog
 
 object DairyColorHelper {
 
-    /** 可选颜色 */
     val colorList = arrayListOf(
         R.color.backGroundColor1,
         R.color.backGroundColor2,
@@ -28,10 +27,8 @@ object DairyColorHelper {
     private const val MAIN_COLOR_DEPTH_EXTENT: Int = 25
     private const val ICON_COLOR_DEPTH_EXTENT: Int = 80
 
-    /** 主体颜色 **/
     fun getDairyMainColor(): Int = colorList[DataStoreUtil[ColorsPainDialog.DEFAULT_COLOR_INDEX] ?: 0]
 
-    /** 图片选择器和日记恢复的颜色 */
     fun getImageSelectorAndRecoverColor(@ColorInt color: Int): Int {
         return addColorDepth(color, MAIN_COLOR_DEPTH_EXTENT)
     }
@@ -64,7 +61,6 @@ object DairyColorHelper {
         return ColorUtils.calculateLuminance(color) > 0.6
     }
 
-    /** 将原有颜色的R,G,B值依次减去 例如20 得到一个更深的颜色 */
     private fun addColorDepth(@ColorInt color: Int, extent: Int): Int {
         var red = color and 0xff0000 shr 16
         var green = color and 0x00ff00 shr 8

@@ -57,9 +57,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         initRecyclerView()
     }
 
-    /**
-     * 读取历史搜索记录
-     */
     private fun initFlowLayout() {
         lifecycleScope.launch {
             DataStoreUtil.getData(SEARCH_HISTORY, "").first {
@@ -71,9 +68,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         }
     }
 
-    /**
-     * 解析从datastore中拿到的string历史记录
-     */
     private fun parseStringToText(str: String) {
         var num = 0
         str.split("$$").forEach {
@@ -85,9 +79,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         }
     }
 
-    /**
-     * 动态添加历史记录到flowLayout
-     */
     private fun addViewToFlowLayout(it: String) {
         val itemView = View.inflate(this, R.layout.item_history_text, null)
         itemView.apply {
@@ -231,14 +222,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
         }
     }
 
-    // 构建输入框文字回调流
     private fun EditText.textChangeFlow(): Flow<CharSequence> = callbackFlow {
-        // 构建输入框监听器
         val watcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            // 在文本变化后向流发射数据
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 s?.let {
                     if (it.isNotEmpty()){
@@ -251,8 +239,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
                 }
             }
         }
-        addTextChangedListener(watcher) // 设置输入框监听器
-        awaitClose { removeTextChangedListener(watcher) } // 阻塞以保证流一直运行
+        addTextChangedListener(watcher)
+        awaitClose { removeTextChangedListener(watcher) }
     }
 
     companion object {

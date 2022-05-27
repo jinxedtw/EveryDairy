@@ -89,7 +89,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         mBinding.includeMain.vpMain.apply {
             adapter = FragmentAdapter(fragments, this@HomeActivity)
         }
-        //TabLayout和ViewPager的绑定
         TabLayoutMediator(
             mBinding.includeMain.tabLayout, mBinding.includeMain.vpMain
         ) { tab, position ->
@@ -112,11 +111,9 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // 未选择时触发
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                // 选中之后再次点击即复选时触发
             }
         })
     }
@@ -126,7 +123,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         viewModel.isFold.value = dairyShowFold
         changeHeadImage(accountSex)
 
-        // 设置点击事件
         setOnClickListeners(
             mBinding.includeMain.includeBar.ivMine,
             mBinding.includeMain.includeBar.ivDisplay,
@@ -194,7 +190,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
             }
         }
 
-        // 获取天气
         lifecycleScope.launch(Dispatchers.Main) {
             runReportCatching {
                 val data = viewModel.requestWeather() ?: return@launch
@@ -209,7 +204,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun initDrawer() {
-        //传入侧拉栏数据
         val list = listOf(
             DrawerItemAdapter.DrawerLayoutBean(
                 R.string.love,
@@ -278,9 +272,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         })
     }
 
-    /**
-     * 设置浮动按钮的动画
-     */
     private fun setFlBtAnim() {
         val animatorSet = AnimatorSet()
         val rotationAnim1 =
@@ -298,10 +289,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         viewModel.ifEnterCheckBoxType.value = boolean
     }
 
-    /**
-     * 进入或退出选择模式
-     * @param boolean 是否进入选择模式
-     */
     private fun enterOrExitCheckBoxType(boolean: Boolean) {
         if (boolean) {
             mBinding.includeMain.vpMain.isUserInputEnabled = false              // 禁止左右滑动
@@ -318,11 +305,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    /**
-     * 修改drawer的头部图片
-     * 0 man
-     * 1 woman
-     */
     private fun changeHeadImage(type: Int) {
         when (type) {
             0 -> mBinding.includeDrawer.ivHead.setDrawable(R.drawable.ic_boy)
@@ -330,9 +312,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    /**
-     * 修改日记列表的展示方式的图标
-     */
     private fun changeDairyShowTypeIcon() {
         if (viewModel.isFold.value!!) {
             mBinding.includeMain.includeBar.ivDisplay.setDrawable(R.drawable.ic_unfold)
@@ -341,9 +320,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    /**
-     * 设置选中模式的头部数量
-     */
     fun setSelectNum(it: Int) {
         mBinding.includeMain.includeCheckBar.tvSelectNum.text =
             String.format(getString(R.string.alreadySelect), it)
@@ -368,7 +344,6 @@ class HomeActivity : BaseActivity<ActivityMainBinding>() {
         mBinding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
-    /** 获取剪切板复制、剪切内容 */
     private fun getClipboardContent() {
         runReportCatching {
             val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

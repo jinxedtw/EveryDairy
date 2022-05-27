@@ -11,11 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-/**
- * 数据来源由repository负责
- * ViewModel只负责数据的中转,显示到View上面去
- * [DairyFragment]共用同一个viewModel
- */
 class MainViewModel(
     private val repository: MainRepository
 ) : ViewModel() {

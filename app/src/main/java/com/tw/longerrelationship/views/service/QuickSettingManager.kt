@@ -6,9 +6,6 @@ import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import com.tw.longerrelationship.views.activity.DairyEditActivity
 
-/**
- * 系统工具栏
- */
 @RequiresApi(Build.VERSION_CODES.N)
 class QuickSettingManager : TileService() {
 

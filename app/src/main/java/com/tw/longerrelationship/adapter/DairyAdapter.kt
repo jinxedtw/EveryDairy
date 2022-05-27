@@ -169,7 +169,6 @@ class DairyAdapter(val context: Context, var type: Int = 1, val isHomeActivity: 
         return super.getItem(position)
     }
 
-    /** 设置关键字 */
     fun setDairyKey(key: String) {
         if (dairyKey != key) {
             dairyKey = key

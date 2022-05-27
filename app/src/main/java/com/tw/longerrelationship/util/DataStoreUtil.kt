@@ -42,7 +42,6 @@ object DataStoreUtil {
             it[intPreferencesKey(key)] ?: default
         }
 
-    /** 同步获取Int值 */
     fun readIntData(key: String): Int? {
         var value: Int? = 0
         runBlocking {
@@ -205,7 +204,6 @@ object DataStoreUtil {
         }
     }
 
-    /** 异步的读取数据 */
     @Suppress("UNCHECKED_CAST")
     fun <U> getData(key: String, default: U): Flow<U> {
         return try {
@@ -225,7 +223,6 @@ object DataStoreUtil {
         }
     }
 
-    /** 异步的存放数据 */
     suspend fun <U> putData(key: String, value: U) {
         try {
             when (value) {
@@ -242,7 +239,6 @@ object DataStoreUtil {
         }
     }
 
-    /** 同步读取数据 */
     inline operator fun <reified U> get(key: String): U? {
         return try {
             val data = when (U::class) {
@@ -261,7 +257,6 @@ object DataStoreUtil {
         }
     }
 
-    /** 同步的存放数据 */
     inline operator fun <reified T> set(key: String, value: T) {
         return try {
             when (T::class) {

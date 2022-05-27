@@ -26,9 +26,6 @@ class MyApplication : Application(), LifecycleObserver {
         @SuppressLint("StaticFieldLeak")
         lateinit var appContext: Context
 
-        /**
-         * 获取DataStore实例。
-         */
         val dataStore: DataStore<Preferences> by lazy {
             appContext.dataStore
         }

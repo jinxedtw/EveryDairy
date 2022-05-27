@@ -24,9 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-/**
- * 笔记
- */
 class DairyFragment : BaseFragment() {
     private lateinit var mBinding: FragmentNoteBinding
     private lateinit var dairyAdapter: DairyAdapter
@@ -101,7 +98,6 @@ class DairyFragment : BaseFragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initView() {
-        // TODO 取消下拉刷新,后期可以在这里增加上传至服务器的操作
 //        mBinding.smartRefresh.apply {
 //            isEnableLoadmore = false    //是否启用上拉加载功能
 //            isEnableRefresh = false
@@ -115,7 +111,6 @@ class DairyFragment : BaseFragment() {
         val layoutAnimationController: LayoutAnimationController
         val animation: Animation
 
-        // 为两种模式分别指定不同的入场动画
         if (viewModel.isFold.value!!) {
             mBinding.rvDairy.apply {
                 layoutManager = linearLayoutManager
@@ -137,10 +132,6 @@ class DairyFragment : BaseFragment() {
         mBinding.rvDairy.layoutAnimation = layoutAnimationController
     }
 
-    /**
-     * 进入或退出选择模式
-     * @param boolean 是否进入选择模式
-     */
     private fun enterOrExitCheckBoxType(boolean: Boolean) {
         dairyAdapter.isShowBox = boolean
         dairyAdapter.notifyDataSetChanged()

@@ -35,9 +35,6 @@ class Converters {
     fun datestampToCalendar(value: Long): Calendar =
         Calendar.getInstance().apply { timeInMillis = value }
 
-    /**
-     * List<Date>的转换方式
-     */
     @TypeConverter
     fun stringToDateList(data: String?): List<Date> {
         val list = ArrayList<Date>()
@@ -61,9 +58,6 @@ class Converters {
         return str.toString()
     }
 
-    /**
-     * Uri对象的转换方式
-     */
     @TypeConverter
     fun stringToUriList(data: String?): List<String> {
         val list = ArrayList<String>()

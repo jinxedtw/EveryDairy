@@ -6,11 +6,6 @@ import com.tw.longerrelationship.logic.network.TotalNetwork
 import com.tw.longerrelationship.logic.repository.MainRepository
 import com.tw.longerrelationship.viewmodel.viewModelFactory.*
 
-/**
- * 用于注入各种活动和片段所需的类的静态方法
- *
- * Activity和Fragment通过该类获取到ViewModel工厂
- */
 object InjectorUtils {
 
     private fun getMainRepository() = MainRepository.getInstance(

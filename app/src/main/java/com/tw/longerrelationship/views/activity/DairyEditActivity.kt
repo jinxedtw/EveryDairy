@@ -91,10 +91,8 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     private var isCompleteMode: Boolean = false
     private var isListMode: Boolean = false
 
-    /** 记录相机保存图片的Uri */
     private lateinit var currentUri: Uri
 
-    /** 记录相机保存的图片 */
     private lateinit var pictureFile: File
 
     private val viewModel by lazy {
@@ -127,7 +125,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             }
         }
 
-    /** 初始化相机启动器 */
     private val toCameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) {
             if (it) {
@@ -138,14 +135,10 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             }
         }
 
-    /** 跳转Activity启动器 */
     private val toPictureInfoLauncher = registerForActivityResult(ToPictureInfoResultContract()) {
         onImageDelete(it)
     }
 
-    /**
-     * 下面两个方法用于监听触摸事件和软件盘输入事件,并尝试关闭已经显示的dialog
-     */
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (ev!!.action == MotionEvent.ACTION_DOWN) tryHideDialog()
         return super.dispatchTouchEvent(ev)
@@ -180,7 +173,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     }
 
     private fun observe() {
-        // 通过监控文本状态,改变标题栏图标
         viewModel.isChanged.observe(this) {
             if (isDiaryNotChanged()) {
                 mBinding.appBar.leftIcon.setDrawable(R.drawable.ic_close)
@@ -191,13 +183,11 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             }
         }
 
-        // 监控日记内容,显示字数
         viewModel.dairyContent.observe(this) {
             mBinding.tvTextLength.text =
                 String.format(getString(R.string.text_content_num), it.length)
         }
 
-        // 获取日记成功时的回调,这里回调代表是编辑日记状态
         viewModel.dairyItem.observe(this) {
             mBinding.viewModel = viewModel
             if (it.content != null) {
@@ -221,9 +211,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         }
     }
 
-    /**
-     * 初始化View,监控ViewModel,设置点击事件
-     */
     @SuppressLint("SetTextI18n")
     private fun initView() {
         pictureSelectAdapter = PictureSelectAdapter(viewModel.pictureList, this, imgRipperDrawable).apply {
@@ -265,12 +252,10 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                     mBinding.etContent.text = mBinding.etContent.text.append(TimeUtils.date2String(Date(), "[yyyy-MM-dd HH:mm]"))
                     mBinding.etContent.setSelection(mBinding.etContent.text.length)
                 }
-                // 添加时间
                 mBinding.ivClock -> {
                     mBinding.etContent.text = mBinding.etContent.text.append(TimeUtils.date2String(Date(), "[HH:mm]"))
                     mBinding.etContent.setSelection(mBinding.etContent.text.length)
                 }
-                // 获得位置
                 mBinding.ivLocation -> {
                     if (mBinding.ivLocationSmall.visibility == View.VISIBLE) {
                         mBinding.ivLocationSmall.gone()
@@ -285,11 +270,9 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                     }
 
                 }
-                // 设置心情
                 mBinding.ivMood -> {
                     moodDialog.show()
                 }
-                // 设置天气
                 mBinding.ivWeather -> {
                     weatherDialog.show()
                 }
@@ -348,7 +331,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         }
     }
 
-    /** 删除了选中的图片 */
     private fun onImageDelete(index: Int) {
 
         if (index != -1) {
@@ -367,9 +349,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         }
     }
 
-    /**
-     * 配置定位信息
-     */
     private fun initLocation() {
         locationListener = object : BDAbstractLocationListener() {
             override fun onReceiveLocation(location: BDLocation?) {
@@ -388,9 +367,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         locationService.start()
     }
 
-    /**
-     * 初始化监听输入框
-     */
     private fun initEditText() {
         mBinding.etContent.doOnTextChanged { text, _, _, _ ->
             if (!TextUtils.isEmpty(text))
@@ -404,7 +380,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         return R.layout.activity_dairy_edit
     }
 
-    /** 监听软键盘状态 */
     private fun addOnSoftKeyBoardVisibleListener() {
         val decorView: View = this.window.decorView
         decorView.viewTreeObserver.addOnGlobalLayoutListener {
@@ -424,7 +399,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         }
     }
 
-    /** 保存日记 */
     fun saveDairy() {
         lifecycleScope.launch(Dispatchers.IO) {
             val result = viewModel.saveDairy(mBinding.appBar.getTitle())
@@ -530,10 +504,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         stopLocationService()
     }
 
-    /**
-     * 判断是否修改了日记
-     * 标题,图片,文本内容
-     */
     private fun isDiaryNotChanged(): Boolean =
         !viewModel.isChanged.value!!
                 && TextUtils.isEmpty(viewModel.dairyContent.value)
@@ -563,9 +533,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         super.closeKeyboard(mBinding.root.windowToken)
     }
 
-    /**
-     * 调用系统录音
-     */
     private fun openRecording() {
         val intent = Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION)
         ActivityCompat.startActivityForResult(this, intent, 3, null)
@@ -585,9 +552,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         toPictureInfoLauncher.launch(bundle)
     }
 
-    /**
-     * 监听回退键,当正在编辑时弹出提示框
-     */
     override fun onBackPressed() {
         if (isDiaryNotChanged()) {
             super.onBackPressed()
@@ -605,12 +569,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         }
     }
 
-    /**
-     * 设置日记编辑的背景主题
-     * 判断颜色是否是亮色,设置对应主题字体
-     *
-     * todo 自定义背景功能
-     */
     private fun setMainColor(@ColorRes colorRes: Int) {
         val mainColor: Int = ContextCompat.getColor(this, colorRes)
         val recoverAndImageColor = ColorStateList.valueOf(DairyColorHelper.getImageSelectorAndRecoverColor(mainColor))
@@ -618,30 +576,23 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         val editContentColor = DairyColorHelper.getEditContentColor(mainColor)
         iconColor = DairyColorHelper.getIconColor(mainColor)
 
-        // 整体背景颜色
         mBinding.clEditDairy.setBackgroundResource(colorRes)
-        // 状态栏颜色
         setStatusBarColor(mainColor)
         if (DairyColorHelper.isDarkTheme(mainColor)) {
-            // 亮色
             setAndroidNativeLightStatusBar(this, true)
         } else {
-            // 暗色
             setAndroidNativeLightStatusBar(this, false)
         }
 
-        // 设置选择图片背景
         val imgShape = GradientDrawable()
         imgShape.color = recoverAndImageColor
         imgShape.cornerRadius = dp2px(5f)
         imgRipperDrawable = RippleDrawable(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.DairyEditHintText)), imgShape, null)
 
-        // 设置日记恢复背景
         val recoverShape = GradientDrawable()
         recoverShape.color = recoverAndImageColor
         mBinding.clRecover.background = RippleDrawable(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.DairyEditHintText)), recoverShape, null)
 
-        // 设置字体颜色
         textColor.apply {
             mBinding.tvLocationInfo.setTextColor(this)
             mBinding.tvTextLength.setTextColor(this)
@@ -654,7 +605,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         mBinding.etContent.setHintTextColor(editContentColor)
     }
 
-    /** 把照片添加到图库*/
     private fun galleryAddPic() {
         // 保存图片
         MediaStore.Images.Media.insertImage(contentResolver, pictureFile.toString(), "title", "description")
@@ -662,18 +612,11 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         MediaScannerConnection.scanFile(baseContext, arrayOf(pictureFile.toString()), null, null)
     }
 
-    /** 停止定位服务 */
     private fun stopLocationService() {
         locationService.unregisterListener(locationListener)
         locationService.stop()
     }
 
-
-    /**
-     * 跳转到[PictureInfoActivity]  协议类
-     * 传入参数  ArrayList<Bitmap>  图片列表
-     * 返回参数  Int                标识哪一张图片被删除
-     */
     inner class ToPictureInfoResultContract : ActivityResultContract<Bundle, Int>() {
         override fun createIntent(context: Context, input: Bundle): Intent {
             return Intent(context, PictureInfoActivity::class.java).apply {
@@ -687,11 +630,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         }
     }
 
-    /**
-     * 跳转到系统相册
-     * 传入参数  ArrayList<Bitmap>  图片列表
-     * 返回参数  Int                标识哪一张图片被删除
-     */
     inner class ToSystemAlbumResultContract : ActivityResultContract<Unit, Uri?>() {
         override fun createIntent(context: Context, input: Unit?): Intent {
             val intent = Intent(

@@ -6,8 +6,4 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.tw.longerrelationship.MyApplication
 
-/**
- * 获取DataStore实例
- */
-
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(MyApplication.appContext.packageName + "_preferences")

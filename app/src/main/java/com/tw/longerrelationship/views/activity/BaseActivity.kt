@@ -29,14 +29,8 @@ import com.tw.longerrelationship.util.setDrawable
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
-    /**
-     * 日志输出标志
-     */
     protected val tag: String = this.javaClass.simpleName
 
-    /**
-     * 根布局
-     */
     protected var root: View? = null
     protected lateinit var mBinding: T
     private lateinit var mAppBar: ConstraintLayout
@@ -53,19 +47,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         init()
     }
 
-    /**
-     * 初始化Binding
-     * 有普通初始化[initBinding]和带appBar两种初始化方式 [initBindingWithAppBar]
-     */
     fun initBinding() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         findViewById<ImageView>(R.id.iv_leave)?.setOnClickListener { finishAndTryCloseSoftKeyboard() }
         root = mBinding.root
     }
 
-    /**
-     * 设置有统一appBar样式的布局
-     */
     fun initBindingWithAppBar(title: String) {
         setContentView(R.layout.activity_base)
         mAppBar = findViewById(R.id.cl_app_bar)
@@ -95,12 +82,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    /**
-     * 自定义appbar右边布局
-     * 按照装入顺着从右到左摆放在appbar中
-     *
-     * todo 该方法有问题，会导致views无法显示，怀疑   API constraintSet.applyTo(mAppBar)
-     */
     fun setAppBarRightLayout(vararg views: View) {
         var lastViewId = 0
         val constraintSet = ConstraintSet()
@@ -205,9 +186,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         logD(tag, "onDestroy()")
     }
 
-    /**
-     * 判断软键盘是否在显示
-     */
     fun isSoftShowing(): Boolean {
         //获取当前屏幕内容的高度
         val screenHeight = window.decorView.height
@@ -217,16 +195,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         return screenHeight - rect.bottom != 0
     }
 
-    /**
-     * 关闭软键盘
-     */
     fun closeKeyboard(windowToken: IBinder) {
         if (isSoftShowing()) {
             (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(windowToken, 0)
         }
     }
 
-    /** 显示键盘 */
     fun showKeyboard(view:View) {
         // 界面未构建完成时无法弹出键盘,需要开个延时
         Handler(this.mainLooper).postDelayed({
@@ -235,15 +209,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         }, 200)
     }
 
-    /**
-     * 子类可以通过重写该方法进行一些初始化操作
-     */
     abstract fun init()
 
-
-    /**
-     * 所有的子类必须重写该方法获取到布局的Id值
-     */
     abstract fun getLayoutId(): Int
-
 }

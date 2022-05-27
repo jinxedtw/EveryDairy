@@ -12,7 +12,6 @@ import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
 
-/** 剪切板链接弹窗 */
 class ClipPopup(context: Context) : BasePopupWindow(context) {
 
     var mTvLink: TextView? = null

@@ -16,9 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-/**
- * 待办事项列表
- */
 class ToDoFragment : BaseFragment() {
     private lateinit var mBinding: FragmentTodoBinding
     private lateinit var mActivity: HomeActivity

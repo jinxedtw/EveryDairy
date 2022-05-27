@@ -5,24 +5,12 @@ import android.graphics.Canvas
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.WeekView
 
-/**
- * 多彩周视图
- */
 class ColorfulWeekView(context: Context?) : WeekView(context) {
     private var mRadius = 0
     override fun onPreviewHook() {
         mRadius = mItemWidth.coerceAtMost(mItemHeight) / 5 * 2
     }
 
-    /**
-     * 如果需要点击Scheme没有效果，则return true
-     *
-     * @param canvas    canvas
-     * @param calendar  日历日历calendar
-     * @param x         日历Card x起点坐标
-     * @param hasScheme hasScheme 非标记的日期
-     * @return false 则不绘制onDrawScheme，因为这里背景色是互斥的
-     */
     override fun onDrawSelected(canvas: Canvas, calendar: Calendar, x: Int, hasScheme: Boolean): Boolean {
         val cx = x + mItemWidth / 2
         val cy = mItemHeight / 2

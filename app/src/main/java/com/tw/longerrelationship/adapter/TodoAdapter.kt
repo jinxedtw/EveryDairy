@@ -23,8 +23,6 @@ import com.tw.longerrelationship.views.activity.HomeActivity
 import com.tw.longerrelationship.views.activity.ToDoEditActivity
 
 
-// TODO: 2021/7/15 只展示5个Item数据的问题
-// TODO: 2021/7/25 长按删除待办事项
 class TodoAdapter(val context: Context) :
     PagingDataAdapter<ToDoItem, TodoAdapter.ViewHolder>(COMPARATOR) {
 

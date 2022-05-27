@@ -9,9 +9,6 @@ private const val INFO = 3
 private const val WARN = 4
 private const val ERROR = 5
 
-/**
- *  如果不是调试模式，就只会打印warn和error级别的日志
- */
 private val level = if (BuildConfig.DEBUG) VERBOSE else WARN
 
 fun logV(tag: String, msg: String?) {

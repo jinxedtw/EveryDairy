@@ -11,9 +11,6 @@ import com.tw.longerrelationship.logic.network.TotalNetwork
 import kotlinx.coroutines.flow.Flow
 
 
-/**
- * repository层,持有dao对象，实际上的进行网络请求和数据库操作
- */
 class MainRepository private constructor(
     private val dairyDao: DairyDao,
     private val todoDao: ToDoDao,
@@ -30,9 +27,6 @@ class MainRepository private constructor(
         if (dairyItem.id == null) dairyDao.insertDairy(dairyItem)
         else dairyDao.updateDairy(dairyItem)
 
-    /**
-     * 查找表获得所有日记
-     */
     fun getAllDairyData(): Flow<PagingData<DairyItem>> {
         return Pager(
             config = PagingConfig(PAGE_SIZE, maxSize = 150),
@@ -40,9 +34,6 @@ class MainRepository private constructor(
         ).flow
     }
 
-    /**
-     * 通过关键词搜索日记
-     */
     fun getKeyDairyData(key: String): Flow<PagingData<DairyItem>> {
         return Pager(
             config = PagingConfig(PAGE_SIZE, maxSize = 150),
@@ -50,13 +41,10 @@ class MainRepository private constructor(
         ).flow
     }
 
-    /** 获取本地日记中所有的图片 */
     suspend fun getPictures() = dairyDao.getALlPictures()
 
-    /** 获取本地日记中所有的日记保存的时间 */
     suspend fun getAllDate() = dairyDao.getALlDiaryTime()
 
-    /** 获取特点日期的日记 */
     fun getDiaryByDate(day: Long): Flow<PagingData<DairyItem>> {
         return Pager(
             config = PagingConfig(PAGE_SIZE, maxSize = 150),
@@ -64,7 +52,6 @@ class MainRepository private constructor(
         ).flow
     }
 
-    // ------------------------------待办相关接口
     fun getNotCompleteToDoData(): Flow<PagingData<ToDoItem>> {
         return Pager(
             config = PagingConfig(PAGE_SIZE, maxSize = 150),
@@ -88,7 +75,6 @@ class MainRepository private constructor(
         else todoDao.updateTodo(toDoItem)
 
 
-    // ------------------------------网络请求
     suspend fun requestWeather() = netWorker.getNowWeather("ip")
 
 

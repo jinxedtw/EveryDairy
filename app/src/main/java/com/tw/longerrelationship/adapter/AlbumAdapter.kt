@@ -35,12 +35,10 @@ class AlbumAdapter(val context: Context, var data: List<String>) : RecyclerView.
             .centerCrop()
             .into(holder.mPhoto)
 
-        // 点击复选框
         holder.mCheckBox.setOnClickListener {
             onCheckBoxClick(data[position],holder.mCheckBox.isChecked)
         }
 
-        // 点击图片
         holder.itemView.setOnClickListener {
             onItemClick(data[position], holder.mCheckBox)
         }

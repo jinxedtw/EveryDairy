@@ -16,13 +16,6 @@ object CipherUtil {
 
     private const val SECRET_STRING = "阿巴阿巴阿巴嘟嘟嘟啦啦啦啦"
 
-    /**
-     * @Description AES算法加密明文
-     * @param data 明文
-     * @param key 密钥，长度16
-     * @param iv 偏移量，长度16
-     * @return 密文
-     */
     @Throws(Exception::class)
     fun encryptAES(data: String, key: String): String? {
         return try {
@@ -46,13 +39,6 @@ object CipherUtil {
         }
     }
 
-    /**
-     * @Description AES算法解密密文
-     * @param data 密文
-     * @param key 密钥，长度16
-     * @param iv 偏移量，长度16
-     * @return 明文
-     */
     @Throws(Exception::class)
     fun decryptAES(data: String?, key: String): String? {
         return try {
@@ -70,29 +56,14 @@ object CipherUtil {
         }
     }
 
-    /**
-     * 编码
-     * @param byteArray
-     * @return
-     */
     private fun base64Encode(byteArray: ByteArray?): String {
         return String(Base64.encode(byteArray, Base64.DEFAULT))
     }
 
-    /**
-     * 解码
-     * @param base64EncodedString
-     * @return
-     */
     private fun base64Decode(base64EncodedString: String?): ByteArray {
         return Base64.decode(base64EncodedString, Base64.DEFAULT)
     }
 
-    /**
-     * 获得AES 16位的加密Key值
-     * 对密码进行base64编码，取前16位当作key
-     * @param password 密码
-     */
     fun getAESKey(password: String): String {
         var key = base64Encode(password.toByteArray())
         while (key.length < 16) {

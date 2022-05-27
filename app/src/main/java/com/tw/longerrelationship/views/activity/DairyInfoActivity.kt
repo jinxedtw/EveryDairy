@@ -38,10 +38,6 @@ import razerdp.basepopup.QuickPopupConfig
 import java.util.*
 
 
-/**
- * 日记详情界面
- * 从[HomeActivity]点击单项日记跳转，点击编辑跳转到[DairyEditActivity]
- */
 class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
     private var dairyId = -1
     private val layoutManager by lazy {
@@ -58,9 +54,6 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
         ).get(DairyInfoViewModel::class.java)
     }
 
-    /**
-     * 跳转Activity启动器
-     */
     private val toPictureInfoLauncher = registerForActivityResult(ToPictureInfoResultContract()) {}
 
     override fun init() {
@@ -166,9 +159,6 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
 
     override fun getLayoutId(): Int = R.layout.activity_dairy_info
 
-    /**
-     * 显示弹出菜单栏
-     */
     private fun showPopupMenu() {
         val location = IntArray(2)
         mBinding.ivMore.getLocationOnScreen(location)
@@ -194,7 +184,6 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                         ToastWithImage.showToast("切换成功", true)
                     }, true)
                     .withClick(R.id.tv_share, {
-                        // TODO: 2021/11/4 后面做成分享文本和图片
                         shareText(mBinding.tvContent.text.toString())
                     }, true)
                     .withClick(R.id.tv_delete, {
@@ -238,9 +227,6 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
         toPictureInfoLauncher.launch(bundle)
     }
 
-    /**
-     * 携带日记Id，跳转到[DairyEditActivity]
-     */
     private fun jumpToDairyEditActivity() {
         val intent = Intent(this, DairyEditActivity::class.java)
         intent.putExtra(INTENT_DAIRY_ID, dairyId)
@@ -248,11 +234,6 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
         startActivity(intent)
     }
 
-    /**
-     * 跳转到[PictureInfoActivity]  协议类
-     * 传入参数  ArrayList<Bitmap>  图片列表
-     * 返回参数  Unit
-     */
     inner class ToPictureInfoResultContract : ActivityResultContract<Bundle, Unit>() {
         override fun createIntent(context: Context, input: Bundle): Intent {
             return Intent(context, PictureInfoActivity::class.java).apply {

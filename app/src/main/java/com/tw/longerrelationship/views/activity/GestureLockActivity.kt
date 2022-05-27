@@ -155,9 +155,6 @@ class GestureLockActivity : BaseActivity<ActivityGestureBinding>() {
         DataStoreUtil[KEY_GESTURE_LOCK_PATH] = sb.toString()
     }
 
-    /**
-     * 左右晃动动效
-     */
     private fun setAnimator(vararg v: View?) {
         val animators = mutableListOf<Animator>()
         v.forEach {

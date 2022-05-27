@@ -17,10 +17,6 @@ import com.tw.longerrelationship.util.getScreenWidth
 import com.tw.longerrelationship.views.activity.DairyInfoActivity
 
 
-/**
- *  日记详情界面展示图片的适配器
- *  @see[DairyInfoActivity]
- */
 class PictureShowAdapter(
     private val pictureList: List<String>,
     private val context: Context

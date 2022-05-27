@@ -20,9 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-/**
- * [DairyEditActivity]修改背景弹框
- */
 class ColorsPainDialog(val activity: DairyEditActivity, val colorSelectCallBack: (Int) -> Unit) : DialogFragment() {
     private lateinit var mView: View
     private lateinit var mRecyclerView: RecyclerView

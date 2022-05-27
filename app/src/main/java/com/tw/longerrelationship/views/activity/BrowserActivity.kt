@@ -12,16 +12,11 @@ import com.tw.longerrelationship.help.WebViewInitHelper
 import com.tw.longerrelationship.util.setOnClickListeners
 import com.tw.longerrelationship.views.widgets.ToastWithImage
 
-/** 网页跳转 */
 class BrowserActivity : BaseActivity<ActivityBrowserBinding>() {
     companion object {
         private const val EXTRA_BROWSER_TITLE = "browser_title"
         private const val EXTRA_BROWSER_URL = "browser_url"
 
-        /**
-         *  @param title 标题
-         *  @param url 网站地址
-         */
         fun openBrowserActivity(activity: Activity, title: String, url: String) {
             runCatching {
                 val intent = Intent(activity, BrowserActivity::class.java).apply {

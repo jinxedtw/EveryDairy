@@ -24,7 +24,6 @@ public class LocationService {
         
     }
 
-    // 注册
     public boolean registerListener(BDAbstractLocationListener listener) {
         boolean isSuccess = false;
         if (listener != null) {
@@ -35,14 +34,12 @@ public class LocationService {
         return isSuccess;
     }
 
-    // 注销
     public void unregisterListener(BDAbstractLocationListener listener) {
         if (listener != null) {
             client.unRegisterLocationListener(listener);
         }
     }
 
-    //设置配置
     public boolean setLocationOption(LocationClientOption option) {
         boolean isSuccess = false;
         if (option != null) {
@@ -54,7 +51,6 @@ public class LocationService {
         return isSuccess;
     }
 
-    //默认Option设置
     public LocationClientOption getDefaultLocationClientOption() {
         if (mOption == null) {
             mOption = new LocationClientOption();
@@ -77,7 +73,6 @@ public class LocationService {
     }
 
 
-    //自定义Option设置
     public LocationClientOption getOption() {
         if (DIYoption == null) {
             DIYoption = new LocationClientOption();

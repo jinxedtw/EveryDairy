@@ -20,7 +20,6 @@ class DoodleViewActivity : BaseActivity<ActivityDoodleViewBinding>() {
         }
     }
 
-
     private fun showPopupMenu() {
         val popupMenu = PopupMenu(this, mBinding.ivMore)
         popupMenu.inflate(R.menu.menu_doodle_view)
@@ -37,9 +36,6 @@ class DoodleViewActivity : BaseActivity<ActivityDoodleViewBinding>() {
         popupMenu.show()
     }
 
-    /**
-     * 显示选择画笔颜色的对话框
-     */
     private fun showColorDialog() {
         AlertDialog.Builder(this)
             .setTitle("选择颜色")
@@ -56,10 +52,6 @@ class DoodleViewActivity : BaseActivity<ActivityDoodleViewBinding>() {
             }.create().show()
     }
 
-
-    /**
-     * 显示选择画笔粗细的对话框
-     */
     private fun showSizeDialog() {
         AlertDialog.Builder(this)
             .setTitle("选择画笔粗细")
@@ -76,9 +68,6 @@ class DoodleViewActivity : BaseActivity<ActivityDoodleViewBinding>() {
             }.create().show()
     }
 
-    /**
-     * 显示选择画笔形状的对话框
-     */
     private fun showShapeDialog() {
         AlertDialog.Builder(this)
             .setTitle("选择形状")

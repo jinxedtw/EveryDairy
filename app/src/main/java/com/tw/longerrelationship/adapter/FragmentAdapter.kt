@@ -6,9 +6,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.tw.longerrelationship.views.activity.HomeActivity
 import com.tw.longerrelationship.views.fragment.BaseFragment
 
-/**
- * [HomeActivity]的viewPager适配器
- */
 class FragmentAdapter(private val mFragments: List<BaseFragment>, fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 

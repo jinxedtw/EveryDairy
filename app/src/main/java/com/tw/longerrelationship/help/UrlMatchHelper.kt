@@ -16,10 +16,6 @@ object UrlMatchHelper {
     const val URL_REGEX = "[a-zA-z]+://[^\\s]*"
 
 
-    /**
-     * @param rawString 需要匹配的字符串
-     * @param onClickCallBack 匹配子串的点击回调
-     */
     inline fun setMatchURL(rawString: String, crossinline onClickCallBack: (String) -> Unit): SpannableString {
         val spannableString = SpannableString(rawString)
 

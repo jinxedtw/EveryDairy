@@ -7,18 +7,11 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-/**
- * 网络服务类,配置okhttp拦截器和Retrofit相关参数
- */
 object ServiceCreator {
     private const val BASE_URL = "https://api.seniverse.com/v3/weather/"
 
-    /** 天气Api私钥 */
     const val weatherApiSecreteKey = "SI3QcOEUfSKmdZqVt"
 
-    /**
-     * 配置OkhttpClient,添加拦截器
-     */
     var httpClient: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(LoggingInterceptor())
         .build()
@@ -26,13 +19,9 @@ object ServiceCreator {
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(httpClient)
-        // 这里的Gson转化器作用s
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    /**
-     * 创建动态代理类对象
-     */
     fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 
 

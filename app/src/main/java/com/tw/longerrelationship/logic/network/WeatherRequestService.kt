@@ -5,11 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-/**
- * 包含请求的一些接口
- *
- * @Path 作用是把参数填到Url里面去
- */
 interface WeatherRequestService {
     @GET("now.json")
     suspend fun requestNowWeather(

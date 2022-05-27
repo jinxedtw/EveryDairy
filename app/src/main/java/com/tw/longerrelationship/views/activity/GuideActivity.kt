@@ -22,9 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-/**
- * 向导页面
- */
 class GuideActivity : AppCompatActivity() {
     lateinit var icon: ImageView
     lateinit var button: Button

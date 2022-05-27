@@ -88,7 +88,6 @@ class FavoritesAddActivity : BaseActivity<ActivityFavoritesAddBinding>() {
         }
     }
 
-    /** 监听软键盘状态 */
     private fun addOnSoftKeyBoardVisibleListener() {
         val decorView: View = this.window.decorView
         decorView.viewTreeObserver.addOnGlobalLayoutListener {

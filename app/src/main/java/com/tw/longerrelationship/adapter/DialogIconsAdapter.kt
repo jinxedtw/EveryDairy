@@ -9,9 +9,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.tw.longerrelationship.R
 
-/**
- * 传入Icon的图标list和点击回调
- */
 class DialogIconsAdapter
     (
     private val iconsList: List<Int>,

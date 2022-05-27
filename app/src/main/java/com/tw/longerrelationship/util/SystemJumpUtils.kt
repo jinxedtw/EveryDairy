@@ -25,7 +25,6 @@ import java.lang.Exception
 import java.util.*
 
 
-/** 跳转到app的程序信息 */
 fun toSelfSetting() {
     val mIntent = Intent()
     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -34,7 +33,6 @@ fun toSelfSetting() {
     appContext.startActivity(mIntent)
 }
 
-/** 复制文本 */
 fun Context.copyText(data: String?) {
     if (data == null) {
         return
@@ -45,7 +43,6 @@ fun Context.copyText(data: String?) {
     ToastWithImage.showToast("Copied", true)
 }
 
-/** 打电话 */
 fun Context.callPhone(tel: String) {
     if (PhoneNumberUtils.isGlobalPhoneNumber(tel)) {
         val intent = Intent(Intent.ACTION_DIAL)
@@ -57,7 +54,6 @@ fun Context.callPhone(tel: String) {
     }
 }
 
-/** 发送邮件 */
 fun Context.sendEmail(address: String) {
     val uri = Uri.parse("mailto:${address}")
     val email = arrayOf(address) // 需要注意，email必须以数组形式传入
@@ -67,7 +63,6 @@ fun Context.sendEmail(address: String) {
     startActivity(Intent.createChooser(intent, "请选择邮件类应用"))
 }
 
-/** 保存图片到相册 */
 fun Context.savePicToAlbum(bitmap: Bitmap?){
     if (bitmap == null){
         ToastWithImage.showToast("保存失败",false)
@@ -107,7 +102,6 @@ fun Context.savePicToAlbum(bitmap: Bitmap?){
     }
 }
 
-/** 发送短信 */
 fun Context.sendSMS(phoneNumber: String, message: String?) {
     if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumber)) {
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:$phoneNumber"))
@@ -118,12 +112,10 @@ fun Context.sendSMS(phoneNumber: String, message: String?) {
     }
 }
 
-/** 打开wifi界面 */
 fun Context.openWifiSetting() {
     startActivity(Intent(ACTION_WIFI_SETTINGS))
 }
 
-/** 打开系统日历 */
 fun Context.openCalendar(
     title: String, description: String, location: String,
     startTime: Long, endTime: Long,
@@ -138,7 +130,6 @@ fun Context.openCalendar(
     startActivity(intent)
 }
 
-/** 打开联系人 */
 fun Context.openContact(
     name: String,
     title: String,
@@ -178,7 +169,6 @@ fun Context.openContact(
     startActivity(insertIntent)
 }
 
-/** 跳转浏览器 */
 fun Activity.openBrowser(url: String) {
     var mUrl: String = url
     if (url.startsWith("www.")) {
@@ -188,7 +178,6 @@ fun Activity.openBrowser(url: String) {
     openIntent(action = Intent.ACTION_VIEW, uri = Uri.parse(mUrl))
 }
 
-/** 分享图片 */
 fun Activity.shareImage(bitmap: Bitmap?) {
     if (bitmap == null) {
         ToastWithImage.showToast("分享失败", false)
@@ -228,7 +217,6 @@ fun Activity.shareImage(bitmap: Bitmap?) {
 }
 
 
-/** 分享扫描结果 */
 fun Activity.shareText(text: String) {
     val intent = Intent()
     intent.action = Intent.ACTION_SEND

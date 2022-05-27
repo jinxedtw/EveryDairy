@@ -125,9 +125,6 @@ class CalendarActivity : BaseActivity<ActivityCalendarBinding>(), OnCalendarSele
 
     override fun getLayoutId(): Int = R.layout.activity_calendar
 
-    /**
-     * 获取选择日期的日记
-     */
     private fun getSelectDayDiary(day: Long) {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.getDiaryByDate(day).collect {

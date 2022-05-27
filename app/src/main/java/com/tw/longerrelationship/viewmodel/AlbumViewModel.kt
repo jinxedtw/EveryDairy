@@ -20,7 +20,6 @@ class AlbumViewModel(val repository: MainRepository) : ViewModel() {
         }
     }
 
-    /** 时间格式 eg: 2022.1.13.周四 */
     private fun formatDate(date: Date): String {
         val calendar = Calendar.getInstance().apply { time = date }
         return "${calendar.get(Calendar.YEAR)}.${calendar.get(Calendar.MONTH) + 1}.${calendar.get(Calendar.DAY_OF_MONTH)}.${

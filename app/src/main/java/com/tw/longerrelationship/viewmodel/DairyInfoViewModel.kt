@@ -9,9 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
-/**
- * use in [DairyInfoActivity]
- */
 class DairyInfoViewModel(private val repository: MainRepository, private val dairyId: Int) :
     ViewModel() {
     lateinit var dairyItem:DairyItem                // 缓存当前的日记实体

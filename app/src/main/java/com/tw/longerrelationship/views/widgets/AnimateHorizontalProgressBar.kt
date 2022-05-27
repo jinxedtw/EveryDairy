@@ -65,11 +65,6 @@ class AnimateHorizontalProgressBar @JvmOverloads constructor(context: Context?, 
         mMaxAnimator!!.duration = DEFAULT_DURATION
     }
 
-    /**
-     * Animation Progress
-     *
-     * @param progress animationEnd progress point
-     */
     fun setProgressWithAnim(progress: Int) {
         if (inAnimating) {
             Log.w(TAG, "now is animating. cant override animator")
@@ -99,11 +94,6 @@ class AnimateHorizontalProgressBar @JvmOverloads constructor(context: Context?, 
         }
     }
 
-    /**
-     * Animation Progress
-     *
-     * @param max animationEnd max point
-     */
     fun setMaxWithAnim(max: Int) {
         if (inAnimating) {
             Log.w(TAG, "now is animating. cant override animator")
@@ -116,9 +106,6 @@ class AnimateHorizontalProgressBar @JvmOverloads constructor(context: Context?, 
         mMaxAnimator!!.start()
     }
 
-    /**
-     * cancelAnimation
-     */
     fun cancelAnimation() {
         if (!inAnimating) {
             Log.w(TAG, "now is no animating.")
@@ -161,7 +148,6 @@ class AnimateHorizontalProgressBar @JvmOverloads constructor(context: Context?, 
         mAnimateProgressListener = animateProgressListener
     }
 
-    // interface progress animationListener
     interface AnimateProgressListener {
         fun onAnimationStart(progress: Int, max: Int)
         fun onAnimationEnd(progress: Int, max: Int)
@@ -185,7 +171,6 @@ class AnimateHorizontalProgressBar @JvmOverloads constructor(context: Context?, 
     init {
         setUpAnimator()
 
-        // progress color set
         val ta = getContext().obtainStyledAttributes(attrs, R.styleable.AnimateHorizontalProgressBar)
         val progressColor = ta.getColor(R.styleable.AnimateHorizontalProgressBar_ahp_progressColor, DEFAULT_PROGRESS_COLOR)
         val backgroundColor = ta.getColor(R.styleable.AnimateHorizontalProgressBar_ahp_backgroundColor, DEFAULT_PROGRESS_BACKGROUND_COLOR)

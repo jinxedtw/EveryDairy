@@ -11,9 +11,6 @@ import com.tw.longerrelationship.logic.model.DairyItem
 import com.tw.longerrelationship.logic.model.ToDoItem
 import com.tw.longerrelationship.util.Constants.DATABASE_NAME
 
-/**
- * App数据库
- */
 @Database(
     entities = [DairyItem::class, ToDoItem::class],
     version = 1,

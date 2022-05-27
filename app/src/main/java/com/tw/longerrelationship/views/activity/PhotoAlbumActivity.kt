@@ -41,7 +41,6 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
     private val mSelectedImage = arrayListOf<String>()              // 已经选中的图片
     private val mSelectedNum by lazy { intent.getIntExtra(INTENT_ALBUM_SELECT_NUM, 0) }
 
-    /** 跳转图片详情页面 [AlbumImageInfoActivity] */
     private val toAlbumImageInfoLauncher = registerForActivityResult(ToAlbumImageInfoResultContract()) {}
 
     override fun init() {
@@ -85,7 +84,6 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
         }
     }
 
-    /** 设置适配器数据 **/
     private fun setAdapterData() {
         if (mImageFolderMap.isEmpty()) {
             showToast("没有查询到图片")
@@ -133,7 +131,6 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
         }
     }
 
-    //获取图片的路径和父路径 及 图片size
     private fun getImages() {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             showToast("检测到没有内存卡")
@@ -171,7 +168,6 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
                     }
                     cursor?.close()
                 }
-                // 更新操作
                 setAdapterData()
             }
         }
@@ -211,11 +207,6 @@ class PhotoAlbumActivity : BaseActivity<ActivityPhotoAlbumBinding>() {
         ObjectAnimator.ofFloat(mBinding.ivDropDown, "rotation", 180f, 0f).start()
     }
 
-    /**
-     * 当有新的图片被选中或者取消选中时调用此方法
-     * @param isChecked 是否被选中
-     * @param url 操作的图片地址
-     */
     private fun onCheckNumChanged(isChecked: Boolean, url: String) {
         if (isChecked && mSelectedImage.size + mSelectedNum >= 9) {
             showToast("最多选中9张图片")

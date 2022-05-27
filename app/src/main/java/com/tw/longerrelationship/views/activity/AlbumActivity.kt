@@ -11,7 +11,6 @@ import com.tw.longerrelationship.viewmodel.AlbumViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/** 图库 */
 class AlbumActivity : BaseActivity<ActivityAlbumBinding>() {
 
     private lateinit var pictureItemAdapter: PictureItemAdapter

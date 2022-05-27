@@ -7,9 +7,6 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-/**
- * 通用Adapter,支持添加头部和尾部布局
- */
 abstract class BaseViewAdapter<T>(
     @LayoutRes private val layoutId: Int,
     private val rawData: List<T> = emptyList(),
@@ -72,7 +69,6 @@ abstract class BaseViewAdapter<T>(
         }
     }
 
-    /** 只支持绑定BODY_LAYOUT的布局内容 */
     abstract fun bindViewHolder(holder: ViewHolder, position: Int, item: T)
 
     override fun getItemCount(): Int {
@@ -102,12 +98,10 @@ abstract class BaseViewAdapter<T>(
 
     // 重写下面方法进行扩展-------------------------------------------------------------------------------- start
 
-    /** 重写这两个方法实现定制化头部和尾部 */
     open fun bindHeadViewHolder(holder: ViewHolder, position: Int) {}
 
     open fun bindTailViewHolder(holder: ViewHolder, position: Int) {}
 
-    /** 使用binding的方式进行布局绑定 */
     open fun useViewBinding(itemView: View): ViewBinding? = null
 
     // ------------------------------------------------------------------------------------------------- end

@@ -11,16 +11,6 @@ class ColorfulMonthView(context: Context?) : MonthView(context) {
         mRadius = mItemWidth.coerceAtMost(mItemHeight) / 5 * 2
     }
 
-    /**
-     * 如果需要点击Scheme没有效果，则return true
-     *
-     * @param canvas    canvas
-     * @param calendar  日历日历calendar
-     * @param x         日历Card x起点坐标
-     * @param y         日历Card y起点坐标
-     * @param hasScheme hasScheme 非标记的日期
-     * @return false 则不绘制onDrawScheme，因为这里背景色是互斥的
-     */
     override fun onDrawSelected(canvas: Canvas, calendar: Calendar, x: Int, y: Int, hasScheme: Boolean): Boolean {
         val cx = x + mItemWidth / 2
         val cy = y + mItemHeight / 2

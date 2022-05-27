@@ -16,9 +16,6 @@ import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.views.activity.DairyEditActivity
 import com.tw.longerrelationship.views.widgets.PictureTypeSelectDialog
 
-/**
- * 日记编辑界面[DairyEditActivity]的选择图片适配器
- */
 class PictureSelectAdapter(
     var pictureList: List<String>,
     private val activity: DairyEditActivity,
@@ -96,9 +93,6 @@ class PictureSelectAdapter(
         isShowDelete = true
     }
 
-    /**
-     * 尾部的ViewHolder
-     */
     inner class TailViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         private val pictureAdd: FrameLayout = itemView.findViewById(R.id.fl_picture_add)

@@ -17,12 +17,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-/**
- * 批量设置控件点击事件。
- *
- * @param v 点击的控件
- * @param block 处理点击事件回调代码块
- */
 fun setOnClickListeners(vararg v: View?, block: View.() -> Unit) {
     val listener = View.OnClickListener {
         it.block()
@@ -32,20 +26,13 @@ fun setOnClickListeners(vararg v: View?, block: View.() -> Unit) {
     }
 }
 
-/**
- * 批量处理view的状态
- */
 fun setMultiViewState(@ViewState state: Int, vararg v: View?) {
     v.forEach {
         it?.visibility = state
     }
 }
 
-/**
- * 定位权限动态申请
- */
 fun requestPositioningPermission(context: Activity?) {
-    // 网络定位
     runCatching {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
@@ -62,7 +49,6 @@ fun requestPositioningPermission(context: Activity?) {
         }
     }.onFailure {}
 
-    // GPS定位
     runCatching {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(
@@ -80,9 +66,6 @@ fun requestPositioningPermission(context: Activity?) {
     }.onFailure { }
 }
 
-/**
- * SD卡读写权限动态申请
- */
 fun requestSDCardWritePermission(context: Activity) {
     if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         != PackageManager.PERMISSION_GRANTED
@@ -94,9 +77,6 @@ fun requestSDCardWritePermission(context: Activity) {
     }
 }
 
-/**
- * 录音权限
- */
 fun requestRecordAudioPermission(context: Activity) {
     if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
         != PackageManager.PERMISSION_GRANTED
@@ -107,10 +87,6 @@ fun requestRecordAudioPermission(context: Activity) {
     }
 }
 
-/**
- * 把两个时间作比较
- * 获得需要的时间字符串
- */
 fun getComparedTime(data: Date): String {
     val old: Calendar = Calendar.getInstance().apply { time = data }
     val now: Calendar = Calendar.getInstance()
@@ -145,7 +121,6 @@ fun isSameDay(cal1: Calendar?, cal2: Calendar?): Boolean {
 }
 
 
-/** 获得右边格式的时间  eg: 18:00,07:08*/
 fun getHourMinuteTime(calendar: Calendar) =
     "${
         if (calendar.get(Calendar.HOUR_OF_DAY) < 10) "0${calendar.get(Calendar.HOUR_OF_DAY)}"
@@ -155,9 +130,6 @@ fun getHourMinuteTime(calendar: Calendar) =
         else calendar.get(Calendar.MINUTE)
     }"
 
-/**
- * 获得右边的时间格式 eg: 2021/3/15
- */
 fun getYearAndDay(calendar: Calendar) =
     "${calendar.get(Calendar.YEAR)}/${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}"
 
@@ -201,10 +173,6 @@ fun getScreenHeight(): Int {
     return appContext.resources.displayMetrics.heightPixels
 }
 
-/**
- * 16进制转GRB颜色值方法
- * @param hex eg: #fe92ec
- */
 fun toRGB(hex: String) {
     val color = hex.replace("#", "").toInt(16)
     val red = color and 0xff0000 shr 16
@@ -213,9 +181,6 @@ fun toRGB(hex: String) {
     println("red=$red--green=$green--blue=$blue")
 }
 
-/**
- * GRB转16进制颜色值方法
- */
 fun toHex(red: Int, green: Int, blue: Int) {
     val hr = Integer.toHexString(red)
     val hg = Integer.toHexString(green)
@@ -223,18 +188,12 @@ fun toHex(red: Int, green: Int, blue: Int) {
     println("#$hr$hg$hb")
 }
 
-/**
- * 给color添加透明度
- * @param alpha 透明度 0f～1f
- * @param baseColor 基本颜色
- */
 fun getColorWithAlpha(alpha: Float, @ColorInt baseColor: Int): Int {
     val a = 255.coerceAtMost(0.coerceAtLeast((alpha * 255).toInt())) shl 24
     val rgb = 0x00ffffff and baseColor
     return a + rgb
 }
 
-/** 打印代码块的执行时间 */
 inline fun <T> T.runTimeLog(message: String? = null, block: T.() -> Unit) {
     val startTime = System.currentTimeMillis()
     block()
