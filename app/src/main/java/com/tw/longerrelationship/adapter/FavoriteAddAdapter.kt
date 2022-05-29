@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.tw.longerrelationship.R
 
-class FavoriteAddAdapter(val context: Context, layoutId: Int, data: List<Int>) : BaseViewAdapter<Int>(layoutId, data) {
+class FavoriteAddAdapter(val context: Context, layoutId: Int, data: List<Int>) : BaseViewAdapter<Int>(data, bodyId = layoutId) {
     private var selectedImage = -1
     var notebookCoverOnSelect: (Int) -> Unit = { }
 

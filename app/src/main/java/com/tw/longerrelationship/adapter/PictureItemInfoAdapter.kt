@@ -17,7 +17,7 @@ import com.tw.longerrelationship.views.activity.AlbumActivity
 import com.tw.longerrelationship.views.activity.PictureInfoActivity
 import java.util.ArrayList
 
-class PictureItemInfoAdapter(val context: Context, val pictureTime: String, layoutId: Int,val data: List<String>) : BaseViewAdapter<String>(layoutId, data) {
+class PictureItemInfoAdapter(val context: Context, val pictureTime: String, layoutId: Int,val data: List<String>) : BaseViewAdapter<String>(data, bodyId = layoutId) {
 
     override fun bindViewHolder(holder: ViewHolder, position: Int, item: String) {
         val picture = holder.itemView.findViewById<ImageView>(R.id.iv_picture_info)

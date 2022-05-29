@@ -11,7 +11,7 @@ import com.tw.longerrelationship.logic.model.NotebookItem
 import com.tw.longerrelationship.viewmodel.FavoritesViewModel
 
 class FavoriteItemAdapter(val context: Context, layoutId: Int, data: List<NotebookItem>, tailLayout: Int) :
-    BaseViewAdapter<NotebookItem>(layoutId, data, tailLayoutId = tailLayout) {
+    BaseViewAdapter<NotebookItem>(data, bodyId =  layoutId, tailId = tailLayout) {
 
     var notebookOnClick: () -> Unit = { }
     var notebookOnAdd: () -> Unit = { }

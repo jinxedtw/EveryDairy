@@ -3,12 +3,11 @@ package com.tw.longerrelationship.adapter
 import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.logic.model.ImageFolder
 
-class ThumbnailAdapter(val context: Context, layoutId: Int, data: List<ImageFolder>) : BaseViewAdapter<ImageFolder>(layoutId, data) {
+class ThumbnailAdapter(val context: Context, layoutId: Int, data: List<ImageFolder>) : BaseViewAdapter<ImageFolder>(data, bodyId = layoutId) {
 
     var onItemClick: (ImageFolder, Int) -> Unit = { _, _ -> }
 

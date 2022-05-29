@@ -11,7 +11,7 @@ import com.tw.longerrelationship.util.dp2px
 
 
 class PictureItemAdapter(val context: Context, layoutId: Int, data: List<String>, val pictureMap: MutableMap<String, List<String>>) :
-    BaseViewAdapter<String>(layoutId, data, tailLayoutId = R.layout.item_dairy_tail) {
+    BaseViewAdapter<String>(data, bodyId = layoutId, tailId = R.layout.item_dairy_tail) {
 
     @SuppressLint("SetTextI18n")
     override fun bindViewHolder(holder: ViewHolder, position: Int, item: String) {
