@@ -36,8 +36,8 @@ import com.tw.longerrelationship.R
 import com.tw.longerrelationship.adapter.PictureSelectAdapter
 import com.tw.longerrelationship.databinding.ActivityDairyEditBinding
 import com.tw.longerrelationship.help.DairyColorHelper
-import com.tw.longerrelationship.help.GridItemDecoration
 import com.tw.longerrelationship.help.LocationService
+import com.tw.longerrelationship.logic.LiveDataBus
 import com.tw.longerrelationship.util.*
 import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_IMAGES
 import com.tw.longerrelationship.util.Constants.INTENT_ALBUM_SELECT_NUM
@@ -60,6 +60,7 @@ import java.util.*
 
 class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     private var showRvPhotoList: Boolean = true
+    private var showRecordBar: Boolean = false
     private var isNeedToSaved: Boolean = true        // 日记是否需要保存
     private var recoveredTitle: String? = null      // 恢复日记标题
     private var recoveredContent: String? = null    // 恢复日记内容
@@ -207,6 +208,9 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             if (it.title != null) {
                 mBinding.appBar.setTitle(it.title)
             }
+            if (it.recordPath.isNotEmpty()) {
+                mBinding.recodeBar.initMedia(it.recordPath)
+            }
             viewModel.apply {
                 location = it.location
                 pictureList = it.uriList as ArrayList<String>
@@ -215,9 +219,24 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                 weatherIcon = it.weather
                 moodIcon = it.mood
                 ifLove = it.isLove
+                recodePath = it.recordPath
             }
             pictureSelectAdapter.pictureList = viewModel.pictureList
             pictureSelectAdapter.notifyDataSetChanged()
+        }
+
+        LiveDataBus.with<String>(Constants.LIVE_SAVE_RECODE).observe(this) {
+            if (viewModel.recodePath.isNotEmpty()) {
+                deleteFileOrFolder(viewModel.recodePath)
+            }
+
+            if (isSoftShowing()) {
+                mBinding.recodeBar.visible()
+            }
+            viewModel.recodePath = it
+            showRecordBar = true
+            mBinding.recodeBar.initMedia(it)
+            viewModel.isChanged.postValue(true)
         }
     }
 
@@ -258,7 +277,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
         ) {
             when (this) {
                 mBinding.ivRecording -> {
-//                    openRecording()
                     RecordAudioDialogFragment().show(supportFragmentManager, "recordDialog")
                 }
                 mBinding.ivCalendar -> {
@@ -412,12 +430,15 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             decorView.getWindowVisibleDisplayFrame(rect)
             // 如果decorView的高度小于原来的80%就说明弹出了软键盘
             if ((rect.bottom - rect.top).toDouble() / decorView.height < 0.8) {
-                mBinding.rvPhotoList.visibility = View.GONE
+                mBinding.recodeBar.gone()
                 decorView.handler.postDelayed({
                     mBinding.llTextAndCount.visibility = View.VISIBLE
                 }, 50)
             } else {
                 mBinding.llTextAndCount.visibility = View.GONE
+                if (showRecordBar) {
+                    mBinding.recodeBar.visible()
+                }
                 if (showRvPhotoList) mBinding.rvPhotoList.visibility =
                     View.VISIBLE else mBinding.rvPhotoList.visibility = View.GONE
             }

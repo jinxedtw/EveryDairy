@@ -27,6 +27,7 @@ class DairyEditViewModel(private val repository: MainRepository, val dairyId: In
     var weatherIcon: Int = R.drawable.ic_weather
     var moodIcon: Int = R.drawable.ic_mood
     var ifLove: Boolean = false
+    var recodePath: String = ""
 
     fun saveDairy(title: String) =
         try {
@@ -41,7 +42,8 @@ class DairyEditViewModel(private val repository: MainRepository, val dairyId: In
                     pictureList,
                     weatherIcon,
                     moodIcon,
-                    ifLove
+                    ifLove,
+                    recodePath
                 )
             )
             Result.success(true)

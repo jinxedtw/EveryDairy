@@ -65,7 +65,7 @@ class GestureLockActivity : BaseActivity<ActivityGestureBinding>() {
                         AlertDialog.Builder(this@GestureLockActivity).setMessage("是否确认保存图案?")
                             .setPositiveButton("确认") { _, _ ->
                                 saveGesturePath()
-                                LiveDataBus.with(Constants.LIVE_SET_LOCK, Boolean::class.java).postValue(true)
+                                LiveDataBus.with<Boolean>(Constants.LIVE_SET_LOCK).postValue(true)
                                 finish()
                             }
                             .setNeutralButton("取消", null)

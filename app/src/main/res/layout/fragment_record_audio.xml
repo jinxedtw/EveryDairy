@@ -7,7 +7,6 @@
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
     android:layout_gravity="center"
-    android:transitionName="open_mediaplayer"
     card_view:cardElevation="3dp">
 
     <RelativeLayout
@@ -21,20 +20,21 @@
 
         <ImageView
             android:id="@+id/record_audio_iv_close"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_close" />
 
         <ImageView
             android:id="@+id/record_audio_fab_record"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@color/blue_app_icon"
             android:layout_below="@+id/record_audio_chronometer_time"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp" />
+            android:layout_marginTop="30dp"
+            android:background="@drawable/ic_play_fill" />
 
         <Chronometer
             android:id="@+id/record_audio_chronometer_time"
@@ -49,6 +49,7 @@
         <TextView
             android:layout_width="240dp"
             android:layout_height="24dp"
+            android:visibility="gone"
             android:layout_alignEnd="@+id/record_audio_chronometer_time"
             android:layout_centerVertical="true"
             android:gravity="center"

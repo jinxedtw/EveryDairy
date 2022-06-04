@@ -36,7 +36,7 @@ class SecretActivity : BaseActivity<ActivitySecretBinding>(){
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initEvent() {
-        LiveDataBus.with(Constants.LIVE_SET_LOCK, Boolean::class.java).observe(this) {
+        LiveDataBus.with<Boolean>(Constants.LIVE_SET_LOCK).observe(this) {
             if (it){
                 mBinding.sbLock.isChecked = true
                 DataStoreUtil[KEY_GESTURE_LOCK] = true

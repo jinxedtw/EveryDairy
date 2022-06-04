@@ -17,7 +17,8 @@ data class DairyItem(
     val uriList: List<String> = emptyList(),                 // 图片的Uri信息
     val weather: Int = R.drawable.ic_weather,                // 天气
     val mood: Int = R.drawable.ic_mood,                      // 心情
-    val isLove: Boolean = false                              // 是否收藏
+    val isLove: Boolean = false,                             // 是否收藏
+    val recordPath: String = "",                                 // 录音位置
 )
 
 /** 图片实体类 */

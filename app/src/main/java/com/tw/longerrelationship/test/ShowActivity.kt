@@ -26,7 +26,7 @@ class ShowActivity : AppCompatActivity() {
 
         text1 = findViewById(R.id.text_1)
 
-        LiveDataBus.with("啦啦啦",String::class.java).value="哇哇哇哇哇"
+        LiveDataBus.with<String>("啦啦啦").value="哇哇哇哇哇"
 
         text1.setOnClickListener {
             val intent=Intent(this, TestActivity::class.java).apply {

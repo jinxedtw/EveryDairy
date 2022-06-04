@@ -15,7 +15,7 @@ object LiveDataBus {
 
     @Suppress("UNCHECKED_CAST")
     @Synchronized
-    fun <T> with(key: String, type: Class<T>, isStick: Boolean = false): BusMutableLivedata<T> {
+    fun <T> with(key: String,isStick: Boolean = false): BusMutableLivedata<T> {
         if (!busMap.containsKey(key)) {
             busMap[key] = BusMutableLivedata(isStick)
         }

@@ -22,7 +22,16 @@ abstract class BaseViewAdapter<T> : RecyclerView.Adapter<BaseViewAdapter<T>.View
     @LayoutRes
     private var tailLayoutId: Int = EMPTY_LAYOUT_ID
 
-    constructor(data: List<T>, @LayoutRes bodyId: Int, @LayoutRes headId: Int = EMPTY_LAYOUT_ID, @LayoutRes tailId: Int = EMPTY_LAYOUT_ID) {
+    private var headVisible: Boolean = true
+
+    private var tailVisible: Boolean = true
+
+    private var count = 0
+
+    /**
+     * 单一ViewHolder
+     */
+    constructor(data: List<T> = emptyList(), @LayoutRes bodyId: Int, @LayoutRes headId: Int = EMPTY_LAYOUT_ID, @LayoutRes tailId: Int = EMPTY_LAYOUT_ID) {
         rawData = data
         bodyLayoutId = bodyId
         headLayoutId = headId
@@ -30,9 +39,9 @@ abstract class BaseViewAdapter<T> : RecyclerView.Adapter<BaseViewAdapter<T>.View
     }
 
     /**
-     * 使用该构造方法需要实现[MultiItemTypeSupport]接口
+     * 使用该构造方法需要实现[MultiItemTypeSupport]接口，支持多种ViewHolder类型
      */
-    constructor(data: List<T>, @LayoutRes headId: Int = EMPTY_LAYOUT_ID, @LayoutRes tailId: Int = EMPTY_LAYOUT_ID) {
+    constructor(data: List<T> = emptyList(), @LayoutRes headId: Int = EMPTY_LAYOUT_ID, @LayoutRes tailId: Int = EMPTY_LAYOUT_ID) {
         rawData = data
         headLayoutId = headId
         tailLayoutId = tailId
@@ -108,20 +117,20 @@ abstract class BaseViewAdapter<T> : RecyclerView.Adapter<BaseViewAdapter<T>.View
 
     override fun getItemCount(): Int {
         var count = rawData.size
-        if (headLayoutId != EMPTY_LAYOUT_ID) {
+        if (headLayoutId != EMPTY_LAYOUT_ID && headVisible) {
             count++
         }
-        if (tailLayoutId != EMPTY_LAYOUT_ID) {
+        if (tailLayoutId != EMPTY_LAYOUT_ID && tailVisible) {
             count++
         }
         return count
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == 0 && headLayoutId != EMPTY_LAYOUT_ID) {
+        if (position == 0 && headLayoutId != EMPTY_LAYOUT_ID && headVisible) {
             return HEAD_LAYOUT
         }
-        if (position == itemCount - 1 && tailLayoutId != EMPTY_LAYOUT_ID) {
+        if (position == itemCount - 1 && tailLayoutId != EMPTY_LAYOUT_ID && tailVisible) {
             return TAIL_LAYOUT
         }
         if (this is MultiItemTypeSupport<*>) {
@@ -131,10 +140,40 @@ abstract class BaseViewAdapter<T> : RecyclerView.Adapter<BaseViewAdapter<T>.View
     }
 
     private fun getRealPosition(position: Int): Int {
-        return if (headLayoutId != EMPTY_LAYOUT_ID) {
+        return if (headLayoutId != EMPTY_LAYOUT_ID && headVisible) {
             position - 1
         } else {
             position
+        }
+    }
+
+    fun setRawData(data: List<T>) {
+        rawData = data
+    }
+
+    fun getRawData(): List<T> {
+        return rawData
+    }
+
+    fun setHeadVisible(visible: Boolean) {
+        if (HEAD_LAYOUT == EMPTY_LAYOUT_ID) {
+            return
+        }
+
+        if (visible != headVisible) {
+            headVisible = visible
+            notifyDataSetChanged()
+        }
+    }
+
+    fun setTailVisible(visible: Boolean) {
+        if (TAIL_LAYOUT == EMPTY_LAYOUT_ID) {
+            return
+        }
+
+        if (visible != tailVisible) {
+            tailVisible = visible
+            notifyDataSetChanged()
         }
     }
 

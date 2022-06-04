@@ -1,19 +1,19 @@
 package com.tw.longerrelationship.util
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
 import android.view.animation.Animation
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.tw.longerrelationship.MyApplication.Companion.appContext
 import com.tw.longerrelationship.util.annotation.ViewState
-import java.text.SimpleDateFormat
+import java.io.File
 import java.util.*
 
 
@@ -232,6 +232,69 @@ fun getColorWithAlpha(alpha: Float, @ColorInt baseColor: Int): Int {
     val a = 255.coerceAtMost(0.coerceAtLeast((alpha * 255).toInt())) shl 24
     val rgb = 0x00ffffff and baseColor
     return a + rgb
+}
+
+/** 删除文件，可以是文件或文件夹
+ * @param delFile 要删除的文件夹或文件名
+ * @return 删除成功返回true，否则返回false
+ */
+fun deleteFileOrFolder(delFile: String): Boolean {
+    val file = File(delFile)
+    return if (!file.exists()) {
+        false
+    } else {
+        if (file.isFile) deleteSingleFile(delFile) else deleteDirectory(delFile)
+    }
+}
+
+/** 删除单个文件
+ * @param filePath 要删除的文件的文件名
+ * @return 单个文件删除成功返回true，否则返回false
+ */
+private fun deleteSingleFile(filePath: String): Boolean {
+    val file = File(filePath)
+    // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+    return if (file.exists() && file.isFile) {
+        file.delete()
+    } else {
+        false
+    }
+}
+
+/** 删除目录及目录下的文件
+ * @param filePath 要删除的目录的文件路径
+ * @return 目录删除成功返回true，否则返回false
+ */
+private fun deleteDirectory(filePath: String): Boolean {
+    // 如果dir不以文件分隔符结尾，自动添加文件分隔符
+    var filePath = filePath
+    if (!filePath.endsWith(File.separator)) filePath += File.separator
+    val dirFile = File(filePath)
+    // 如果dir对应的文件不存在，或者不是一个目录，则退出
+    if (!dirFile.exists() || !dirFile.isDirectory) {
+        return false
+    }
+    var flag = true
+    // 删除文件夹中的所有文件包括子目录
+    val files: Array<File> = dirFile.listFiles()
+    for (file in files) {
+        // 删除子文件
+        if (file.isFile) {
+            flag = deleteSingleFile(file.absolutePath)
+            if (!flag) break
+        } else if (file.isDirectory) {
+            flag = deleteDirectory(
+                file
+                    .getAbsolutePath()
+            )
+            if (!flag) break
+        }
+    }
+    if (!flag) {
+        return false
+    }
+    // 删除当前目录
+    return dirFile.delete()
 }
 
 /** 打印代码块的执行时间 */

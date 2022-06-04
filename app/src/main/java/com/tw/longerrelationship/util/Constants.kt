@@ -28,4 +28,5 @@ object Constants {
 
     /** liveData */
     const val LIVE_SET_LOCK = "setLock"     // 设置锁
+    const val LIVE_SAVE_RECODE = "saveRecord" // 保存录音
 }

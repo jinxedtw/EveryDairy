@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.tw.longerrelationship.viewmodel.DairyEditViewModel" />
@@ -91,7 +92,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="20dp"
             android:scrollbars="none"
-            app:layout_constraintBottom_toTopOf="@id/ll_bottom"
+            app:layout_constraintBottom_toTopOf="@id/recode_bar"
             app:layout_constraintTop_toBottomOf="@id/cl_recover">
 
             <EditText
@@ -108,6 +109,12 @@
                 android:textSize="16sp" />
         </ScrollView>
 
+        <com.tw.longerrelationship.views.widgets.RecordBar
+            android:id="@+id/recode_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/sv_edit_content" />
+
         <LinearLayout
             android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
@@ -118,7 +125,7 @@
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sv_edit_content">
+            app:layout_constraintTop_toBottomOf="@id/recode_bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_text_and_count"

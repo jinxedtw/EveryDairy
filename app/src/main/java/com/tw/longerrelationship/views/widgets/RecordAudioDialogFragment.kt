@@ -3,7 +3,6 @@ package com.tw.longerrelationship.views.widgets
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.os.SystemClock
@@ -12,6 +11,7 @@ import android.view.WindowManager
 import android.widget.Chronometer
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.tw.longerrelationship.R
 import com.tw.longerrelationship.views.service.RecordingService
@@ -22,7 +22,6 @@ import java.io.File
  */
 class RecordAudioDialogFragment : DialogFragment() {
     private var mStartRecording = true
-    var timeWhenPaused: Long = 0
     private var mFabRecord: ImageView? = null
     private var mChronometerTime: Chronometer? = null
     private var mIvClose: ImageView? = null
@@ -50,39 +49,26 @@ class RecordAudioDialogFragment : DialogFragment() {
     private fun onRecord(start: Boolean) {
         val intent = Intent(activity, RecordingService::class.java)
         if (start) {
-            Toast.makeText(activity, "开始录音...", Toast.LENGTH_SHORT).show()
+            mFabRecord?.background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_stop_fill)
+            ToastWithImage.showToast("开始录音...",true)
             val folder = File(Environment.getExternalStorageDirectory().toString() + "/SoundRecorder")
             if (!folder.exists()) {
-                //folder /SoundRecorder doesn't exist, create the folder
                 folder.mkdir()
             }
 
-            //start Chronometer
             mChronometerTime!!.base = SystemClock.elapsedRealtime()
             mChronometerTime!!.start()
 
-            //start RecordingService
             requireActivity().startService(intent)
-            //keep screen on while recording
-//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         } else {
-            //stop recording
-//            mFabRecord!!.setImageResource(R.drawable.ic_mic_white_36dp)
-            //mPauseButton.setVisibility(View.GONE);
             mChronometerTime!!.stop()
-            timeWhenPaused = 0
-            Toast.makeText(activity, "录音结束...", Toast.LENGTH_SHORT).show()
-            requireActivity().stopService(intent)
-            //allow the screen to turn off again once recording is finished
-            requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
-    }
+            ToastWithImage.showToast("录音结束...",true)
+            mFabRecord?.background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_play_fill)
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        when (requestCode) {
-            1 -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                onRecord(mStartRecording)
-            }
+            requireActivity().stopService(intent)
+            requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            dismiss()
         }
     }
 }

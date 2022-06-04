@@ -182,14 +182,24 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_content" />
 
+
+                    <com.tw.longerrelationship.views.widgets.RecordBar
+                        android:id="@+id/recode_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/rv_photo_list"
+                        tools:visibility="visible" />
+
                     <ImageView
                         android:id="@+id/iv_location"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="10dp"
                         android:src="@drawable/ic_location_small"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/rv_photo_list" />
+                        app:layout_constraintTop_toBottomOf="@id/recode_bar" />
 
                     <TextView
                         android:id="@+id/tv_location"

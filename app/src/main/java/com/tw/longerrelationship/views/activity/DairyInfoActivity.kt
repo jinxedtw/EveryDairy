@@ -119,6 +119,11 @@ class DairyInfoActivity : BaseActivity<ActivityDairyInfoBinding>() {
                         BrowserActivity.openBrowserActivity(this@DairyInfoActivity, "啦啦啦", url)
                     }
                 }
+
+                if (it.recordPath.isNotEmpty()){
+                    mBinding.recodeBar.visible()
+                    mBinding.recodeBar.initMedia(it.recordPath)
+                }
             }
         }
     }
