@@ -59,7 +59,6 @@ import java.util.*
 
 
 class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
-    private var showRvPhotoList: Boolean = true
     private var showRecordBar: Boolean = false
     private var isNeedToSaved: Boolean = true        // 日记是否需要保存
     private var recoveredTitle: String? = null      // 恢复日记标题
@@ -219,6 +218,11 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                 weatherIcon = it.weather
                 moodIcon = it.mood
                 ifLove = it.isLove
+                if (recodePath.isNotEmpty()){
+                    mBinding.recodeBar.initMedia(recodePath)
+                    mBinding.recodeBar.visible()
+                    showRecordBar = true
+                }
                 recodePath = it.recordPath
             }
             pictureSelectAdapter.pictureList = viewModel.pictureList
@@ -431,6 +435,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
             // 如果decorView的高度小于原来的80%就说明弹出了软键盘
             if ((rect.bottom - rect.top).toDouble() / decorView.height < 0.8) {
                 mBinding.recodeBar.gone()
+                mBinding.rvPhotoList.gone()
                 decorView.handler.postDelayed({
                     mBinding.llTextAndCount.visibility = View.VISIBLE
                 }, 50)
@@ -439,8 +444,7 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
                 if (showRecordBar) {
                     mBinding.recodeBar.visible()
                 }
-                if (showRvPhotoList) mBinding.rvPhotoList.visibility =
-                    View.VISIBLE else mBinding.rvPhotoList.visibility = View.GONE
+                mBinding.rvPhotoList.visibility = View.VISIBLE
             }
         }
     }
@@ -464,7 +468,6 @@ class DairyEditActivity : BaseActivity<ActivityDairyEditBinding>() {
     fun finishActivity() {
         if (isSoftShowing()) {
             closeKeyboard(mBinding.root.windowToken)
-            showRvPhotoList = false
             mBinding.root.handler.postDelayed({
                 if (isTaskRoot) {
                     startActivity(Intent(this, HomeActivity::class.java))
