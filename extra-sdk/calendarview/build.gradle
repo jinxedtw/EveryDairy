@@ -4,13 +4,13 @@ plugins {
 
 android {
     namespace "com.haibin.calendarview"
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 371
-        versionName "3.7.1"
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
