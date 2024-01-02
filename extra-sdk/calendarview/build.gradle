@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace "com.haibin.calendarview"
     compileSdkVersion 30
 
     defaultConfig {
